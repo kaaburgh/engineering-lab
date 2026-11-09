@@ -123,6 +123,21 @@
 сдвиг в 3–4 раза больше A/A-плацебо. На AMD стоимость `POPFQ` иная — не
 измерялась.
 
+**Зонды для C2/C3/C6** (`JitCounters` v2, SHA-256 `83a60062…7fd2d`; guest
+результаты и `PFPREC` идентичны base; два прогона совпадают в пределах
+0.15%; `data/counts-demo-window-probes.json`):
+
+| Зонд | Результат | Статус |
+|---|---|---|
+| Доля вызовов stack-helper, где доступ в пределах страницы и есть прямой TLB-указатель (= сработал бы inline fast path) | PUSH 65.40 M из 65.42 M (**99.97%**), POP 39.49 M из 39.49 M (**99.99%**) | C2-механизм **CONFIRMED** |
+| Доля входов в dispatcher, где code page та же, что у предыдущего входа | 12.17 M из 18.02 M (**67.5%**) | C3 «same page» применим — **CONFIRMED** (критерий > 50%) |
+| Причины fallback в normal core | 1 945 752 из 1 945 752 — `BR_Opcode` (неподдержанная dynamic core инструкция); SMC — 0, `invalidation_map` — 0, отсутствие code page — 0, trap — 0 | **CONFIRMED** |
+| Опкоды `BR_Opcode` | `BT r/m,r` (`0F A3`) 1 367 631 (70%), `SETE` (`0F 94`) 295 802, `SAHF` (`9E`) 183 754, `BTR` (`0F B3`) 32 725, `MOV CRn,r` 15 288, `MOV DRn,r` 12 740, `LSS` 10 024, `0F 01` 7 644, `MOV r,CRn` 7 644, `BTS` 3 977, `SETLE` 2 910, `0F 00` 2 548 | В `decoder.h` нет `case` для `0F A3/AB/B3`, `0F 9x` и `9E` → `illegalopcode` — **CONFIRMED** |
+
+Следствие для H3: за окно demo нет ни одного fallback из-за SMC/инвалидации
+и создано лишь 3 730 блоков — гипотеза о дорогой самомодификации `surf8`
+в режиме timedemo **UNSUPPORTED** (патчинг происходит, но не стоит времени).
+
 **PR #10 по счётчикам** (`JitCounters` + PR #10 патч): `FPU_FLD_32` вызовов
 152 409 081 → **0**; TLB-промахов inline-чтения +30 768 (99.98% x87 m32
 загрузок на быстром пути); счётчики `PUSHFQ`/`POPFQ`, PUSH/POP, dispatcher —
