@@ -389,6 +389,89 @@ block) while the sentinel is gone. The per-frame cost of `surf8` is the
 texel address computation and the byte packing — the patching is a load-time
 event.
 
+## Step 4 of the register: the decoder gap is closed and measured
+
+The register's step 4 was to close the `BT`/`SETcc`/`SAHF` decoder gap with
+the regression test from
+[kaaburgh/dosbox-staging PR #11](https://github.com/kaaburgh/dosbox-staging/pull/11)
+as the gate, and then to measure the effect. That is done, in
+[kaaburgh/dosbox-staging PR #13](https://github.com/kaaburgh/dosbox-staging/pull/13):
+the register bit-base form of `BT`/`BTS`/`BTR`/`BTC`, the immediate-index
+form, all sixteen `SETcc` codes and `SAHF` are now translated by the dynamic
+core. `BT` with a memory bit base keeps the bit-string semantics of the
+SDM and still falls back to the interpreter.
+
+### The gate
+
+The guest program from PR #11 (`bit_test_semantics.asm`, 19 cases) now runs
+on the dynamic core without any interpreter entry for the implemented
+opcodes. The interpreter core and the dynamic core produce byte-identical
+output, the in-program self-check reports zero deviations, and 710 of the
+1021 guest image bytes are translated (69.5 %) in 19 blocks.
+
+### The fallbacks
+
+An instrumented build (a local patch, not part of the fork branch) counted
+every interpreter entry with the guest `CS:EIP` that caused it. Both rows
+below are the same Quake 1.06 `demo1` timedemo (969 frames), the same
+configuration, on the same node, measured back to back:
+
+| Guest code | base branch | gap closed |
+|---|---:|---:|
+| `0x00a7:0x02f5c6` (`bt edi,ebx`) | 894 278 | **0** |
+| `0x00a7:0x00491c` (`bt`) | 368 672 | **0** |
+| `0x00a7:0x031b6d` (`sete`) | 289 352 | **0** |
+| `0x00a7:0x032994` (`bt`) | 102 502 | **0** |
+| `0x00a7:0x04ed40` (`sahf`) | 97 835 | **0** |
+| `0x00a7:0x04ed5c` (`sahf`) | 88 485 | **0** |
+| `0x00a7:0x02f6a6` (`btr edi,ebx`) | 32 666 | **0** |
+| **total interpreter entries** | **2 185 284** | **301 653** |
+| of which caused by Quake's own code | 1 863 789 | **0** |
+
+The remaining 301 653 entries are in DOS and BIOS code, which the branch
+does not touch; their per-address counts are unchanged (13 221 vs. 13 268
+at `0x0d04d:0x02b01`), so the reduction is attributable to the implemented
+opcodes and not to a change in how often the DOS kernel is entered. The
+absolute totals depend on the run (an earlier series on the same
+configuration counted 1 963 529), so only the contemporaneous pair is used
+for the comparison.
+
+### The effect
+
+A/B, 4 warm-ups discarded, 32 measured runs, ABBA quartet order, two
+different binaries, fresh game copy and fresh emulator process per run:
+
+| Metric | base (A) | gap closed (B) | Contrast A/B | 95 % bootstrap interval |
+|---|---:|---:|---:|---|
+| guest FPS (median of 16 runs per arm) | 112.8 | 121.2 | **−6.381 %** | [−7.356, −5.390] |
+| host CPU time | — | — | **+6.624 %** | [5.768, 7.564] |
+
+The branch is **6.4 % faster** in guest FPS and uses **6.6 % less host CPU**
+for the same 969 frames; both intervals exclude zero and the effect is
+about four times the detection floor measured on this host (1.63 % FPS,
+1.31 % host CPU). An earlier independent A/B of the same change gave
+−5.248 % FPS [−6.583, −3.891] and +5.588 % host CPU [4.589, 6.497].
+
+**The measured effect is larger than the 1.19 % "fallback window" that the
+profiling attributed to the interpreter and the x87 state transfer.** The
+reason is that the fallback cost is not only the interpreter's own samples:
+every fallback also ends the cached block, so the surrounding code has to
+be translated again. The earlier attribution counted samples, not the
+block teardown. This is the correction the earlier review asked for, and it
+is the reason the register's cost model now has to include the invalidation
+cost of a fallback, not only the interpreter's samples.
+
+**Verdict impact:** none of H1–H5 changes. The fallback was a small
+component of H5's window, and H5's dominant component remains x87
+(≈7 % of the window, `FPU_FLD_32` → `mem_readd`), which this branch does
+not touch. What the branch establishes is that the *measured* cost of one
+decoder gap in this guest is about 6.4 %, which is the number any future
+estimate of "one missing opcode family is worth X %" has to start from
+instead of the 1.2 % sample-based figure.
+
+Artifacts: `research/quake106-fallback-counts-2026-11-09.csv`,
+`research/quake106-decoder-gap-closure-2026-11-09.json`.
+
 ## Measurement floor, for whoever claims a speedup next
 
 On the same host: FPS coefficient of variation 2.17%, minimum detectable
@@ -426,7 +509,14 @@ the host that produced it.
    `R_ClipEdge` the most exposed function (23.7% of its own cost).
 3. ~~Re-scope H3.~~ **Done** above: the patching is a load-time cost; the
    per-frame cost is the inlined texel packing.
-4. Close the `BT`/`SETcc`/`SAHF` decoder gap and re-measure the fallback
-   share with the regression test from PR #11 as the gate.
+4. ~~Close the `BT`/`SETcc`/`SAHF` decoder gap and re-measure the fallback
+   share with the regression test from PR #11 as the gate.~~ **Done**: the
+   gate passes (byte-identical output, zero deviations), the fallbacks
+   caused by Quake's own code drop from 1 863 789 to zero, and the A/B
+   measures 6.4 % FPS and 6.6 % host CPU.
 5. Only then design changes, and measure them with an A/A control on a
    stable host, given the detection floor measured here.
+6. The remaining measured decoder gaps, in the order of their measured
+   frequency: `BT`/`BTS`/`BTR`/`BTC` with a memory bit base (3 420 entries
+   in Quake's code), the `0xAE` floating-point escape prefix (638 entries),
+   and `LAHF`, `CMOVcc`, `BSF`/`BSR`.

@@ -313,3 +313,32 @@ actionable and to locate the x87 path. Both are done on the same pool.
 New harness tools: `../harness/split_unit_bodies.py`,
 `../harness/profile_native_blocks.py`. The attribution analyzer now records
 the nested helper caller **per guest block**.
+
+### Follow-up (same day): the decoder gap is closed and measured
+
+The register's next step after that was to close the `BT`/`SETcc`/`SAHF`
+decoder gap with the regression test from
+[kaaburgh/dosbox-staging PR #11](https://github.com/kaaburgh/dosbox-staging/pull/11)
+as the gate, and then to measure the effect. Done in
+[kaaburgh/dosbox-staging PR #13](https://github.com/kaaburgh/dosbox-staging/pull/13).
+
+- **The gate passes**: the 19-case guest program produces byte-identical
+  output under the interpreter core and the dynamic core, with zero
+  self-check deviations; 710 of 1021 guest image bytes are translated in
+  19 blocks.
+- **The fallbacks in Quake's own code drop from 1 863 789 to zero**; the
+  interpreter entries of the whole run drop from 2 185 284 to 301 653, and
+  the remainder is DOS/BIOS code whose per-address counts are unchanged.
+- **The measured effect is 6.4 % guest FPS and 6.6 % host CPU time**
+  (A/B, 32 measured runs, ABBA quartets, 95 % bootstrap intervals
+  [−7.356, −5.390] and [5.768, 7.564]).
+- **The effect is larger than the 1.19 % fallback window** that the
+  profiling attributed to the interpreter and the x87 transfer, because a
+  fallback also ends the cached block and forces a re-translation. The
+  register's cost model must count that invalidation cost, not only the
+  interpreter's samples.
+- **No hypothesis changes.** The fallback was a small component of H5's
+  window; H5's dominant component remains x87 (≈7 % of the window).
+
+Data: `research/quake106-fallback-counts-2026-11-09.csv`,
+`research/quake106-decoder-gap-closure-2026-11-09.json`.
