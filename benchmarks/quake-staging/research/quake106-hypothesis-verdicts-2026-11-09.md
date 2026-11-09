@@ -1,168 +1,210 @@
-# Quake 1.06 JIT hypotheses H1–H5 — verdicts from an instrumented local run (2026-11-09)
+# Quake 1.06 JIT hypotheses H1–H5 — verdicts after the function-level re-measurement (2026-11-09)
 
 ## Outcome
 
-Five hypotheses were tested against original DOS Quake 1.06 running on the
-fork's **instrumented** dynamic core. The result is a set of **verdicts
-against the falsifiers** that the register itself defined.
+The hypothesis register now has **verdicts** for H1–H5, measured on original
+DOS Quake 1.06 running on the fork's instrumented dynamic core.
 
-| Hypothesis | Verdict | Decisive measurement |
+This revision replaces the entry-block unit with a **function unit** and
+re-measures everything on a five-fold larger sample. The headline change is
+not a new mechanism but a **measurement defect that is now quantified**: the
+entry-block unit understated the cost of a function by a factor of **1.4 to
+4.2**, and for H1 — the register's first-ranked hypothesis — that factor
+decides whether the hypothesis looks alive or dead.
+
+| Hypothesis | Verdict | Decisive measurement (function unit) |
 |---|---|---|
-| **H1** `D_DrawSpans8` | **not falsified — the measurement unit was wrong** | the span region carries **22.8% of all helper traffic** and **18.2% of the main thread in translated code** |
-| **H2** `D_DrawZSpans` | **not falsified — the mechanism is visible** | helper traffic is small (1.05% of helpers), but the region holds **1.8% of the window in translated code**, and the native code materialises the flags with `PUSHFQ` before each z-buffer store |
-| **H3** `R_DrawSurfaceBlock8_mip*` | **the helper-only view underestimates it** | almost no helper traffic and **zero** invalidations, but the region holds **4.6% of the window in translated code** |
-| **H4** transitions/dispatcher | **premise measured** | 7,735 block creations and 185 invalidations (2.39%) per run, 7,669 distinct guest blocks, median **12 guest bytes** against **368 native bytes** (×27.2), dispatcher share 1.99% |
-| **H5** x87 + memory helpers | **live, and x87 dominates it** | **7.05%** of the window is x87-attributable (5.17% of it is `mem_readd` called from `FPU_FLD_32`); the dynamic-core decoder gap is the second-largest effect at **1.2–1.7%** |
+| **H1** `D_DrawSpans8` | **alive, and much larger than the entry-block view showed** | the span drawing cluster holds **11.38%** of the main thread (9.67% in translated code + 1.70% in helpers); its four entry blocks show only 2.70% |
+| **H2** `D_DrawZSpans` | **not falsified; the named mechanism is present** | `D_DrawZSpans` holds **3.27%**; the generated code of block `0x10D3B` materialises the flags **three times** with `pushf` (PUSHFQ), each immediately before the flag-consuming sequence and the z-buffer store |
+| **H3** `R_DrawSurfaceBlock8_mip*` | **re-scoped: the patching is a load-time cost, not a per-frame one** | mip0 + mip1 hold **4.31%**, with **0.04%** helper traffic and **zero** invalidations of surf8 blocks; the live guest memory holds the **patched** displacement `0x0018007c` and no sentinel, so the per-frame cost is the inlined texel packing (50% of the sampled instructions are move-or-address), not the patching |
+| **H4** transitions/dispatcher | premise measured | 7,735 block creations, 185 invalidations (2.39%) per run, 7,669 distinct guest blocks, median 12 guest bytes vs 368 native bytes (×27.2), dispatcher share 1.99% |
+| **H5** x87 + memory helpers | **live, and x87 dominates it** | **7.09%** of the main thread is x87-attributable (4.65% of it is `mem_readd` called *by* `FPU_FLD_32`); the dynamic-core decoder gap is the second effect at **1.2–1.7%** |
 
-The hypothesis texts are unchanged. What changed are the verdicts, and two
-methodological points that the first version of this report got wrong:
+The hypothesis texts are unchanged. What changed are the verdicts, the
+measurement unit, and the sampling depth.
 
-* **A region's cost must be measured in both the translated code and the
-  helpers.** Counting only helper samples makes H2 and H3 look negligible
-  when they in fact hold 1.8% and 4.6% of the main thread.
-* **"x87 = 1.88%" was wrong by an order of magnitude.** 74% of the
-  `mem_readd` traffic is called *by* `FPU_FLD_32`, so it belongs to x87,
-  not to plain guest memory access.
-
-## Measurement environment
+## What was re-measured, and how
 
 | Item | Value |
 |---|---|
 | Host | Linux x86-64 container, Xeon Platinum @ 2.5 GHz |
 | DOSBox | fork `91774d582069d52f4d3bf04952cb6047dbdc073f`, 0.84.0-alpha, Release |
-| Clean build SHA-256 | `1b12b66eb4691578d0cc7abd5a678562e6e68078a64509f809e62c6941a9e481` (`OPT_JIT_BLOCK_TRACE=OFF`) |
 | Trace build SHA-256 | `ffd4e25086813cd54299eb3ce9a416c64a4cb72067a2b911d07107caa8903b2d` (`OPT_JIT_BLOCK_TRACE=ON`) |
+| Clean build SHA-256 | `1b12b66eb4691578d0cc7abd5a678562e6e68078a64509f809e62c6941a9e481` (`OPT_JIT_BLOCK_TRACE=OFF`) |
 | `QUAKE.EXE` SHA-256 | `7cdb244122cc607cc6f162524bfcac60f6d11d8ca2ff07473d6cd962311161fb` |
 | `PAK0.PAK` SHA-256 | `35a9c55e5e5a284a159ad2a62e0e8def23d829561fe2f54eb402dbc0a9a946af` |
-| Sampler | SIGPROF preload, 1100 µs period, **extended**: also captures 8 words of the interrupted thread's stack |
+| Runs | 5 instrumented timedemo runs, 1100 µs SIGPROF period |
+| Samples in the demo window | **41,502** (8,328 – 8,946 per run) |
+| Helper samples | 6,259, of which **5,247 attributed** (83.83%) |
+| Guest function map | 2,386 code units, see below |
 
-The instrumented build runs at 87–114 FPS against 117 FPS for the clean
+The instrumented build runs at 74–82 FPS against 117 FPS for the clean
 build, so **instrumented and clean figures must never be mixed**.
 
-### The environment's measurement floor
+### The function unit
 
-The same host was characterised separately: over 32+32+32+32 and a pooled
-64+64 uninstrumented A/A runs the FPS coefficient of variation is 2.17%
-and the minimum detectable effect is **1.68% in FPS** and **0.98% in host
-CPU time**; a placebo A/B produced −0.241% with a CI of [−1.315, +0.877].
+The register's unit was the guest *block*. That unit is biased: the profiler
+lands in entry blocks, while the cost mechanism — helper calls — lives in the
+other blocks of the same function. The re-measurement therefore segments the
+guest `.text` into **code units delimited by `ret`** and aggregates there.
 
-These figures describe **this** host. They are not a property of the guest
-or of the fork, and a quieter host (for example one with a lower jitter
-floor) would detect smaller effects with the same number of runs. Any
-performance claim should therefore be reported together with a fresh A/A
-control on the host that produced it.
+`harness/map_guest_functions.py` does this without a symbol table
+(`QUAKE.EXE` is a COFF image with `nsyms = 0`): it disassembles the section
+linearly and cuts it at every `ret`. The unit is meaningful for both code
+kinds in this guest — a C function ends with a `ret`, and the hand-written
+assembly routines (`d_draw.s`, `surf8.s`) also end with a `ret` but have
+several entry points reached by tail jumps, which the tool records
+separately.
 
-## What made the attribution possible
+The segmentation is cross-checked against the register's own published
+identifications and against the functions identified structurally in the
+previous round:
 
-The register's open problem was the "blind spot" of helper samples: when
-the profiler interrupts the emulator inside `mem_readd` or `FPU_FLD_32`, the
-caller is unknown, so H1 and H5 could not be separated.
+| Guest address | Register / structural identification | Function found | Agreement |
+|---|---|---|---|
+| `0x10D3B` | `D_DrawZSpans` | `0x10C57`–`0x10E84` | inside the expected unit |
+| `0x11216`, `0x112CC`, `0x11343`, `0x1143F` | span drawing family | `0x10E84`–`0x1179F` (one unit) | inside the expected unit |
+| `0x3E233`, `0x3E29A` | `R_DrawSurfaceBlock8_mip0` | `0x3E1BB`–`0x3E375` | same unit, ret boundary matches the register's two-block split |
+| `0x3E3EF`, `0x3E455` | `R_DrawSurfaceBlock8_mip1` | `0x3E375`–`0x3E4C1` | same unit |
+| `0x2F5CF` | `R_RecursiveWorldNode` | `0x2F574`–`0x2F708` | function start matches the structural identification exactly |
+| `0x306BD` | `R_ClipEdge` | `0x306A1`–`0x3096E` | function start matches the structural identification exactly |
 
-That was closed **without modifying the emulator**: an extended SIGPROF
-preload additionally records eight stack words, and
-[harness/attribute_helper_callers.py](harness/attribute_helper_callers.py)
-scans them for the return address of the helper call, which maps the
-helper sample to the live dynamic-core block and therefore to the guest
-CS:EIP that called it. The analyzer now also resolves **nested** helper
-calls, i.e. it can tell a `mem_readd` that was issued by `FPU_FLD_32` from
-one that the guest issued directly — which is what makes the x87 share
-measurable.
+### The entry-block unit versus the function unit
 
-| Quantity | Value |
-|---|---:|
-| Samples inside the timedemo window | 7,520 |
-| Samples inside dynamic-core blocks | 3,871 (51.5%) |
-| Samples inside emulator helpers | 1,243 (16.5%) |
-| Helper samples attributed to a calling guest block | **1,045 (84.07%)** |
+| Hypothesis | Entry-block view | Function view | Understatement |
+|---|---:|---:|---:|
+| **H1** span family | 2.70% | **11.38%** | **×4.2** |
+| **H2** Z-span | 1.10% | **3.27%** | ×3.0 |
+| **H3** surf8 | 3.06% | **4.31%** | ×1.4 |
+| **H5** `R_ClipEdge` + `R_RecursiveWorldNode` | 2.71% | **6.03%** | ×2.2 |
 
-The per-block breakdown is in
-[quake106-helper-attribution-2026-11-09.csv](quake106-helper-attribution-2026-11-09.csv)
-(424 rows, no proprietary data), and the per-region split of translated and
-helper time is in
-[quake106-region-time-2026-11-09.csv](quake106-region-time-2026-11-09.csv).
+This is the quantitative form of the methodological note from the previous
+round: **the register should measure functions, not entry blocks**. The
+bias is not uniform — it is worst where the cost mechanism is a helper call
+(H1) and mildest where the cost is inlined arithmetic (H3).
 
-Helper traffic:
+## Cost per function
+
+| Function | Guest range | JIT | Helpers | Total | Blocks |
+|---|---|---:|---:|---:|---:|
+| span drawing cluster (`d_draw.s`) | `0x10E84`–`0x1179F` | 9.67% | 1.70% | **11.38%** | 85 |
+| `D_DrawZSpans` | `0x10C57`–`0x10E84` | 2.55% | 0.73% | **3.27%** | 21 |
+| `R_ClipEdge` | `0x306A1`–`0x3096E` | 1.60% | 1.52% | **3.11%** | 30 |
+| `R_RecursiveWorldNode` | `0x2F574`–`0x2F708` | 2.10% | 0.82% | **2.92%** | 18 |
+| `R_DrawSurfaceBlock8_mip0` | `0x3E1BB`–`0x3E375` | 2.22% | 0.01% | **2.23%** | 11 |
+| block dispatch (patched displacement) | 0x31367`–`0x31583 | 2.08% | 0.15% | **2.23%** | 27 |
+| `R_DrawSurfaceBlock8_mip1` | `0x3E375`–`0x3E4C1` | 2.05% | 0.03% | **2.08%** | 10 |
+| unidentified host-side routine | `0x2FA25`–`0x2FDEC` | 1.67% | 0.39% | 2.06% | 41 |
+| engine routine with 8 patched displacements | `0x2DDAB`–`0x2E068` | 1.69% | 0.08% | 1.78% | 35 |
+| unidentified | `0x3096E`–`0x30C2F` | 0.81% | 0.46% | 1.26% | 20 |
+| game memcpy-like routine | `0x1054E`–`0x10582` | 0.80% | 0.26% | 1.06% | 3 |
+| `memcpy` (djgpp runtime) | `0x55EDB`–`0x55F04` | 0.77% | 0.03% | 0.80% | 6 |
+
+Full data: [quake106-function-cost-2026-11-09.csv](quake106-function-cost-2026-11-09.csv)
+(327 functions with samples), per-block detail in
+[quake106-block-cost-2026-11-09.csv](quake106-block-cost-2026-11-09.csv)
+(1,625 blocks).
+
+### Helper traffic
 
 | Helper | Samples | % of window |
 |---|---:|---:|
-| `mem_readd` | 525 | 6.98% |
-| `mem_writed_checked` | 194 | 2.58% |
-| `FPU_FLD_32` | 122 | 1.62% |
-| `mem_writed` | 108 | 1.44% |
-| `CPU_Core_Normal_Run` | 42 | 0.56% |
-| `FPU_GetPRegsTo` | 29 | 0.39% |
-| `mem_readw` | 24 | 0.32% |
-| `FPU_FST_32` | 19 | 0.25% |
-| `FPU_SetPRegsFrom` | 19 | 0.25% |
+| `mem_readd` | 2,705 | 6.52% |
+| `mem_writed_checked` | 983 | 2.37% |
+| `FPU_FLD_32` | 657 | 1.58% |
+| `MakeCodePage` | 594 | 1.43% |
+| `mem_writed` | 475 | 1.14% |
+| `CPU_Core_Normal_Run` | 193 | 0.47% |
+| `FPU_FST_32` | 142 | 0.34% |
+| `FPU_GetPRegsTo` | 114 | 0.27% |
+| `FPU_SetPRegsFrom` | 100 | 0.24% |
+| `sync_dh_fpu_and_run_normal_core` | 88 | 0.21% |
+| `mem_readw` | 86 | 0.21% |
+| `PAGING_LinkPage` | 58 | 0.14% |
+| `mem_writew` | 56 | 0.13% |
+| **total** | **6,259** | **15.08%** |
 
-## Time per guest region
+## H1 — the span drawing cluster: 11.38% of the main thread
 
-| Region | JIT-block samples | % of window | Helper samples | % of window |
-|---|---:|---:|---:|---:|
-| `0x10A8–0x12FFF` (span region) | 1,368 | 18.19% | 284 | 3.78% |
-| `0x2F000–0x31FFF` (renderer) | 1,060 | 14.10% | 383 | 5.09% |
-| `0x3E000–0x3FFFF` (`surf8`) | 346 | **4.60%** | 5 | 0.07% |
-| `0x10D00–0x10E00` (Z-span) | 137 | **1.82%** | 13 | 0.17% |
-| `0x30600–0x30800` (`R_ClipEdge`) | 96 | 1.28% | 133 | 1.77% |
+The largest single unit in the guest is the hand-written span rasteriser
+(`WinQuake/d_draw.s`): dispatch stubs that tail-jump into a shared body
+with several entry points (`0x110A8`, `0x110C5`, `0x11158`, `0x1119B`).
 
-## H1 — `D_DrawSpans8`: not falsified, and the measurement unit was wrong
+- 9.67% of the main thread is spent in the **translated** code of the
+  cluster, 1.70% in **helpers** it calls.
+- The four entry blocks the register listed account for only 2.70% of the
+  window, i.e. the entry-block view understated the mechanism by **×4.2**.
+- The helper traffic of the cluster is dominated by `mem_readd`,
+  `mem_writed` and `FPU_FLD_32`/`FPU_FST_32` — the texture fetch and the
+  span endpoint conversion.
 
-H1 predicted that repeated guest 8-bit textured-span loads/stores lower to
-excessive TLB checks or native helper calls, with the falsifier "fast path
-already inlined and inexpensive; hottest host RIPs land on texture-address
-arithmetic not memory handling".
+**Verdict: H1 is alive and is the largest addressable unit in this guest.**
+Its falsifier ("the fast path is already inlined and inexpensive; the
+hottest RIPs land on texture-address arithmetic, not memory handling") is
+contradicted on both halves: the hot RIPs land on **memory handling**
+(1.70% of the window in helpers of this one unit), and the fast path is
+not the whole story, since the cluster also holds 9.67% of the main thread
+in translated code.
 
-**The falsifier is not met.** The span region holds **22.8% of all helper
-traffic** and **18.2% of the main thread in translated code**, and the
-leading blocks are not the entry blocks the register listed:
-
-| Guest block | Helper samples | Mix |
-|---|---:|---|
-| `0x10F4A` | 54 | `mem_readd` 39, `FPU_FLD_32` 15 |
-| `0x10CA0` | 28 | `mem_readd` 22, `FPU_FLD_32` 6 |
-| `0x110FB` | 22 | `mem_writed` 14, `FPU_FST_32` 8 |
-| `0x10572` | 21 | `mem_writed_checked` 21 |
-| `0x112CC` | 14 | `mem_readd` 10, `FPU_FLD_32` 4 |
-
-The **methodological consequence** matters more than the verdict: a "hot
-entry block" systematically **underestimates** the cost, because the
-profiler lands in entry blocks while the cost mechanism — the helper calls
-— lives in the *non-entry* blocks of the same functions. H1's hypothesis
-text is left unchanged; the register should change its **measurement unit**
-from entry blocks to whole functions.
+The correct next question for H1 is therefore *where inside the cluster*
+the cost sits, and whether the helper transitions in it are avoidable —
+not whether it matters.
 
 ## H2 — `D_DrawZSpans`: the mechanism is visible
 
-The register's falsifier for H2 is "clean straight-line x86-64 without
-costly helpers; the dominant cost is the actual writes". On the helper
-side the falsifier holds: the region `0x10D00–0x10E00` accounts for 13 of
-1,243 helper samples (1.05%), the listed entry block `0x10D3B` itself
-invokes helpers twice, and the instruction mix is move-or-address 53%,
-arithmetic 20%, branch 19%.
+`D_DrawZSpans` holds **3.27%** of the window (2.55% translated, 0.73%
+helpers) — three times the entry-block view.
 
-But the region's **own** translated code holds **1.82% of the window**, and
-the generated native code of `0x10D3B` shows the mechanism H2 names: the
-flags are materialised with a `PUSHFQ` before each z-buffer store, followed
-by the TLB check and the store itself.
+The named mechanism is present in the generated code. The native code of
+block `0x10D3B` (192 instructions, 516 bytes) contains **three `pushf`
+instructions**, each immediately followed by the flag-dependent sequence
+(`dec` / `lea` / `sbb`) and, in the third case, the z-buffer store:
 
-So H2 is **not falsified**: the flag materialisation it predicts is present
-in the generated code. Whether that materialisation is avoidable is the
-optimisation question, which stays behind the register's gate.
+```
+0x0138: pushf
+0x0139: dec    eax
+0x013a: lea    esp,[esp-0x8]
+0x013e: mov    DWORD PTR [ebp+0x0],ecx     ; z-buffer store
+```
 
-## H3 — `R_DrawSurfaceBlock8_mip*`: the helper-only view underestimates it
+**Verdict: H2 is not falsified.** The flag materialisation it predicts is
+in the generated code, and the unit is three times larger than the
+entry-block measurement showed. Whether the materialisation is avoidable is
+the optimisation question, which stays behind the register's gate.
 
-The `surf8` region shows **5 helper samples (0.07% of the window)** and
-**zero** invalidations of `surf8` blocks, so neither invalidation churn nor
-helper traffic supports the hypothesis' proposed mechanism.
+## H3 — re-scoped: the patching is a load-time cost
 
-However, the region holds **346 samples in translated code = 4.60% of the
-window** — more than the Z-span region and more than the whole `R_ClipEdge`
-region. The hypothesis is therefore not "weak", it is **mis-targeted**: the
-code is hot, but the hotness is in the translated code itself, not in
-helper calls or invalidations. The register should re-scope H3 to ask where
-the `surf8` code spends its 4.6%, instead of looking for helper churn.
+`R_DrawSurfaceBlock8_mip0` and `_mip1` hold **4.31%** of the window
+(2.23% + 2.08%) with **0.04%** helper traffic, and the H4 measurement shows
+**zero** invalidations of surf8 blocks (185 invalidations per run in total,
+2.39%).
 
-## H4 — transitions and dispatcher: the premise is now measured
+The mechanism H3 proposes — runtime-patched texture displacements causing
+avoidable checks and invalidations — is real, but it is a **load-time**
+cost, not a per-frame one. The evidence:
+
+- The static `.text` contains **61** sentinel displacements `0x12345678`;
+  **48 of them** are inside the surf8 routines
+  (`0x3E1BB` 16, `0x3E700` 16, `0x3E375` 8, `0x3E4C1` 4, `0x3E5CF` 4).
+- The **live guest memory** of the surf8 blocks contains **no sentinel** and
+  the patched value `0x0018007c` 6, 7, 6 and 2 times respectively.
+- The **JIT-generated native code** of those blocks contains the patched
+  value 6–7 times and no sentinel.
+
+So the patching happens once, before the timedemo, and the blocks are
+compiled with the final displacement. The per-frame cost of the surf8
+routines is the work itself: in the instruction-family attribution of the
+four surf8 entry blocks (662 samples), **50% of the sampled instructions
+are move-or-address**, with branch and predicate instructions next and
+**no call-site samples at all**.
+
+**Verdict: H3's proposed mechanism does not explain the cost.** The
+hypothesis should be re-scoped to ask where the 4.3% of the surf8 routines
+goes (texel packing and address arithmetic), not whether the displacement
+patching causes repeated invalidations — it does not, and the patching is
+not per-frame.
+
+## H4 — transitions and dispatcher: the premise is measured
 
 | Quantity | Value |
 |---|---:|
@@ -174,37 +216,47 @@ the `surf8` code spends its 4.6%, instead of looking for helper churn.
 | Dispatcher share | 1.99% |
 | Selected blocks invalidated | 0 of 11 |
 
-The guest block population does not churn, the per-block expansion factor is
-measurable, and H4's falsifier can now be tested directly against the
-per-native-RIP histogram.
-
 ## H5 — x87 and memory helpers: live, and x87 dominates it
 
-The H5 requirement to "verify actual Quake function for `0x306BD` and
-`0x2F5CF`" is closed. `QUAKE.EXE` has no symbol table, so the two blocks
-were identified from structural markers against the id Software sources
-(`bf4ac42`):
+### Identification of the register's blocks
+
+`QUAKE.EXE` carries no symbol table, so the two blocks were identified from
+structural markers against the id Software sources (`bf4ac42`):
 
 | Guest block | Function | Decisive markers |
 |---|---|---|
 | `0x2F584` | **`R_RecursiveWorldNode`** | `contents == CONTENTS_SOLID` (−2), `visframe != r_visframecount`, `minmaxs` read as signed `short`, axial-plane type switch, `dot(corner, plane->normal) - plane->dist`, `pfrustum_indexes[4][2][3]` |
 | `0x306A4` | **`R_ClipEdge`** | `d0`/`d1` plane distances for both edge endpoints, the `0x7FFFFFFF` "do not cache clipped edges" sentinel, `f = d0 / (d0 - d1)` |
 
-### The x87 share
+The function map independently places `R_RecursiveWorldNode` at
+`0x2F574`–`0x2F708` and `R_ClipEdge` at `0x306A1`–`0x3096E`, i.e. the
+structural identifications coincide with function boundaries.
 
-Resolving nested helper calls changes the picture:
+### The x87 share, with nested attribution
+
+Resolving nested helper calls separates x87 operand traffic from plain
+guest memory traffic:
 
 | Attribution | Samples | % of window |
 |---|---:|---:|
-| `FPU_FLD_32` → `mem_readd` | 389 | 5.17% |
-| `FPU_FLD_32` (own samples) | 122 | 1.62% |
-| `FPU_FST_32` (own samples) | 19 | 0.25% |
-| **x87-attributable total** | **530** | **7.05%** |
-| direct guest `mem_readd` | 136 | 1.81% |
+| `mem_readd` called **by** `FPU_FLD_32` | 1,929 | 4.65% |
+| `FPU_FLD_32` (own samples) | 657 | 1.58% |
+| `FPU_FST_32` (own samples) | 142 | 0.34% |
+| `FPU_GetPRegsTo` / `FPU_SetPRegsFrom` | 214 | 0.52% |
+| **x87-attributable total** | **2,942** | **7.09%** |
+| direct guest `mem_readd` | 776 | 1.87% |
 
-74% of the `mem_readd` traffic is x87 operand loading, so the raw 6.98%
-`mem_readd` share must not be read as guest memory access cost. The x87
-path is the largest single effect measured in this guest.
+The static image also shows where the x87 code lives: the functions with
+the highest x87 instruction density are the span cluster (125 x87
+instructions in 2,331 bytes), `0x3096E` (115 in 705 bytes), `R_ClipEdge`
+(83 in 717), `R_RecursiveWorldNode` (38 in 404) and the block dispatch
+(38 in 540). The per-function x87 counts are in
+[quake106-guest-function-map.csv](quake106-guest-function-map.csv).
+
+74% of the `mem_readd` traffic is x87 operand loading, so the raw 6.52%
+`mem_readd` share must not be read as guest memory access cost. The
+five-run pool reproduces the single-run estimate (7.05%) within 0.04
+percentage points.
 
 ### The decoder gap
 
@@ -216,13 +268,6 @@ by the interpreter, with the whole x87 state transferred across the
 boundary.
 
 Exact counters from an instrumented build, one headless timedemo window:
-The counters come from a local instrumented build that is **not** part of
-this PR: a counter is incremented in `case BR_Opcode:` of
-`src/cpu/core_dyn_x86.cpp`, keyed by the guest `CS:EIP` of the instruction
-that could not be translated, and the table is written out at exit. The
-host-side mapping from guest addresses to opcodes is a ten-line lookup in
-the guest image's `.text` section.
-
 
 | Opcode | Fallbacks | Share |
 |---|---:|---:|
@@ -233,10 +278,19 @@ the guest image's `.text` section.
 | `BTS` (`0F AB`) | 3,981 | 0.20% |
 | **total** | **1,963,529** | 100% |
 
-SIGPROF-visible cost of the fallback path: `CPU_Core_Normal_Run` 0.56%,
-`FPU_GetPRegsTo` 0.39%, `FPU_SetPRegsFrom` 0.25% — **1.20% of the window
-directly attributable**, plus part of the dispatcher (2.26%) and of
-`MakeCodePage` (1.52%), so **1.3–1.7% is a credible total**.
+The re-measured cost of that path, from the five-run pool:
+
+| Symbol | Samples | % of window |
+|---|---:|---:|
+| `CPU_Core_Normal_Run` | 193 | 0.47% |
+| `sync_dh_fpu_and_run_normal_core` | 88 | 0.21% |
+| `FPU_GetPRegsTo` | 114 | 0.27% |
+| `FPU_SetPRegsFrom` | 100 | 0.24% |
+| **directly attributable** | **495** | **1.19%** |
+
+The single-run estimate was 1.20%, so **1.19% is the floor**; adding the
+dispatcher (2.26%) and `MakeCodePage` (1.43%), which also serve ordinary
+block execution, gives the **1.3–1.7%** credible band.
 
 The evidence, the guest regression test and the acceptance criteria for
 closing the gap are in
@@ -244,34 +298,45 @@ closing the gap are in
 
 **Verdict:** H5 stays the only hypothesis whose *proposed mechanism* is
 confirmed at full size, and its dominant component is x87 (≈7% of the
-window), not the interpreter fallback (≈1.2–1.7%). The x87 part is already
-being explored separately in
-[PR #10](https://github.com/kaaburgh/dosbox-staging/pull/10).
+window), not the interpreter fallback (≈1.2–1.7%).
+
+## Measurement floor, for whoever claims a speedup next
+
+On the same host: FPS coefficient of variation 2.17%, minimum detectable
+effect **1.68% in FPS** and **0.98% in host CPU time**, placebo A/B
+−0.241% with CI [−1.315, +0.877]. These figures describe **this** host; a
+quieter host would detect smaller effects with the same number of runs. Any
+performance claim should be reported together with a fresh A/A control on
+the host that produced it.
 
 ## Limits
 
-* Every number above comes from an **instrumented** build and from SIGPROF
+- Every number above comes from an **instrumented** build and from SIGPROF
   hit statistics at a 1100 µs period. They are not an exact time budget and
   must not be mixed with clean FPS figures.
-* The fallback counts are exact, but they count transitions, not time.
-* The 1.20% attributable fallback cost is a floor.
-* The A/A figures in "measurement floor" describe this host only.
-* Function names are reconstructions from machine-code structure matched
+- The function unit is a `ret`-delimited code unit. For the hand-written
+  assembly routines it is a routine group with several entry points, which
+  is stated in the data; it is not a source-level function boundary.
+- The fallback counts are exact, but they count transitions, not time.
+- The 1.19% attributable fallback cost is a floor.
+- The A/A figures describe this host only.
+- Function names are reconstructions from machine-code structure matched
   against the id Software sources, not symbols; the 1.06-era sources were
   not available for a literal comparison.
-* The extended sampler records only eight stack words, so 15.93% of helper
+- The extended sampler records only eight stack words, so 16.17% of helper
   samples could not be attributed.
-* No proprietary Quake file, guest byte snapshot, native code blob, process
+- No proprietary Quake file, guest byte snapshot, native code blob, process
   map or raw sample address is stored in this repository.
 
 ## Next discriminating steps
 
-1. Re-run the attribution with a **function-level** unit for H1, so that
-   the span functions can be compared as wholes.
-2. Re-scope H3 from "helper churn" to "where does the `surf8` code spend
-   its 4.6%".
-3. Design the x87 measurement for H5 on the **nested** attribution, since
-   the plain helper table understates it by a factor of four.
+1. Split the **span cluster** (11.38%) into its entry-point bodies and
+   attribute the cost per body — this is where H1 becomes actionable.
+2. Measure the **x87 path** per function (7.09%), now that the unit is
+   functions, to see whether it is concentrated in `R_ClipEdge`,
+   `R_RecursiveWorldNode` or the span cluster.
+3. Keep H3 as "where does the surf8 texel packing spend its 4.3%", with the
+   patching ruled out as a per-frame cost.
 4. Close the `BT`/`SETcc`/`SAHF` decoder gap and re-measure the fallback
    share with the regression test from PR #11 as the gate.
 5. Only then design changes, and measure them with an A/A control on a
