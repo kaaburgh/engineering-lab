@@ -1,6 +1,6 @@
 region,description,jit_samples,pct_of_window_jit,helper_samples,pct_of_window_helpers,pct_of_helper_traffic
-0x10A8-0x12FFF,span region,1368,18.1915,284,3.7766,22.8479
-0x2F000-0x31FFF,renderer,1060,14.0957,383,5.0931,30.8126
-0x30600-0x30800,R_ClipEdge,96,1.2766,133,1.7686,10.6999
-0x10D00-0x10E00,D_DrawZSpans,137,1.8218,13,0.1729,1.0459
-0x3E000-0x3FFFF,surf8 region,346,4.6011,5,0.0665,0.4023
+0x10A8-0x12FFF,span region (d_draw.s + D_DrawZSpans),7173,17.2835,1555,3.7468,24.8442
+0x2F000-0x31FFF,renderer,5241,12.6283,1811,4.3636,28.9343
+0x30600-0x30800,R_ClipEdge,423,1.0192,566,1.3638,9.0430
+0x10D00-0x10E00,D_DrawZSpans,696,1.6770,60,0.1446,0.9586
+0x3E000-0x3FFFF,surf8 region,1897,4.5709,21,0.0506,0.3355
