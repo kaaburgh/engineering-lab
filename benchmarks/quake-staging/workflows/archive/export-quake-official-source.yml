@@ -1,0 +1,30 @@
+name: Export official Quake source for offline hotspot investigation
+on:
+  push:
+    branches: [bench/dosbox-084-guest-mapping-validate]
+    paths: [.github/workflows/export-quake-official-source.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Archive id Software source and provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none --depth=1 https://github.com/id-Software/Quake.git quake-source
+          ( cd quake-source && git rev-parse HEAD > ../SOURCE_SHA )
+          tar -czf quake-official-source.tar.gz -C quake-source --exclude=.git .
+          sha256sum quake-official-source.tar.gz > SHA256SUMS
+          ls -lh quake-official-source.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quake-official-source-for-offline-diff
+          path: |
+            quake-official-source.tar.gz
+            SOURCE_SHA
+            SHA256SUMS
+          retention-days: 10

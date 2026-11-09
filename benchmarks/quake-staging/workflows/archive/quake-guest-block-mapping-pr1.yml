@@ -1,0 +1,49 @@
+name: Quake Guest Block Mapping PR1
+on:
+  push:
+    branches:
+      - bench/quake-guest-block-mapping-pr1
+    paths:
+      - benchmarks/quake-staging/guest-block-mapping/**
+      - .github/workflows/quake-guest-block-mapping-pr1.yml
+  pull_request:
+    paths:
+      - benchmarks/quake-staging/guest-block-mapping/**
+      - .github/workflows/quake-guest-block-mapping-pr1.yml
+
+permissions:
+  contents: read
+
+jobs:
+  patch-and-analysis-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get exactly DOSBox Staging v0.83.0 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch v0.83.0 \
+            https://github.com/dosbox-staging/dosbox-staging.git /tmp/dosbox-staging
+          test "$(git -C /tmp/dosbox-staging rev-parse HEAD)" = "7b40053b7ac580843d0461eba8c36a47a990e66c"
+      - name: Check standalone patch can be applied cleanly
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/dosbox-staging
+          git apply --check "$GITHUB_WORKSPACE/benchmarks/quake-staging/guest-block-mapping/dosbox-staging-v0.83.0-guest-block-mapping.patch"
+          git apply "$GITHUB_WORKSPACE/benchmarks/quake-staging/guest-block-mapping/dosbox-staging-v0.83.0-guest-block-mapping.patch"
+          grep -q 'OPT_JIT_BLOCK_TRACE' CMakeLists.txt
+          grep -q 'JitBlockTrace_Create' src/cpu/core_dyn_x86/decoder.h
+          grep -q 'JitBlockTrace_Invalidate' src/cpu/dyn_cache.h
+      - name: Run Python analysis unit tests
+        working-directory: benchmarks/quake-staging/guest-block-mapping/tools
+        run: |
+          python3 -m unittest discover -s . -p test_analyze_trace.py -v
+          python3 -m py_compile analyze_trace.py test_analyze_trace.py run_guest_trace.py
+      - name: Compile Linux SIGPROF helper
+        working-directory: benchmarks/quake-staging/guest-block-mapping/tools
+        run: |
+          cc -O2 -shared -fPIC -Wall -Wextra -o /tmp/preload_sigprof_thread.so preload_sigprof_thread.c -ldl -pthread
+          file /tmp/preload_sigprof_thread.so

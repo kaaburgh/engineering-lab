@@ -1,0 +1,30 @@
+name: Export DOSBox fork source for local reproducible research
+on:
+  push:
+    branches: [bench/dosbox-084-guest-mapping-validate]
+    paths: [.github/workflows/export-dosbox-guest-sources.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Fetch exact fork source (not benchmark execution)
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none --depth=1 --branch experiments/quake-guest-block-mapping \
+            https://github.com/kaaburgh/dosbox-staging.git fork
+          ( cd fork && git rev-parse HEAD > ../FORK_SHA && git status --short )
+          tar -C fork --exclude=.git -czf fork-source.tar.gz .
+          sha256sum fork-source.tar.gz > SHA256SUMS
+          du -h fork-source.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dosbox-084-source-local-research
+          path: |
+            fork-source.tar.gz
+            FORK_SHA
+            SHA256SUMS
+          retention-days: 10

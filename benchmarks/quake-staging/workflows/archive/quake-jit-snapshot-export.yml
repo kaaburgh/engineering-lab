@@ -1,0 +1,115 @@
+name: Build selected JIT snapshots binary for local Quake research
+on:
+  push:
+    branches: [bench/quake-p0-p1-local-builds]
+    paths: [.github/workflows/quake-jit-snapshot-export.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-pair:
+    runs-on: ubuntu-24.04
+    container: debian:trixie
+    timeout-minutes: 55
+    steps:
+      - name: Install compiler and dependencies
+        run: |
+          set -eux
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            git ca-certificates cmake ninja-build g++ gcc ccache pkg-config python3 \
+            libasound2-dev libfluidsynth-dev libiir-dev libpng-dev libopusfile-dev \
+            libspeexdsp-dev libsdl3-dev libsdl3-image-dev libasio-dev zlib1g-dev \
+            libgl-dev nasm file
+      - name: Checkout fork and record toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch experiments/quake-selected-jit-snapshots \
+            https://github.com/kaaburgh/dosbox-staging.git /tmp/fork
+          mkdir -p /tmp/out/bin /tmp/out/lib /tmp/out/probes /tmp/out/logs
+          git -C /tmp/fork rev-parse HEAD > /tmp/out/FORK_SHA
+          cat /etc/os-release > /tmp/out/OS_RELEASE
+          (g++ --version; cmake --version; ninja --version) > /tmp/out/TOOLCHAIN
+          dpkg-query -W > /tmp/out/DPKG_LOCK_MANIFEST
+          # Debian 13 libiir-dev exports an absent unused static CMake target.
+          multiarch="$(gcc -dumpmachine)"
+          if [ ! -e "/usr/lib/$multiarch/libiir_static.a" ]; then
+            ln -s libiir.so "/usr/lib/$multiarch/libiir_static.a"
+          fi
+          ccache -M 3G
+          ccache -z
+          # Debian 13 libraries lag 0.84-alpha. Only patch two unrelated
+          # SDL keymapper / MIDI calls in temporary source, not CPU/JIT.
+          python3 - <<'PY'
+          from pathlib import Path
+          edits = {
+            '/tmp/fork/src/gui/mapper.cpp': (
+              'SDL_SetDefaultTextureScaleMode(mapper.renderer, SDL_SCALEMODE_NEAREST);',
+              '/* SDK shim: only unused keyboard mapper. */'),
+            '/tmp/fork/src/midi/fluidsynth.cpp': (
+              'fluid_synth_set_portamento_time_mode(fluid_synth.get(),\n\t                                     FLUID_PORTAMENTO_TIME_MODE_XG_GS);',
+              '/* SDK shim: only MIDI, disabled for Quake. */')
+          }
+          for path,(old,new) in edits.items():
+            p=Path(path)
+            content=p.read_text()
+            assert content.count(old)==1,(path,content.count(old))
+            p.write_text(content.replace(old,new))
+          PY
+          printf 'Two temporary source compatibility edits (mapper, MIDI); no JIT changes\n' > /tmp/out/LOCAL_SDK_SHIMS
+          cd /tmp/fork/extras/guest-block-mapping
+          python3 -m unittest discover -s . -p test_analyze_trace.py -v
+          g++ -std=c++23 -O2 -Wall -Wextra -Werror test_jit_block_trace_io.cpp -o /tmp/jit-io-test
+          /tmp/jit-io-test
+          nasm -f bin smc_invalidations.asm -o /tmp/out/probes/SMC.COM
+          nasm -f bin crosspage_invalidations.asm -o /tmp/out/probes/XPG.COM
+          cc -O2 -shared -fPIC -o /tmp/out/probes/preload_sigprof_thread.so preload_sigprof_thread.c -ldl -pthread
+          g++ -std=c++20 -O2 -Wall -Wextra -Werror test_jit_selected_snapshot.cpp -o /tmp/snapshot-test
+          /tmp/snapshot-test
+      - name: Build selected JIT snapshot support (one Release binary)
+        shell: bash
+        run: |
+          set -euo pipefail
+          export CCACHE_DIR=/tmp/ccache
+          cmake -S /tmp/fork -B /tmp/fork/build/snap -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_LIBS=ON \
+            -DOPT_MT32EMU=OFF -DOPT_TESTS=OFF -DOPT_DOCUMENTATION=OFF \
+            -DOPT_JIT_BLOCK_TRACE=ON 2>&1 | tee /tmp/out/logs/cmake-snap.log
+          cmake --build /tmp/fork/build/snap -j2 2>&1 | tee /tmp/out/logs/build-snap.log
+          cp /tmp/fork/build/snap/dosbox /tmp/out/bin/dosbox-snapshot
+      - name: Bundle runtime libs and manifest for local container
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess, shutil, re
+          dest=Path('/tmp/out/lib')
+          libs={}
+          for kind in ('snapshot',):
+            f=Path('/tmp/out/bin/dosbox-'+kind)
+            result=subprocess.check_output(['ldd',str(f)],text=True)
+            for line in result.splitlines():
+              m=re.search(r'^\s*(\S+)\s+=>\s+(/\S+)\s+\(',line)
+              if m:
+                name, path=m.group(1),Path(m.group(2))
+                assert path.is_file(),line
+                if name not in libs:
+                  libs[name]=str(path)
+                  shutil.copy2(path,dest/name,follow_symlinks=True)
+            (Path('/tmp/out/logs')/('ldd-'+kind+'.log')).write_text(result)
+          Path('/tmp/out/LIBRARIES_MANIFEST').write_text(
+            ''.join(f'{name} {path}\n' for name,path in sorted(libs.items())))
+          print('Copied',len(libs),'runtime libraries')
+          PY
+          ( cd /tmp/out && find bin lib probes -type f -print0 | sort -z | xargs -0 sha256sum ) \
+            > /tmp/out/SHA256SUMS
+          du -sh /tmp/out
+      - name: Upload build artifacts (no gameplay or timing in CI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: dosbox-084-selected-guest-host-snapshot-binary
+          path: /tmp/out/
+          retention-days: 10
+          compression-level: 6

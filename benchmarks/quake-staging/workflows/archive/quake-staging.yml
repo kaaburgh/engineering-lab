@@ -1,0 +1,155 @@
+name: DOS Quake 1.06 / DOSBox Staging performance test
+
+on:
+  push:
+    branches:
+      - bench/quake-staging-2026-11-06
+
+permissions:
+  contents: read
+
+jobs:
+  quake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    env:
+      STAGING_VERSION: v0.83.0
+      STAGING_SHA256: d3a94f7f1c3e68a47ec88d61145506c7904452adb0c9c5928cb8cfe2331d6c5c
+    steps:
+      - name: Prepare host and download official DOSBox and Quake shareware
+        shell: bash
+        run: |
+          set -euo pipefail
+          uname -a
+          lscpu | grep -E 'CPU\(s\):|Model name:|Hypervisor vendor:' || true
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb xauth unzip
+          curl --fail --location --retry 3 --max-time 180 \
+            "https://github.com/dosbox-staging/dosbox-staging/releases/download/${STAGING_VERSION}/dosbox-staging-linux-x86_64-${STAGING_VERSION}.tar.xz" -o staging.tar.xz
+          echo "${STAGING_SHA256}  staging.tar.xz" | sha256sum --check
+          mkdir -p staging
+          tar -xJf staging.tar.xz -C staging
+          dosbox_bin="$(find "$(pwd)/staging" -type f -name dosbox -print -quit)"
+          test -n "$dosbox_bin"
+          echo "DOSBOX_BIN=$dosbox_bin" >> "$GITHUB_ENV"
+          "$dosbox_bin" --version
+          curl --fail --location --retry 3 --max-time 180 \
+            'https://archive.org/download/Quake_802/zQUAKE_SW-play.zip' -o quake.zip
+          sha256sum quake.zip
+          unzip -tq quake.zip
+          mkdir -p quake-source
+          unzip -q quake.zip -d quake-source
+          exe="$(find "$(pwd)/quake-source" -type f -iname 'quake.exe' -print -quit)"
+          pak="$(find "$(pwd)/quake-source" -type f -iname 'pak0.pak' -print -quit)"
+          test -n "$exe" && test -n "$pak"
+          echo "QUAKE_ROOT=$(dirname "$exe")" >> "$GITHUB_ENV"
+          sha256sum "$exe" "$pak"
+
+      - name: Measure three interleaved trials with each CPU core
+        shell: bash
+        run: |
+          set -euo pipefail
+          Xvfb :111 -screen 0 1280x720x24 -nolisten tcp > xvfb.log 2>&1 &
+          xvfb_pid=$!
+          trap 'kill "$xvfb_pid" 2>/dev/null || true; wait "$xvfb_pid" 2>/dev/null || true' EXIT
+          export DISPLAY=:111
+          sleep 2
+          kill -0 "$xvfb_pid"
+
+          printf 'core\trep\tfps\tframes\tseconds\n' > metrics.tsv
+          echo '| CPU core | Trial | Measured Quake FPS |' >> "$GITHUB_STEP_SUMMARY"
+          echo '|---|---:|---:|' >> "$GITHUB_STEP_SUMMARY"
+          completed=0
+          for rep in 1 2 3; do
+            for core in dynamic normal; do
+              # The interpreter is diagnostic only: an uncapped Quake timedemo
+              # can be too slow for a shared CI runner.
+              if [[ "$core" == normal && "$rep" -gt 1 ]]; then continue; fi
+              work="$(pwd)/quake-run-${core}-${rep}"
+              mkdir -p "$work"
+              cp -a "$QUAKE_ROOT" "$work/game"
+              find "$work/game" -iname 'qconsole.log' -delete
+              conf="$work/dosbox.conf"
+              cat > "$conf" <<EOF
+          [dosbox]
+          memsize = 32
+          [cpu]
+          core = ${core}
+          cpu_cycles = 3000
+          cpu_cycles_protected = max
+          EOF
+              echo "::group::Quake timedemo core=$core rep=$rep"
+              echo "Start: $(date -u --iso-8601=seconds)"
+              env SDL_AUDIODRIVER=dummy SDL_VIDEODRIVER=x11 \
+                "$DOSBOX_BIN" --noprimaryconf --nolocalconf --noautoexec --conf "$conf" \
+                -c "mount c \"$work/game\"" -c "c:" \
+                -c "quake.exe -nosound -nocdaudio -condebug -width 320 -height 200 +timedemo demo1" \
+                > "$work/dosbox.log" 2>&1 &
+              dosbox_pid=$!
+              limit=75
+              if [[ "$core" == normal ]]; then limit=110; fi
+              deadline=$((SECONDS + limit))
+              fps_line=""
+              console=""
+              while ((SECONDS < deadline)); do
+                console="$(find "$work/game" -type f -iname 'qconsole.log' -print -quit)"
+                if [[ -n "$console" ]]; then
+                  fps_line="$(grep -aiE '[0-9]+[[:space:]]+frames.*[0-9]+([.][0-9]+)?[[:space:]]+fps' "$console" | tail -n 1 || true)"
+                  if [[ -n "$fps_line" ]]; then break; fi
+                fi
+                if ! kill -0 "$dosbox_pid" 2>/dev/null; then
+                  echo "DOSBox quit before emitting FPS"
+                  break
+                fi
+                sleep 1
+              done
+              kill -TERM "$dosbox_pid" 2>/dev/null || true
+              sleep 1
+              kill -KILL "$dosbox_pid" 2>/dev/null || true
+              wait "$dosbox_pid" 2>/dev/null || true
+              if [[ -n "$fps_line" ]]; then
+                echo "QUAKE_RESULT core=$core rep=$rep $fps_line"
+                printf '%s\n' "$fps_line" | python3 -c '
+          import re,sys
+          s=sys.stdin.read()
+          m=re.search(r"(\d+)\s+frames\s+([0-9.]+)\s+seconds\s+([0-9.]+)\s+fps", s)
+          if not m: sys.exit("Cannot parse Quake FPS: "+s)
+          frames,elapsed,fps=m.groups()
+          with open("metrics.tsv","a") as f:
+              f.write(f"{sys.argv[1]}\t{sys.argv[2]}\t{fps}\t{frames}\t{elapsed}\n")
+          ' "$core" "$rep"
+                echo "| $core | $rep | $fps_line |" >> "$GITHUB_STEP_SUMMARY"
+                completed=$((completed + 1))
+              else
+                echo "::warning::NO FPS core=$core rep=$rep"
+                if [[ -n "$console" ]]; then tail -n 30 "$console"; fi
+                echo "| $core | $rep | FAILED |" >> "$GITHUB_STEP_SUMMARY"
+              fi
+              tail -n 15 "$work/dosbox.log"
+              echo "::endgroup::"
+            done
+          done
+          echo "Completed timedemos: $completed / 4 planned (3 dynamic + optional normal)"
+          python3 - <<'PY'
+          import csv, statistics
+          with open("metrics.tsv",newline="") as f:
+              rows=list(csv.DictReader(f,delimiter="\t"))
+          for core in ("dynamic","normal"):
+              fps=[float(r["fps"]) for r in rows if r["core"]==core]
+              print(f"SUMMARY core={core} n={len(fps)} FPS={fps}")
+              if fps:
+                  median=statistics.median(fps)
+                  print(f"SUMMARY core={core} median={median:.2f} best={max(fps):.2f}")
+                  with open(__import__("os").environ["GITHUB_STEP_SUMMARY"],"a") as f:
+                      f.write(f"\n**{core}** — median {median:.1f}, best {max(fps):.1f} FPS (n={len(fps)}).\n")
+          dyn=[float(r["fps"]) for r in rows if r["core"]=="dynamic"]
+          norm=[float(r["fps"]) for r in rows if r["core"]=="normal"]
+          if len(dyn) != 3:
+              raise SystemExit("Quake dynamic core did not complete all 3 trials")
+          if len(dyn)==3 and len(norm)>=1:
+              ratio=statistics.median(dyn)/statistics.median(norm)
+              print(f"SUMMARY dynamic_over_normal_median_ratio={ratio:.3f}x")
+              with open(__import__("os").environ["GITHUB_STEP_SUMMARY"],"a") as f:
+                  f.write(f"\n**Dynamic/normal median ratio: {ratio:.2f}×.**\n")
+          PY
+

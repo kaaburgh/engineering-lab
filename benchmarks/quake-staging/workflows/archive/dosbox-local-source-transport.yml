@@ -1,0 +1,35 @@
+name: Transport upstream DOSBox Staging sources for local container build
+
+on:
+  push:
+    branches:
+      - bench/dosbox-local-source-2026-11-07
+
+permissions:
+  contents: read
+
+jobs:
+  source-bundle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Fetch exact upstream v0.83.0 source tag and official binary
+        run: |
+          set -euxo pipefail
+          mkdir -p out
+          git clone --depth=1 --branch v0.83.0 https://github.com/dosbox-staging/dosbox-staging.git src
+          git -C src rev-parse HEAD > out/upstream-commit.txt
+          git -C src status --porcelain
+          git -C src archive --format=tar --prefix=dosbox-staging/ HEAD | xz -T0 -5 > out/dosbox-staging-v0.83.0-source.tar.xz
+          curl --fail --location --retry 4 \
+            'https://github.com/dosbox-staging/dosbox-staging/releases/download/v0.83.0/dosbox-staging-linux-x86_64-v0.83.0.tar.xz' \
+            --output out/dosbox-staging-v0.83.0-reference-binary.tar.xz
+          echo 'd3a94f7f1c3e68a47ec88d61145506c7904452adb0c9c5928cb8cfe2331d6c5c  out/dosbox-staging-v0.83.0-reference-binary.tar.xz' | sha256sum -c -
+          sha256sum out/*.tar.xz > out/SHA256SUMS.txt
+          ls -lh out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: upstream-dosbox-staging-v0.83.0-source-and-reference
+          path: out/
+          compression-level: 0
+          retention-days: 2

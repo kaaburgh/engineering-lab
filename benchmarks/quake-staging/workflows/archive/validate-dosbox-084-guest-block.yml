@@ -1,0 +1,211 @@
+name: Validate DOSBox 0.84 guest mapping (fork)
+
+on:
+  push:
+    branches:
+      - bench/dosbox-084-guest-mapping-validate
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    container:
+      image: debian:trixie
+    timeout-minutes: 45
+    steps:
+      - name: Install Debian 13 toolchain, SDL3 and test dependencies
+        shell: bash
+        run: |
+          set -euxo pipefail
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            git cmake ninja-build g++ gcc pkg-config python3 curl unzip ca-certificates \
+            libasound2-dev libfluidsynth-dev libiir-dev libpng-dev libopusfile-dev \
+            libspeexdsp-dev libsdl3-dev libsdl3-image-dev libasio-dev zlib1g-dev \
+            libgl-dev xvfb x11-utils file nasm ccache
+      - name: Work around Debian 13 iir package exporting a missing static target
+        shell: bash
+        run: |
+          set -euxo pipefail
+          multiarch="$(gcc -dumpmachine)"
+          dir="/usr/lib/$multiarch"
+          ls -l "$dir"/libiir* || true
+          # Only CMake's unused iir_static imported target needs to exist.
+          # Link the installed shared library as the placeholder; the actual
+          # DOSBox target continues linking the provided iir shared target.
+          if [ ! -e "$dir/libiir_static.a" ] && [ -e "$dir/libiir.so" ]; then
+            ln -s libiir.so "$dir/libiir_static.a"
+          fi
+      - name: Fetch exact fork branch, not upstream tag
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git clone --depth=1 --branch experiments/quake-guest-block-mapping \
+            https://github.com/kaaburgh/dosbox-staging.git /tmp/dosbox
+          git -C /tmp/dosbox rev-parse HEAD | tee /tmp/fork-commit.txt
+          grep -q 'DOSBOX_JIT_BLOCK_TRACE' /tmp/dosbox/src/cpu/jit_block_trace.h
+      - name: Run analyzer tests and compile SIGPROF helper
+        shell: bash
+        run: |
+          set -euxo pipefail
+          cd /tmp/dosbox/extras/guest-block-mapping
+          python3 -m unittest discover -s . -p test_analyze_trace.py -v
+          python3 -m py_compile analyze_trace.py test_analyze_trace.py run_guest_trace.py
+          cc -O2 -shared -fPIC -Wall -Wextra \
+            -o /tmp/preload_sigprof_thread.so preload_sigprof_thread.c -ldl -pthread
+      - name: Compatibility shim for newer SDL3 mapper-only API
+        shell: bash
+        run: |
+          set -euxo pipefail
+          # Debian 13 ships older SDL3 than 0.84-alpha requires. This is
+          # unrelated to JIT and affects only the keymapper UI, unused in Quake.
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/dosbox/src/gui/mapper.cpp')
+          s=p.read_text()
+          old='SDL_SetDefaultTextureScaleMode(mapper.renderer, SDL_SCALEMODE_NEAREST);'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,'/* CI SDL3 compatibility: default texture scale mode unavailable */'))
+          PY
+          # Debian 13's FluidSynth lacks a new MIDI-only portamento control.
+          # Quake benchmark runs with -nosound; exclude only this one call.
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/dosbox/src/midi/fluidsynth.cpp')
+          s=p.read_text()
+          old='fluid_synth_set_portamento_time_mode(fluid_synth.get(),\n\t                                     FLUID_PORTAMENTO_TIME_MODE_XG_GS);'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,'/* CI FluidSynth 2.4 compatibility: optional portamento setting unavailable */'))
+          PY
+      - name: Build patched DOSBox with guest mapping
+        shell: bash
+        run: |
+          set -euxo pipefail
+          cmake -S /tmp/dosbox -B /tmp/dosbox/build/ci-guest -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_LIBS=ON \
+            -DOPT_MT32EMU=OFF -DOPT_TESTS=OFF \
+            -DOPT_JIT_BLOCK_TRACE=ON -DOPT_DOCUMENTATION=OFF \
+            2>&1 | tee /tmp/cmake.log
+          cmake --build /tmp/dosbox/build/ci-guest -j2 2>&1 | tee /tmp/build.log
+          find /tmp/dosbox/build/ci-guest -type f -name 'dosbox*' | head -30
+      - name: Run official Quake 1.06 timedemo and map JIT samples
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/quake
+          curl -fL --retry 4 'https://github.com/user-attachments/files/21488506/quake-benchmark.zip' \
+            -o /tmp/quake/quake-benchmark.zip
+          echo 'bd928b86e3bd1dc7ffeea88b11e757005be38bc8971aa228ee004d5d23a35a60  /tmp/quake/quake-benchmark.zip' | sha256sum -c -
+          unzip -q /tmp/quake/quake-benchmark.zip -d /tmp/quake/
+          mkdir -p /tmp/quake/game
+          cp -a '/tmp/quake/Quake Bench/drives/c/.' /tmp/quake/game/
+          if [ -d /tmp/quake/game/id1 ] && [ ! -d /tmp/quake/game/ID1 ]; then
+            mv /tmp/quake/game/id1 /tmp/quake/game/ID1
+          fi
+          exe="$(find /tmp/dosbox/build/ci-guest -name dosbox -type f -executable | head -1)"
+          test -n "$exe"
+          ( cd /tmp/dosbox && python3 extras/guest-block-mapping/run_guest_trace.py \
+              --dosbox "$exe" --game /tmp/quake/game \
+              --out /tmp/quake/results --renderer texture --profiler /tmp/preload_sigprof_thread.so \
+              --timeout 190 ) || true
+          cat /tmp/quake/results/result.json
+          python3 /tmp/dosbox/extras/guest-block-mapping/analyze_trace.py \
+            --trace /tmp/quake/results/jit-blocks.csv \
+            --samples /tmp/quake/results/samples.bin \
+            --output-guest /tmp/quake/results/hotspots.csv \
+            --output /tmp/quake/results/generation-hits.csv \
+            | tee /tmp/quake/results/analysis.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/quake/results/result.json')
+          r=json.loads(p.read_text())
+          assert r['result'] and r['result']['frames']==969, r
+          assert r['result']['fps'] > 0, r
+          assert Path('/tmp/quake/results/hotspots.csv').stat().st_size > 100
+          PY
+      - name: Exercise real DOS self-modifying-code invalidations
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/smc
+          nasm -f bin -l /tmp/smc/smc.lst \
+            /tmp/dosbox/extras/guest-block-mapping/smc_invalidations.asm \
+            -o /tmp/smc/SMC.COM
+          cat > /tmp/smc/smc.conf <<'EOF'
+          [cpu]
+          core = dynamic
+          cputype = pentium
+          cpu_cycles = 3000
+          cpu_cycles_protected = max
+          [sdl]
+          output = texture
+          texture_renderer = software
+          EOF
+          exe="$(find /tmp/dosbox/build/ci-guest -name dosbox -type f -executable | head -1)"
+          test -n "$exe"
+          Xvfb :157 -screen 0 1280x720x24 -nolisten tcp > /tmp/smc/xvfb-smc.log 2>&1 &
+          xvfb_pid="$!"
+          trap 'kill "$xvfb_pid" 2>/dev/null || :' EXIT
+          for n in $(seq 1 50); do
+            if xdpyinfo -display :157 >/dev/null 2>&1; then break; fi
+            sleep 0.1
+          done
+          DISPLAY=:157 SDL_AUDIODRIVER=dummy SDL_VIDEODRIVER=x11 SDL_RENDER_DRIVER=software \
+          DOSBOX_JIT_BLOCK_TRACE=/tmp/smc/smc-jit-blocks.csv \
+            timeout --signal=TERM 45s "$exe" --noprimaryconf --nolocalconf \
+            --noautoexec --conf /tmp/smc/smc.conf \
+            -c 'mount c /tmp/smc' -c 'c:' -c 'SMC.COM' -c 'exit' \
+            > /tmp/smc/smc-dosbox.log 2>&1
+          python3 - <<'PY'
+          from pathlib import Path
+          from collections import Counter
+          import sys
+          sys.path.insert(0, '/tmp/dosbox/extras/guest-block-mapping')
+          from analyze_trace import events_from_csv, classify
+          root=Path('/tmp/smc')
+          output=next(root.glob('*'),None)
+          ok=[p for p in root.iterdir() if p.name.lower()=='smc.ok']
+          assert len(ok)==1, [p.name for p in root.iterdir()]
+          assert ok[0].read_bytes()==b'OK\r\n', ok[0].read_bytes()
+          events=events_from_csv(root/'smc-jit-blocks.csv')
+          summary,ranked=classify(events,[])
+          assert summary['creates']>0 and summary['invalidations']>0, summary
+          created=Counter((e.block.guest_cs,e.block.guest_eip)
+                           for e in events if e.block)
+          repeated=[(key,n) for key,n in created.items() if n>=2]
+          assert repeated, 'no recompiled guest block observed'
+          print('SMC_SUCCESS:',len(events),'events',summary['creates'],
+                'creates',summary['invalidations'],'invalidations;',
+                len(repeated),'guest blocks regenerated')
+          for (cs,eip),n in sorted(repeated,key=lambda p:-p[1])[:10]:
+              print('SMC_REGENERATED',f'{cs:04x}:{eip:08x}',n)
+          PY
+      - name: Stage non-proprietary evidence
+        shell: bash
+        if: always()
+        run: |
+          mkdir -p /tmp/out
+          cp -f /tmp/fork-commit.txt /tmp/out/ 2>/dev/null || :
+          cp -f /tmp/cmake.log /tmp/build.log /tmp/out/ 2>/dev/null || :
+          if [ -d /tmp/quake/results ]; then
+            find /tmp/quake/results -maxdepth 1 -type f \
+              \( -name '*.csv' -o -name '*.bin' -o -name '*.json' \
+                 -o -name '*.log' -o -name '*.conf' \) \
+              -exec cp {} /tmp/out/ \;
+          fi
+          if [ -d /tmp/smc ]; then
+            find /tmp/smc -maxdepth 1 -type f \
+              \( -name '*.csv' -o -name '*.log' -o -name '*.lst' -o -name '*.OK' \) \
+              -exec cp {} /tmp/out/ \;
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dosbox-staging-084-guest-block-integration-evidence
+          path: /tmp/out/
+          compression-level: 6
+          retention-days: 5
