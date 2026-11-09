@@ -1,0 +1,36 @@
+name: Export DOS JIT wrap probe and verifier (no execution)
+on:
+  push:
+    branches: [bench/quake-p0-p1-local-builds]
+    paths: [.github/workflows/quake-wrap-probe-export.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Get exact experiment sources and assemble guest test
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y nasm
+          git clone --depth 1 --branch experiments/quake-guest-block-mapping \
+            https://github.com/kaaburgh/dosbox-staging.git fork
+          mkdir -p output
+          git -C fork rev-parse HEAD > output/FORK_SHA
+          cp fork/extras/guest-block-mapping/{analyze_trace.py,verify_wrap_trace.py,test_analyze_trace.py,cache_wrap_stress.asm} output/
+          ( cd output && python3 -m unittest discover -s . -p test_analyze_trace.py -v )
+          nasm -f bin output/cache_wrap_stress.asm -o output/WRAP.COM
+          python3 -m py_compile output/analyze_trace.py output/verify_wrap_trace.py
+          test "$(wc -c < output/WRAP.COM)" -gt 45000
+          test "$(wc -c < output/WRAP.COM)" -lt 65280
+          ( cd output && sha256sum WRAP.COM analyze_trace.py verify_wrap_trace.py test_analyze_trace.py cache_wrap_stress.asm > SHA256SUMS )
+          cat output/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dosbox-cache-wrap-guest-probe-and-verifier
+          path: output/
+          retention-days: 10

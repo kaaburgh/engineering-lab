@@ -1,0 +1,28 @@
+name: Export official DOSBox Staging Quake 1.06 benchmark for LOCAL research
+on:
+  push:
+    branches: [bench/quake-p0-p1-local-builds]
+    paths: [.github/workflows/export-quake106-benchmark.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Download published official benchmark, no game execution
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 \
+            'https://github.com/user-attachments/files/21488506/quake-benchmark.zip' \
+            -o quake-benchmark.zip
+          sha256sum quake-benchmark.zip > QUAKE_BENCHMARK_SHA256
+          unzip -l quake-benchmark.zip | head -30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: official-dosbox-quake106-benchmark-local-only
+          path: |
+            quake-benchmark.zip
+            QUAKE_BENCHMARK_SHA256
+          retention-days: 4

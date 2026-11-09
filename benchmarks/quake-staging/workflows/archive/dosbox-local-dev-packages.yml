@@ -1,0 +1,42 @@
+name: Transport Debian 13 development packages for offline local DOSBox compilation
+
+on:
+  push:
+    branches:
+      - bench/dosbox-local-source-2026-11-07
+
+permissions:
+  contents: read
+
+jobs:
+  dev-debs:
+    runs-on: ubuntu-24.04
+    container:
+      image: debian:trixie
+    timeout-minutes: 20
+    steps:
+      - name: Download matching Debian 13 x86-64 dev packages without installing or compiling DOSBox
+        shell: bash
+        run: |
+          set -euxo pipefail
+          apt-get update
+          for p in libsdl2-dev libsdl2-image-dev libfluidsynth-dev libiir-dev \
+            libspeexdsp-dev libasound2-dev libpng-dev libgl-dev libopusfile-dev libasio-dev \
+            libglew-dev zlib1g-dev; do
+            apt-cache policy "$p" | head -12
+          done
+          apt-get install -y --download-only --no-install-recommends \
+            libsdl2-dev libsdl2-image-dev libfluidsynth-dev libiir-dev \
+            libspeexdsp-dev libasound2-dev libpng-dev libgl-dev libopusfile-dev libasio-dev \
+            libglew-dev zlib1g-dev
+          mkdir -p /tmp/out
+          cp /var/cache/apt/archives/*.deb /tmp/out/
+          sha256sum /tmp/out/*.deb > /tmp/out/SHA256SUMS.txt
+          printf '%s\n' 'Debian 13 (trixie), amd64, system dev library bundle for upstream DOSBox 0.83.0' > /tmp/out/README.txt
+          ls -lh /tmp/out | tail -35
+      - uses: actions/upload-artifact@v4
+        with:
+          name: debian13-dosbox-staging-development-debs
+          path: /tmp/out/
+          compression-level: 0
+          retention-days: 2

@@ -1,0 +1,24 @@
+# Local measurements, proprietary inputs, build outputs
+*.exe
+*.EXE
+*.COM
+*.com
+*.iso
+*.img
+*.bin
+*.zip
+*.tar
+*.tar.gz
+*.tar.xz
+*.dmg
+*.pcap
+*.pcapng
+*.profraw
+*.profdata
+__pycache__/
+*.pyc
+.cache/
+build/
+out/
+artifacts/
+*.log

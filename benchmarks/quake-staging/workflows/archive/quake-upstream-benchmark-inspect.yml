@@ -1,0 +1,44 @@
+name: Inspect official DOSBox Staging Quake benchmark archive
+on:
+  push:
+    branches: [bench/dosbox-local-source-2026-11-07]
+    paths: [.github/workflows/quake-upstream-benchmark-inspect.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Download official wiki archive and print reproducibility metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output /tmp/quake-benchmark.zip \
+            'https://github.com/user-attachments/files/21488506/quake-benchmark.zip'
+          sha256sum /tmp/quake-benchmark.zip
+          file /tmp/quake-benchmark.zip
+          python3 - <<'PY'
+          import io, zipfile, hashlib, re
+          p='/tmp/quake-benchmark.zip'
+          with zipfile.ZipFile(p) as z:
+              print("Archive members:",len(z.infolist()))
+              for f in z.infolist():
+                  print("FILE",repr(f.filename),"size",f.file_size,"crc",hex(f.CRC))
+                  if f.is_dir() or f.file_size>20*1024*1024: continue
+                  data=z.read(f)
+                  ext=f.filename.lower().rsplit('.',1)[-1]
+                  if ext in ('conf','cfg','bat','txt','ini','md','json'):
+                      print("TEXT_FILE_START",f.filename)
+                      print(data.decode('cp437','replace')[:9000])
+                      print("TEXT_FILE_END",f.filename)
+                  elif ext in ('exe','com'):
+                      print("EXE_SHA256",f.filename,hashlib.sha256(data).hexdigest())
+                      txt=b' '.join(re.findall(rb'[\x20-\x7e]{8,}',data))
+                      pats=[rb'(?i)quake.{0,50}(?:1\.[0-9]{2}|version)',rb'(?i)version.{0,40}[0-9]\.[0-9]{2}',rb'(?i)based on.{0,70}']
+                      for pat in pats:
+                          print("EXE_VERSION_CANDIDATES",f.filename,[x.decode('ascii','replace') for x in re.findall(pat,txt)[:15]])
+                  elif ext in ('zip','pak'):
+                      print("NESTED_ARCHIVE",f.filename,hashlib.sha256(data).hexdigest())
+          PY
