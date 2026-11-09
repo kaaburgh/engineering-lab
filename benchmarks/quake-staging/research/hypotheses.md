@@ -252,5 +252,7 @@ candidates [candidates.md](phase1-audit-2026-11-09/candidates.md), plan
 - **Semantics:** dynamic-core x87 memory faults use the legacy nested #PF path
   (guest sees block-start EIP and stale registers); PR #10 changes this for m32
   loads; PR #9 is semantically neutral. Earlier fault oracles cannot detect it.
-- **Measurement:** the +4.08% (PR #9) and +9.59% (PR #10) estimates were not
-  reproduced; same-binary placebo −6.0% even with deterministic guest work.
+- **Measurement:** host CPU time varies 6–10% even with deterministic guest
+  work. Pooled over 28 interleaved blocks (two identical-binary placebo
+  labels), PR #10 is +8.7% [+5.0, +12.6] — consistent with its +9.59% claim —
+  while PR #9 (+1.9% [−1.9, +5.7]) is indistinguishable from noise.

@@ -138,6 +138,7 @@ python3 extras/jit-audit/tools/count_quake.py --dosbox <counters-build> --game g
    (`push_helper_calls`/`pop_helper_calls` → ~0), затем время.
 4. E3 (C4 — флаги): стоимость `POPFQ` на AMD (микробенчмарк + инъекция),
    распределение по блокам, дифференциальный тест флагов — до реализации.
-5. E4 (C3 — dispatcher): счётчик «цель в той же code page».
+5. E4 (C3 — dispatcher): прототип «skip MakeCodePage» (67.5% входов — та же
+   code page) с тестами SMC/CR3/CS. E5 (C6): `BT`/`SETcc`/`SAHF` в dynamic core.
 6. Отдельное correctness-изменение: точные #PF для всех x87 memory-форм
    (тест `pfprec` → везде `E=I R=ok`), независимо от производительности.

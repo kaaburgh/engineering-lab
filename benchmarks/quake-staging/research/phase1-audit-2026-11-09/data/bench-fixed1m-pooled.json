@@ -1,0 +1,104 @@
+{
+ "fixed1m.csv": {
+  "base": {
+   "speedup_pct": 3.15,
+   "boot95_pct": [
+    -0.17,
+    7.04
+   ],
+   "blocks": 8
+  },
+  "base2": {
+   "speedup_pct": -3.05,
+   "boot95_pct": [
+    -6.56,
+    0.15
+   ],
+   "blocks": 8
+  },
+  "pr10": {
+   "speedup_pct": 4.2,
+   "boot95_pct": [
+    -0.82,
+    8.83
+   ],
+   "blocks": 8
+  },
+  "pr9": {
+   "speedup_pct": -0.29,
+   "boot95_pct": [
+    -7.83,
+    6.84
+   ],
+   "blocks": 8
+  }
+ },
+ "fixed1m-20.csv": {
+  "base": {
+   "speedup_pct": -1.63,
+   "boot95_pct": [
+    -3.94,
+    0.6
+   ],
+   "blocks": 20
+  },
+  "base2": {
+   "speedup_pct": 1.66,
+   "boot95_pct": [
+    -0.54,
+    4.13
+   ],
+   "blocks": 20
+  },
+  "pr10": {
+   "speedup_pct": 10.51,
+   "boot95_pct": [
+    5.95,
+    15.43
+   ],
+   "blocks": 20
+  },
+  "pr9": {
+   "speedup_pct": 2.78,
+   "boot95_pct": [
+    -1.46,
+    7.19
+   ],
+   "blocks": 20
+  }
+ },
+ "pooled": {
+  "base": {
+   "speedup_pct": -0.29,
+   "boot95_pct": [
+    -2.4,
+    1.8
+   ],
+   "blocks": 28
+  },
+  "base2": {
+   "speedup_pct": 0.29,
+   "boot95_pct": [
+    -1.76,
+    2.41
+   ],
+   "blocks": 28
+  },
+  "pr10": {
+   "speedup_pct": 8.67,
+   "boot95_pct": [
+    4.99,
+    12.57
+   ],
+   "blocks": 28
+  },
+  "pr9": {
+   "speedup_pct": 1.9,
+   "boot95_pct": [
+    -1.88,
+    5.73
+   ],
+   "blocks": 28
+  }
+ }
+}
