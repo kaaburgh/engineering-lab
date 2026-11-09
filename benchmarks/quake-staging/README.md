@@ -5,6 +5,10 @@ Staging emulator. The actual source instrumentation and minimal regression
 programs are maintained in
 [kaaburgh/dosbox-staging#1](https://github.com/kaaburgh/dosbox-staging/pull/1).
 
+## Latest research (2026-11-09)
+
+Current session results are indexed in [research/hypotheses.md](research/hypotheses.md), including [A/A stability](research/stability-aa48-report.md), [helper caller attribution](research/caller-attribution-2026-11-09.md), and the [x87 inline-read research experiment](research/fpu-read-study/). No performance improvement has been established.
+
 ## What is verified (2026-11-07)
 
 The original DOS Quake 1.06 was executed on DOSBox Staging 0.84 with
@@ -88,5 +92,4 @@ controlled dedicated machine.
 
 **Limitations:** The synthetic DOS checks exercise real cache recycling and
 important guest instruction paths, not every x86 instruction or hardware
-device. The native JIT block mapping intentionally does not yet attribute
-time spent in C++ memory/FPU helpers to a particular guest instruction.
+device. Later experimental stack/snapshot work attributes some helper samples to JIT call sites; exact guest-instruction correspondence and full paths remain subject to the limits in the linked research reports.

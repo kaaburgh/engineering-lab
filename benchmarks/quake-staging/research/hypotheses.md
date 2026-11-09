@@ -39,7 +39,7 @@ The DOS Quake 1.06 executable has an embedded DJGPP COFF `.text` section and con
 ## Artifacts and organization
 
 - **DOSBox fork:** minimal optional feature for selected compile-time guest/native code snapshots and focused correctness tests; new stacked PR **on top of Guest block mapping PR #1**, not mixed into #1.
-- **configs/research:** this hypothesis register, guest/host disassembly, source annotations, costs and experiment outcomes, plus local-only benchmarking harness.
+- **engineering-lab:** this hypothesis register, derived guest/host annotations, costs, experiment outcomes and benchmark harness. Earlier configs links describe historical provenance.
 - **Raw artifact:** filtered capture files and their hashes; do not commit proprietary Quake executable, `PAK0.PAK`, or unbounded logs.
 - Keep hypotheses `H1`–`H5` stable. Record rejected hypotheses and why; never silently redefine success after measurements.
 
@@ -222,3 +222,14 @@ Compared with the unpinned 48-run series:
 **Simple whole-process CPU affinity failed to improve local FPS
 precision.** Keep this host for correctness and exploratory hot-path
 research, not small (<3%) JIT speedup claims.
+
+
+## Current session — helper attribution and inline-read experiment (2026-11-09)
+
+The canonical public research home is this repository. Historical `configs` references describe prior provenance only. Detailed results: [local A/A stability](stability-aa48-report.md), [caller attribution](caller-attribution-2026-11-09.md), and [x87 prototype and correctness tests](fpu-read-study/README.md).
+
+- The fresh trace-OFF fork build completed 4 warmups + 48 A/A measurements, all 969 frames; FPS CV 7.53%, p10–p90 spread 16.99%, same-binary placebo +1.66% (descriptive interval −0.41% to +3.90%). A later pinned A/A (4+24) had CV 11.02% and placebo interval −10.68% to +9.22%. Separate series do not establish a causal pinning effect; neither demonstrates adequate precision for a small optimization.
+- Two SIGPROF + live-snapshot experiments verified selected `0x10f4a`, `0x306bd`, and `0x112cc` generations and call sites for sampled candidate chains through `FPU_FLD_32` and `mem_readd`. The indirect call targets were not independently recovered from call-time registers; sample counts are not execution counts. H5 is a concrete candidate, not a proven inefficiency.
+- An experimental checked-inline x87 dword read changed generated code and passed nine DOS oracles across normal/dynamic cores and baseline/candidate binaries (36/36), including selected non-present and CPL3 protection faults. This is not full x87/MMIO/protection correctness. The 32-run randomized ABBA/BAAB A/B estimate was +9.59%, descriptive interval −3.27% to +26.26%; it is inconclusive. The prototype is an isolated research patch, not a product change.
+
+**Next boundary:** establish fresh A/A precision on a stable host, then independently test randomized paired A/B and other workloads; expand exception, interrupt and MMIO correctness before proposing a JIT patch. See the reports for provenance and limitations.

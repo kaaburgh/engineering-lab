@@ -21,3 +21,7 @@ The source repository is private; its direct links are not publicly viewable. Th
 - Some code and docs describe historical DOSBox version-specific experiments. Do not assume all scripts work without adapting inputs, versions, or paths.
 
 See [research/hypotheses.md](research/hypotheses.md) and [guest-block-mapping/README.md](guest-block-mapping/README.md) for study-specific methodology.
+
+## Canonical repository for subsequent work
+
+`kaaburgh/engineering-lab` is the canonical public repository for ongoing engineering research. The earlier `kaaburgh/configs` branches remain historical sources; new research findings should be recorded here under the same study paths. The 2026-11-09 session findings were added directly under `research/`, with derived data in `research/evidence/2026-11-09-current-session/`. See [hypotheses.md](research/hypotheses.md) for the current research state.

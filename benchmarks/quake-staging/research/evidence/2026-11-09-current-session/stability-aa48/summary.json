@@ -1,0 +1,58 @@
+{
+  "experiment": "same-binary uninstrumented Quake 1.06 A/A ABBA",
+  "source_sha": "91774d582069d52f4d3bf04952cb6047dbdc073f",
+  "dosbox_sha256": "1fb0d1f17aac13b191f3f84f13b9fad042c6956b0180911a3257c6f54433cf44",
+  "warmups_excluded": 4,
+  "measured_runs": 48,
+  "completed_frames_per_run": 969,
+  "fps": {
+    "median": 181.15,
+    "mean": 177.515,
+    "min": 132.5,
+    "max": 197.1,
+    "p10": 160.4,
+    "p90": 191.18,
+    "p10_p90_spread_pct_of_median": 16.991,
+    "population_stdev": 13.372,
+    "coefficient_of_variation_pct": 7.533,
+    "median_absolute_deviation_pct": 3.643,
+    "first_half_median": 181.4,
+    "second_half_median": 180.15,
+    "second_vs_first_half_pct": -0.689,
+    "lag1_autocorrelation_log_fps": 0.343,
+    "equivalent_timedemo_seconds_at_median_fps": 5.349
+  },
+  "placebo_ABBA": {
+    "labels_are_identical_binary": true,
+    "A_runs": 24,
+    "B_runs": 24,
+    "A_median_fps": 181.45,
+    "B_median_fps": 180.15,
+    "geometric_quartet_A_over_B_pct": 1.663,
+    "quartet_bootstrap_95pct_interval_pct": [
+      -0.406,
+      3.899
+    ],
+    "quartet_bootstrap_resamples": 10000,
+    "bootstrap_caveat": "descriptive: assumes independent quartets; correlated host noise may widen true uncertainty"
+  },
+  "host_interference": {
+    "runs_with_cgroup_throttling_events": 0,
+    "total_cgroup_throttled_events": 0,
+    "total_cgroup_throttled_ms": 0.0
+  },
+  "exploratory_precision_gates": {
+    "p10_p90_within_6pct": false,
+    "placebo_bootstrap_halfwidth_within_2pct": false,
+    "half_to_half_drift_within_3pct": true,
+    "all_three": false,
+    "note": "heuristic only: future A/B needs separate interleaved replicated comparison on a dedicated host"
+  },
+  "limitations": [
+    "Only one GitHub Actions host/run; does not measure runner-to-runner variance.",
+    "Shared CI CPU and rendering can cause load-correlated changes.",
+    "Quake logs 1 decimal FPS, which limits sensitivity.",
+    "FPS excludes emulator startup but includes rendering/guest execution.",
+    "A/A pseudo-groups cannot establish an optimization effect."
+  ]
+}

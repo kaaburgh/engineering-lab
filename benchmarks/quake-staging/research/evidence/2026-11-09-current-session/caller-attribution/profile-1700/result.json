@@ -1,0 +1,13 @@
+{
+  "result": {
+    "frames": 969,
+    "seconds": 8.6,
+    "fps": 112.0
+  },
+  "wall_sec": 10.598,
+  "renderer": "texture",
+  "profiler": true,
+  "trace_enabled": true,
+  "selected_snapshots": true,
+  "profile_period_us": 1700
+}

@@ -1,0 +1,94 @@
+{
+  "main_thread_samples": 2192,
+  "all_jit_samples": 1332,
+  "other_jit_samples": 1154,
+  "non_jit_samples_unattributed": 860,
+  "selected_snapshot_samples": 178,
+  "selected_generations": 9,
+  "bucket_bytes": 16,
+  "interpretation": "sample counts, not executed call counts; no helper attribution outside JIT",
+  "warning": null,
+  "blocks": [
+    {
+      "generation": 5799,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x3e233",
+      "native_bytes": 2059,
+      "host_sha256": "277b8596c72b61ce19b95bac5a3371df970584ba6929ff88c1a76627f0779e1e",
+      "guest_complete": true,
+      "samples": 15
+    },
+    {
+      "generation": 5800,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x3e29a",
+      "native_bytes": 2080,
+      "host_sha256": "f97f9191b6d2ebe04a111b4265b79b379a4af691ae6ea8e8def5119bd8b45638",
+      "guest_complete": true,
+      "samples": 17
+    },
+    {
+      "generation": 5838,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x1143f",
+      "native_bytes": 2219,
+      "host_sha256": "99d498de05ae68ab886e37f7ee2c4b80c7087fa8795c18f839ce74558eed946a",
+      "guest_complete": true,
+      "samples": 14
+    },
+    {
+      "generation": 5851,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x11216",
+      "native_bytes": 3160,
+      "host_sha256": "20bc5c5e5536404863e1b501d8508e371ce84399d60eec12c5e4aabff69d9f46",
+      "guest_complete": true,
+      "samples": 19
+    },
+    {
+      "generation": 5865,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x112cc",
+      "native_bytes": 2504,
+      "host_sha256": "425e8df5c0ad23a8382253ba534ff883e82fa4cb4d661d2580ed09e852fe8c2c",
+      "guest_complete": true,
+      "samples": 27
+    },
+    {
+      "generation": 5866,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x11343",
+      "native_bytes": 3123,
+      "host_sha256": "f51eac536d24c5bb7ba950258b84a743c0271d75b0a0c4d2483392b40c755321",
+      "guest_complete": true,
+      "samples": 13
+    },
+    {
+      "generation": 5923,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x10d3b",
+      "native_bytes": 516,
+      "host_sha256": "3205817d3a015c4da1ed86c0390002a179a44ca29b7781a2332e55b53c2d468d",
+      "guest_complete": true,
+      "samples": 38
+    },
+    {
+      "generation": 5936,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x3e3ef",
+      "native_bytes": 2058,
+      "host_sha256": "fa4e75f6efb56ce4c90e0382bfb66b1c7af915ab6f6c45e77bdffe8a63d52dbd",
+      "guest_complete": true,
+      "samples": 18
+    },
+    {
+      "generation": 5937,
+      "guest_cs": "0xa7",
+      "guest_eip": "0x3e455",
+      "native_bytes": 1581,
+      "host_sha256": "0579ffc59daad7f63b375313136d0181969fc69ff02204cfed9be36f5ba5a23c",
+      "guest_complete": true,
+      "samples": 17
+    }
+  ]
+}

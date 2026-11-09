@@ -1,0 +1,169 @@
+generation,guest_eip,offset,length,mnemonic,operand_shape,family,samples
+5797,0x3e233,27,3,test,"r15d,r15d",predicate,1
+5797,0x3e233,81,3,test,"rbx,rbx",predicate,1
+5797,0x3e233,159,2,jmp,IMM,branch,2
+5797,0x3e233,210,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5797,0x3e233,294,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5797,0x3e233,326,2,jmp,IMM,branch,2
+5797,0x3e233,470,2,jmp,IMM,branch,1
+5797,0x3e233,637,3,test,"rsi,rsi",predicate,1
+5797,0x3e233,719,2,jmp,IMM,branch,2
+5797,0x3e233,794,2,jmp,IMM,branch,1
+5797,0x3e233,945,8,mov,"r8,QWORD PTR [rbp+r8*IMM+IMM]",move-or-address,1
+5797,0x3e233,962,2,jmp,IMM,branch,1
+5797,0x3e233,1041,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5797,0x3e233,1063,2,je,IMM,branch,1
+5797,0x3e233,1225,2,jmp,IMM,branch,1
+5797,0x3e233,1357,4,add,"rsp,IMM",arithmetic-or-bitwise,1
+5797,0x3e233,1398,3,mov,"DWORD PTR [rbp+IMM],ecx",move-or-address,1
+5798,0x3e29a,27,3,test,"r15d,r15d",predicate,1
+5798,0x3e29a,41,3,mov,"ebx,DWORD PTR [rbp+IMM]",move-or-address,3
+5798,0x3e29a,81,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5798,0x3e29a,110,2,jmp,IMM,branch,2
+5798,0x3e29a,166,3,mov,"esi,r14d",move-or-address,1
+5798,0x3e29a,180,3,test,"rsi,rsi",predicate,1
+5798,0x3e29a,261,2,jmp,IMM,branch,1
+5798,0x3e29a,412,8,mov,"r8,QWORD PTR [rbp+r8*IMM+IMM]",move-or-address,1
+5798,0x3e29a,508,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5798,0x3e29a,537,2,jmp,IMM,branch,1
+5798,0x3e29a,698,2,jmp,IMM,branch,1
+5798,0x3e29a,830,4,add,"rsp,IMM",arithmetic-or-bitwise,1
+5798,0x3e29a,853,1,pushf,,flags-or-state,1
+5798,0x3e29a,948,8,mov,"rsi,QWORD PTR [rbp+rsi*IMM+IMM]",move-or-address,1
+5798,0x3e29a,1038,2,je,IMM,branch,1
+5798,0x3e29a,1044,2,jmp,IMM,branch,1
+5798,0x3e29a,1126,2,jmp,IMM,branch,1
+5798,0x3e29a,1324,2,jmp,IMM,branch,1
+5836,0x1143f,30,6,jle,IMM,branch,1
+5836,0x1143f,77,3,test,"rbx,rbx",predicate,1
+5836,0x1143f,149,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5836,0x1143f,261,5,lea,"rsp,[rsp-IMM]",move-or-address,3
+5836,0x1143f,361,2,mov,"eax,ebx",move-or-address,1
+5836,0x1143f,383,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5836,0x1143f,494,3,imul,r12d,arithmetic-or-bitwise,2
+5836,0x1143f,506,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5836,0x1143f,531,8,mov,"r8,QWORD PTR [rbp+r8*IMM+IMM]",move-or-address,1
+5836,0x1143f,539,3,test,"r8,r8",predicate,1
+5836,0x1143f,718,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5836,0x1143f,751,3,test,"r8,r8",predicate,1
+5836,0x1143f,826,7,lea,"r13d,[r14+IMM]",move-or-address,1
+5836,0x1143f,834,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5836,0x1143f,1160,1,pushf,,flags-or-state,1
+5836,0x1143f,1372,1,pushf,,flags-or-state,1
+5836,0x1143f,1406,3,test,"r8,r8",predicate,1
+5836,0x1143f,1485,5,lea,"rsp,[rsp+IMM]",move-or-address,2
+5836,0x1143f,1505,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5836,0x1143f,1660,4,add,"rsp,IMM",arithmetic-or-bitwise,1
+5849,0x11216,10,10,mov,"DWORD PTR [rbp+IMM],IMM",move-or-address,1
+5849,0x11216,82,4,mov,"r15d,DWORD PTR [rbx+r15*IMM]",move-or-address,1
+5849,0x11216,354,3,test,"r8,r8",predicate,1
+5849,0x11216,674,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5849,0x11216,872,6,bt,"DWORD PTR [rsp+IMM],IMM",predicate,1
+5849,0x11216,894,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5849,0x11216,1143,2,jmp,IMM,branch,2
+5849,0x11216,1335,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5849,0x11216,1556,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5849,0x11216,1584,2,jmp,IMM,branch,2
+5849,0x11216,1636,8,lea,"r12d,[r14+rcx*IMM+IMM]",move-or-address,1
+5849,0x11216,1765,3,adc,"r11d,r12d",arithmetic-or-bitwise,1
+5849,0x11216,2025,2,jmp,IMM,branch,1
+5849,0x11216,2123,2,jmp,IMM,branch,1
+5849,0x11216,2201,5,lea,"rsp,[rsp+IMM]",move-or-address,1
+5849,0x11216,2330,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5863,0x112cc,83,2,fxch,st(IMM),x87,2
+5863,0x112cc,119,3,mov,"edi,r15d",move-or-address,1
+5863,0x112cc,164,2,fdiv,"st,st(IMM)",x87,2
+5863,0x112cc,166,7,lea,"r15d,[r14+IMM]",move-or-address,1
+5863,0x112cc,206,2,je,IMM,branch,2
+5863,0x112cc,212,2,jmp,IMM,branch,1
+5863,0x112cc,345,4,mov,"r13d,DWORD PTR [rbp+IMM]",move-or-address,1
+5863,0x112cc,471,2,jmp,IMM,branch,1
+5863,0x112cc,636,5,lea,"rsp,[rsp+IMM]",move-or-address,1
+5863,0x112cc,652,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5863,0x112cc,804,2,je,IMM,branch,1
+5863,0x112cc,881,3,shr,"esi,IMM",arithmetic-or-bitwise,1
+5863,0x112cc,1093,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5863,0x112cc,1223,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5863,0x112cc,1342,2,jmp,IMM,branch,2
+5863,0x112cc,1402,5,lea,"r8,[r12+IMM]",move-or-address,1
+5863,0x112cc,1755,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5863,0x112cc,1783,2,jmp,IMM,branch,3
+5863,0x112cc,1863,3,mov,"DWORD PTR [rbp+IMM],eax",move-or-address,2
+5863,0x112cc,1922,7,mov,"BYTE PTR [rbp-IMM],IMM",move-or-address,1
+5864,0x11343,161,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5864,0x11343,300,2,jmp,IMM,branch,1
+5864,0x11343,352,1,pushf,,flags-or-state,1
+5864,0x11343,353,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5864,0x11343,361,3,shr,"esi,IMM",arithmetic-or-bitwise,1
+5864,0x11343,381,2,jmp,IMM,branch,1
+5864,0x11343,467,2,jmp,IMM,branch,1
+5864,0x11343,553,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5864,0x11343,785,2,jmp,IMM,branch,2
+5864,0x11343,829,8,lea,"r11d,[r14+rbx*IMM+IMM]",move-or-address,1
+5864,0x11343,865,3,test,"r8,r8",predicate,1
+5864,0x11343,874,2,jmp,IMM,branch,2
+5864,0x11343,952,7,lea,"r11d,[r14+IMM]",move-or-address,1
+5864,0x11343,960,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5864,0x11343,1073,2,sbb,"ebx,ebx",arithmetic-or-bitwise,1
+5864,0x11343,1192,2,jmp,IMM,branch,1
+5864,0x11343,1248,7,and,"r8,IMM",arithmetic-or-bitwise,1
+5864,0x11343,1275,2,je,IMM,branch,1
+5864,0x11343,1371,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5864,0x11343,1570,4,lea,"r8,[r11+IMM]",move-or-address,1
+5864,0x11343,1584,2,ja,IMM,branch,1
+5864,0x11343,1801,2,jmp,IMM,branch,1
+5864,0x11343,2066,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5864,0x11343,2142,1,pushf,,flags-or-state,2
+5864,0x11343,2143,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5921,0x10d3b,20,7,mov,"r15d,DWORD PTR [rbp-IMM]",move-or-address,1
+5921,0x10d3b,27,3,test,"r15d,r15d",predicate,1
+5921,0x10d3b,30,6,jle,IMM,branch,1
+5921,0x10d3b,48,2,add,"ebx,edx",arithmetic-or-bitwise,1
+5921,0x10d3b,86,1,pushf,,flags-or-state,2
+5921,0x10d3b,87,5,lea,"rsp,[rsp-IMM]",move-or-address,5
+5921,0x10d3b,119,3,test,"rax,rax",predicate,1
+5921,0x10d3b,128,2,jmp,IMM,branch,4
+5921,0x10d3b,146,3,mov,"edi,r13d",move-or-address,1
+5921,0x10d3b,208,5,lea,"rsp,[rsp-IMM]",move-or-address,13
+5921,0x10d3b,232,8,mov,"rax,QWORD PTR [rbp+rax*IMM+IMM]",move-or-address,1
+5921,0x10d3b,249,2,jmp,IMM,branch,4
+5921,0x10d3b,313,5,lea,"rsp,[rsp-IMM]",move-or-address,4
+5921,0x10d3b,321,3,mov,"DWORD PTR [rbp+IMM],eax",move-or-address,2
+5921,0x10d3b,324,3,mov,"DWORD PTR [rbp+IMM],ebx",move-or-address,1
+5921,0x10d3b,327,4,mov,"DWORD PTR [rbp+IMM],r14d",move-or-address,9
+5921,0x10d3b,331,4,mov,"DWORD PTR [rbp+IMM],r15d",move-or-address,5
+5921,0x10d3b,335,4,mov,"DWORD PTR [rbp+IMM],r12d",move-or-address,4
+5921,0x10d3b,339,7,mov,"r15d,DWORD PTR [rbp-IMM]",move-or-address,3
+5921,0x10d3b,352,4,sub,"r15d,IMM",arithmetic-or-bitwise,1
+5921,0x10d3b,367,4,mov,"DWORD PTR [rbp+IMM],r14d",move-or-address,1
+5921,0x10d3b,409,3,jmp,QWORD PTR [rax+IMM],branch,1
+5934,0x3e3ef,150,3,test,"rcx,rcx",predicate,1
+5934,0x3e3ef,159,2,jmp,IMM,branch,2
+5934,0x3e3ef,308,8,mov,"rsi,QWORD PTR [rbp+rsi*IMM+IMM]",move-or-address,1
+5934,0x3e3ef,647,2,jmp,IMM,branch,1
+5934,0x3e3ef,713,2,je,IMM,branch,1
+5934,0x3e3ef,956,2,je,IMM,branch,1
+5934,0x3e3ef,1020,4,add,"rsp,IMM",arithmetic-or-bitwise,1
+5934,0x3e3ef,1041,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5934,0x3e3ef,1137,3,test,"rsi,rsi",predicate,1
+5934,0x3e3ef,1360,3,add,"edx,r13d",arithmetic-or-bitwise,1
+5934,0x3e3ef,1364,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5934,0x3e3ef,1373,4,add,"r15d,IMM",arithmetic-or-bitwise,1
+5935,0x3e455,0,10,mov,"DWORD PTR [rbp+IMM],IMM",move-or-address,1
+5935,0x3e455,10,10,mov,"DWORD PTR [rbp+IMM],IMM",move-or-address,1
+5935,0x3e455,41,3,mov,"ebx,DWORD PTR [rbp+IMM]",move-or-address,3
+5935,0x3e455,74,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5935,0x3e455,103,2,jmp,IMM,branch,1
+5935,0x3e455,264,2,je,IMM,branch,3
+5935,0x3e455,452,3,test,"r8,r8",predicate,1
+5935,0x3e455,531,2,ja,IMM,branch,1
+5935,0x3e455,630,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5935,0x3e455,744,5,lea,"rsp,[rsp-IMM]",move-or-address,2
+5935,0x3e455,963,7,lea,"r11d,[r14+IMM]",move-or-address,1
+5935,0x3e455,971,5,lea,"rsp,[rsp-IMM]",move-or-address,1
+5935,0x3e455,1013,2,jmp,IMM,branch,1
+5935,0x3e455,1067,1,pushf,,flags-or-state,2
+5935,0x3e455,1068,5,lea,"rsp,[rsp-IMM]",move-or-address,3
+5935,0x3e455,1079,3,mov,"DWORD PTR [rbp+IMM],edx",move-or-address,1
+5935,0x3e455,1086,4,mov,"DWORD PTR [rbp+IMM],r13d",move-or-address,2
+5935,0x3e455,1154,4,mov,"DWORD PTR [rbp+IMM],r13d",move-or-address,1

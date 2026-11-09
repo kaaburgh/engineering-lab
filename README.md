@@ -2,7 +2,7 @@
 
 Public, reproducible engineering research: performance experiments, reverse engineering, hypotheses, measurements, and technical findings.
 
-This is an **experiment and evidence repository**, not a downstream source-code fork or a collection of machine configurations.
+This is the canonical public home for the owner’s engineering research, experiments, and evidence, rather than a downstream source-code fork or a collection of machine configurations. New research belongs here; `kaaburgh/configs` is historical provenance for migrated work.
 
 ## Research areas
 

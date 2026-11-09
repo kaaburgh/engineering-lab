@@ -1,0 +1,87 @@
+{
+  "counts": {
+    "mem_readd_via_FPU_FLD_32": 153,
+    "candidate_jit_parent": 153
+  },
+  "depths": {
+    "2": 153
+  },
+  "jit_parent_candidates": [
+    {
+      "guest_eip": "0x10f4a",
+      "return_offset": 78,
+      "samples": 13
+    },
+    {
+      "guest_eip": "0x306bd",
+      "return_offset": 78,
+      "samples": 5
+    },
+    {
+      "guest_eip": "0x352ec",
+      "return_offset": 79,
+      "samples": 4
+    },
+    {
+      "guest_eip": "0x2f5cf",
+      "return_offset": 897,
+      "samples": 4
+    },
+    {
+      "guest_eip": "0x306bd",
+      "return_offset": 224,
+      "samples": 3
+    },
+    {
+      "guest_eip": "0x306bd",
+      "return_offset": 272,
+      "samples": 3
+    },
+    {
+      "guest_eip": "0x112cc",
+      "return_offset": 158,
+      "samples": 3
+    },
+    {
+      "guest_eip": "0x2e0fe",
+      "return_offset": 394,
+      "samples": 3
+    },
+    {
+      "guest_eip": "0x19638",
+      "return_offset": 572,
+      "samples": 2
+    },
+    {
+      "guest_eip": "0x10f4a",
+      "return_offset": 241,
+      "samples": 2
+    },
+    {
+      "guest_eip": "0x10f4a",
+      "return_offset": 127,
+      "samples": 2
+    },
+    {
+      "guest_eip": "0x19c4c",
+      "return_offset": 164,
+      "samples": 2
+    },
+    {
+      "guest_eip": "0x36a61",
+      "return_offset": 103,
+      "samples": 2
+    },
+    {
+      "guest_eip": "0x30b20",
+      "return_offset": 78,
+      "samples": 2
+    },
+    {
+      "guest_eip": "0x10f4a",
+      "return_offset": 382,
+      "samples": 2
+    }
+  ],
+  "caveat": "parent return is a candidate until call instruction bytes are validated for the same live generation"
+}

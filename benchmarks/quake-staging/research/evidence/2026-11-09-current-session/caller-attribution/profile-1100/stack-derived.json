@@ -1,0 +1,699 @@
+{
+  "period_us": 1100,
+  "main_window_samples": 3644,
+  "depths": {
+    "0": 2706,
+    "8": 574,
+    "2": 191,
+    "1": 125,
+    "3": 35,
+    "4": 13
+  },
+  "sampled_executable_symbols": [
+    [
+      "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      216
+    ],
+    [
+      "MakeCodePage(unsigned long, CodePageHandler*&)",
+      80
+    ],
+    [
+      "CPU_Core_Dyn_X86_Run()",
+      76
+    ],
+    [
+      "mem_writed_checked(unsigned int, unsigned int)",
+      72
+    ],
+    [
+      "ScaleHoriz2x_32(void const*)",
+      68
+    ],
+    [
+      "mem_writed(unsigned int, unsigned int)",
+      42
+    ],
+    [
+      "FPU_FLD_32(unsigned int)",
+      42
+    ],
+    [
+      "mem_writed_checked_dcx64(unsigned int, unsigned long)",
+      32
+    ],
+    [
+      "draw_linear_line_from_dac_palette(unsigned long, unsigned long)",
+      31
+    ],
+    [
+      "mem_readd_checked(unsigned int, unsigned int*)",
+      24
+    ],
+    [
+      "VGA_ChainedVGA_Handler::writed(unsigned int, unsigned int)",
+      23
+    ],
+    [
+      "CPU_Core_Normal_Run()",
+      21
+    ],
+    [
+      "FPU_FST_32(unsigned int)",
+      18
+    ],
+    [
+      "PAGING_LinkPage(unsigned int, unsigned int)",
+      15
+    ],
+    [
+      "PIC_RunQueue()",
+      14
+    ],
+    [
+      "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      12
+    ],
+    [
+      "WEBSERVER_IsEnabled()",
+      10
+    ],
+    [
+      "CodePageHandler::GetHostReadPt(unsigned long)",
+      9
+    ],
+    [
+      "FPU_SetPRegsFrom(unsigned char const (*) [10])",
+      9
+    ],
+    [
+      "MEM_GetPageHandler(unsigned long)",
+      8
+    ],
+    [
+      "unsigned char mem_readb<(MemOpMode)0>(unsigned int)",
+      8
+    ],
+    [
+      "sync_dh_fpu_and_run_normal_core()",
+      6
+    ],
+    [
+      "mem_writew(unsigned int, unsigned short)",
+      5
+    ],
+    [
+      "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+      5
+    ],
+    [
+      "PageHandler::writed_checked(unsigned int, unsigned int)",
+      5
+    ],
+    [
+      "VGA_DrawSingleLine(unsigned int)",
+      5
+    ],
+    [
+      "mem_readd_checked_dcx64(unsigned int, unsigned int*)",
+      4
+    ],
+    [
+      "InitPageHandler::readb_checked(unsigned int, unsigned char*)",
+      4
+    ],
+    [
+      "InitPageHandler::readd_checked(unsigned int, unsigned int*)",
+      4
+    ],
+    [
+      "unsigned int mem_readd_inline<(MemOpMode)0>(unsigned int)",
+      3
+    ],
+    [
+      "PAGING_SetDirBase(unsigned long)",
+      3
+    ],
+    [
+      "localFile::Read(unsigned char*, unsigned short*)",
+      3
+    ],
+    [
+      "[unknown executable]",
+      3
+    ],
+    [
+      "InitPageHandler::writed_checked(unsigned int, unsigned int)",
+      3
+    ],
+    [
+      "seek_native_file(int, long, NativeSeek)",
+      2
+    ],
+    [
+      "DiskNoises::SetLastIoPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, DiskNoiseIoType, DiskType)",
+      2
+    ],
+    [
+      "opcode::Emit8(unsigned char)",
+      2
+    ],
+    [
+      "normal_loop()",
+      2
+    ],
+    [
+      "FPU_GetPRegsTo(unsigned char (*) [10])",
+      2
+    ],
+    [
+      "FPU_FLD_80(unsigned int)",
+      2
+    ]
+  ],
+  "candidate_top_frame_edges": [
+    {
+      "sampled": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      "caller": "FPU_FLD_32(unsigned int)",
+      "samples": 153
+    },
+    {
+      "sampled": "MakeCodePage(unsigned long, CodePageHandler*&)",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 76
+    },
+    {
+      "sampled": "CPU_Core_Dyn_X86_Run()",
+      "caller": "normal_loop()",
+      "samples": 73
+    },
+    {
+      "sampled": "ScaleHoriz2x_32(void const*)",
+      "caller": "VGA_DrawSingleLine(unsigned int)",
+      "samples": 67
+    },
+    {
+      "sampled": "draw_linear_line_from_dac_palette(unsigned long, unsigned long)",
+      "caller": "VGA_DrawSingleLine(unsigned int)",
+      "samples": 29
+    },
+    {
+      "sampled": "CPU_Core_Normal_Run()",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 20
+    },
+    {
+      "sampled": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      "caller": "InitPageHandler::readd(unsigned int)",
+      "samples": 20
+    },
+    {
+      "sampled": "PAGING_LinkPage(unsigned int, unsigned int)",
+      "caller": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "samples": 14
+    },
+    {
+      "sampled": "PIC_RunQueue()",
+      "caller": "normal_loop()",
+      "samples": 11
+    },
+    {
+      "sampled": "WEBSERVER_IsEnabled()",
+      "caller": "DOSBOX_RunMachine()",
+      "samples": 10
+    },
+    {
+      "sampled": "CodePageHandler::GetHostReadPt(unsigned long)",
+      "caller": "PAGING_LinkPage(unsigned int, unsigned int)",
+      "samples": 9
+    },
+    {
+      "sampled": "FPU_SetPRegsFrom(unsigned char const (*) [10])",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 9
+    },
+    {
+      "sampled": "MEM_GetPageHandler(unsigned long)",
+      "caller": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "samples": 8
+    },
+    {
+      "sampled": "unsigned char mem_readb<(MemOpMode)0>(unsigned int)",
+      "caller": "InitPageHandler::readb_checked(unsigned int, unsigned char*)",
+      "samples": 8
+    },
+    {
+      "sampled": "sync_dh_fpu_and_run_normal_core()",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 6
+    },
+    {
+      "sampled": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      "caller": "FPU_FLD_80(unsigned int)",
+      "samples": 6
+    },
+    {
+      "sampled": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      "caller": "FPU_FLD_64(unsigned int)",
+      "samples": 5
+    },
+    {
+      "sampled": "MakeCodePage(unsigned long, CodePageHandler*&)",
+      "caller": "normal_loop()",
+      "samples": 4
+    },
+    {
+      "sampled": "mem_writed(unsigned int, unsigned int)",
+      "caller": "InitPageHandler::writed(unsigned int, unsigned int)",
+      "samples": 4
+    },
+    {
+      "sampled": "mem_writed(unsigned int, unsigned int)",
+      "caller": "FPU_FST_80(unsigned int)",
+      "samples": 4
+    },
+    {
+      "sampled": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "caller": "InitPageHandler::readd(unsigned int)",
+      "samples": 4
+    },
+    {
+      "sampled": "unsigned int mem_readd_inline<(MemOpMode)0>(unsigned int)",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 3
+    },
+    {
+      "sampled": "mem_writew(unsigned int, unsigned short)",
+      "caller": "InitPageHandler::writew(unsigned int, unsigned short)",
+      "samples": 3
+    },
+    {
+      "sampled": "localFile::Read(unsigned char*, unsigned short*)",
+      "caller": "DOS_ReadFile(unsigned short, unsigned char*, unsigned short*, bool)",
+      "samples": 3
+    },
+    {
+      "sampled": "VGA_DrawSingleLine(unsigned int)",
+      "caller": "PIC_RunQueue()",
+      "samples": 3
+    },
+    {
+      "sampled": "CPU_Core_Dyn_X86_Run()",
+      "caller": "DOSBOX_RunMachine()",
+      "samples": 3
+    },
+    {
+      "sampled": "PIC_RunQueue()",
+      "caller": "DOSBOX_RunMachine()",
+      "samples": 3
+    },
+    {
+      "sampled": "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+      "caller": "FPU_FLDCW_DH(unsigned int)",
+      "samples": 3
+    },
+    {
+      "sampled": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "caller": "InitPageHandler::readb(unsigned int)",
+      "samples": 3
+    },
+    {
+      "sampled": "DiskNoises::SetLastIoPath(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, DiskNoiseIoType, DiskType)",
+      "caller": "DOS_ReadFile(unsigned short, unsigned char*, unsigned short*, bool)",
+      "samples": 2
+    },
+    {
+      "sampled": "normal_loop()",
+      "caller": "DOSBOX_RunMachine()",
+      "samples": 2
+    },
+    {
+      "sampled": "FPU_GetPRegsTo(unsigned char (*) [10])",
+      "caller": "normal_loop()",
+      "samples": 2
+    },
+    {
+      "sampled": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "caller": "InitPageHandler::writew(unsigned int, unsigned short)",
+      "samples": 2
+    },
+    {
+      "sampled": "VGA_DrawSingleLine(unsigned int)",
+      "caller": "normal_loop()",
+      "samples": 2
+    },
+    {
+      "sampled": "write_byte_to_port(unsigned short, unsigned char)",
+      "caller": "dyn_io_writeB(unsigned short, unsigned char)",
+      "samples": 2
+    },
+    {
+      "sampled": "PIC_AddEvent(void (*)(unsigned int), double, unsigned int)",
+      "caller": "normal_loop()",
+      "samples": 2
+    },
+    {
+      "sampled": "counter_latch(PIT_Block&)",
+      "caller": "dyn_io_writeB(unsigned short, unsigned char)",
+      "samples": 2
+    },
+    {
+      "sampled": "MAPPER_IsUsingJoysticks()",
+      "caller": "normal_loop()",
+      "samples": 2
+    },
+    {
+      "sampled": "draw_linear_line_from_dac_palette(unsigned long, unsigned long)",
+      "caller": "PIC_RunQueue()",
+      "samples": 2
+    },
+    {
+      "sampled": "RMR_DrawLine_Passthrough(void const*)",
+      "caller": "PIC_RunQueue()",
+      "samples": 2
+    },
+    {
+      "sampled": "InitPageHandler::readb_checked(unsigned int, unsigned char*)",
+      "caller": "MakeCodePage(unsigned long, CodePageHandler*&)",
+      "samples": 2
+    },
+    {
+      "sampled": "seek_native_file(int, long, NativeSeek)",
+      "caller": "DOS_21Handler()",
+      "samples": 1
+    },
+    {
+      "sampled": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "caller": "InitPageHandler::readw_checked(unsigned int, unsigned short*)",
+      "samples": 1
+    },
+    {
+      "sampled": "DOS_21Handler()",
+      "caller": "DOSBOX_RunMachine()",
+      "samples": 1
+    },
+    {
+      "sampled": "seek_native_file(int, long, NativeSeek)",
+      "caller": "DOS_ReadFile(unsigned short, unsigned char*, unsigned short*, bool)",
+      "samples": 1
+    },
+    {
+      "sampled": "CodePageHandler::writeb(unsigned int, unsigned char)",
+      "caller": "DOS_21Handler()",
+      "samples": 1
+    },
+    {
+      "sampled": "ReelMagic_RENDER_StartUpdate()",
+      "caller": "PIC_RunQueue()",
+      "samples": 1
+    },
+    {
+      "sampled": "maybe_restore_windowed_size()",
+      "caller": "normal_loop()",
+      "samples": 1
+    },
+    {
+      "sampled": "[unknown executable]",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 1
+    },
+    {
+      "sampled": "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+      "caller": "DOS_PerformDiskIoDelayByHandle(unsigned short, unsigned short)",
+      "samples": 1
+    },
+    {
+      "sampled": "MEM_BlockWrite(unsigned int, void const*, unsigned long)",
+      "caller": "DOS_21Handler()",
+      "samples": 1
+    },
+    {
+      "sampled": "opcode::Emit8(unsigned char)",
+      "caller": "dyn_write_word(DynReg*, DynReg*, bool, bool) [clone .constprop.0]",
+      "samples": 1
+    },
+    {
+      "sampled": "gen_call_ptr(void*, unsigned char)",
+      "caller": "gen_call_function(void*, char const*, ...)",
+      "samples": 1
+    },
+    {
+      "sampled": "dyn_read_word(DynReg*, DynReg*, bool, bool)",
+      "caller": "CreateCacheBlock(CodePageHandler*, unsigned int, unsigned long) [clone .constprop.0]",
+      "samples": 1
+    },
+    {
+      "sampled": "FindDynReg(DynReg*, bool) [clone .part.0]",
+      "caller": "gen_dop_word(DualOps, bool, DynReg*, DynReg*)",
+      "samples": 1
+    },
+    {
+      "sampled": "opcode::Emit8(unsigned char)",
+      "caller": "gen_call_function(void*, char const*, ...)",
+      "samples": 1
+    },
+    {
+      "sampled": "CodePageHandler::writew(unsigned int, unsigned short)",
+      "caller": "(anonymous namespace)::enter_irq_stack()",
+      "samples": 1
+    },
+    {
+      "sampled": "gen_call_function(void*, char const*, ...)",
+      "caller": "dyn_closeblock()",
+      "samples": 1
+    },
+    {
+      "sampled": "ScaleHoriz2x_32(void const*)",
+      "caller": "PIC_RunQueue()",
+      "samples": 1
+    },
+    {
+      "sampled": "GFX_StartUpdate(unsigned int*&, int&)",
+      "caller": "VGA_DrawSingleLine(unsigned int)",
+      "samples": 1
+    },
+    {
+      "sampled": "VGA_DisplayStartLatch(unsigned int)",
+      "caller": "normal_loop()",
+      "samples": 1
+    },
+    {
+      "sampled": "[unknown executable]",
+      "caller": "normal_loop()",
+      "samples": 1
+    },
+    {
+      "sampled": "SdlRenderer::PrepareFrame()",
+      "caller": "GFX_MaybePresentFrame()",
+      "samples": 1
+    },
+    {
+      "sampled": "GFX_GetPresentationMode()",
+      "caller": "DOSBOX_RunMachine()",
+      "samples": 1
+    },
+    {
+      "sampled": "PAGING_LinkPage(unsigned int, unsigned int)",
+      "caller": "InitPageHandler::readb_checked(unsigned int, unsigned char*)",
+      "samples": 1
+    },
+    {
+      "sampled": "write_p3c9(unsigned short, unsigned int, io_width_t)",
+      "caller": "dyn_io_writeB(unsigned short, unsigned char)",
+      "samples": 1
+    },
+    {
+      "sampled": "IO_WriteB(unsigned short, unsigned char)",
+      "caller": "dyn_io_writeB(unsigned short, unsigned char)",
+      "samples": 1
+    },
+    {
+      "sampled": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "caller": "InitPageHandler::writed(unsigned int, unsigned int)",
+      "samples": 1
+    },
+    {
+      "sampled": "InitPageHandler::readb(unsigned int)",
+      "caller": "MakeCodePage(unsigned long, CodePageHandler*&)",
+      "samples": 1
+    },
+    {
+      "sampled": "mem_writed(unsigned int, unsigned int)",
+      "caller": "cpu_switch_task(unsigned long, TSwitchType, unsigned long) [clone .isra.0]",
+      "samples": 1
+    },
+    {
+      "sampled": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      "caller": "cpu_switch_task(unsigned long, TSwitchType, unsigned long) [clone .isra.0]",
+      "samples": 1
+    },
+    {
+      "sampled": "CPU_SetFlags(unsigned int, unsigned int)",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 1
+    },
+    {
+      "sampled": "DOS_OpenFile(char const*, unsigned char, unsigned short*, bool)",
+      "caller": "DOS_21Handler()",
+      "samples": 1
+    },
+    {
+      "sampled": "TIMER_AddTick()",
+      "caller": "normal_loop()",
+      "samples": 1
+    },
+    {
+      "sampled": "mem_writeb(unsigned int, unsigned char)",
+      "caller": "InitPageHandler::writeb_checked(unsigned int, unsigned char)",
+      "samples": 1
+    },
+    {
+      "sampled": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      "caller": "CPU_Interrupt(unsigned long, unsigned long, unsigned long)",
+      "samples": 1
+    },
+    {
+      "sampled": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+      "caller": "MouseDriverState::GetButtons() const",
+      "samples": 1
+    },
+    {
+      "sampled": "EA_16_06_n()",
+      "caller": "CPU_Core_Dyn_X86_Run()",
+      "samples": 1
+    },
+    {
+      "sampled": "CPU_Core_Normal_Run()",
+      "caller": "normal_loop()",
+      "samples": 1
+    },
+    {
+      "sampled": "PCSPEAKER_PicCallback()",
+      "caller": "normal_loop()",
+      "samples": 1
+    }
+  ],
+  "candidate_selected_jit_return_offsets": [
+    {
+      "sampled": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 30
+    },
+    {
+      "sampled": "mem_writed(unsigned int, unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 25
+    },
+    {
+      "sampled": "VGA_ChainedVGA_Handler::writed(unsigned int, unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 23
+    },
+    {
+      "sampled": "FPU_FLD_32(unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 19
+    },
+    {
+      "sampled": "PAGING_SetDirBase(unsigned long)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 3
+    },
+    {
+      "sampled": "InitPageHandler::writed_checked(unsigned int, unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 2
+    },
+    {
+      "sampled": "PageHandler::writed_checked(unsigned int, unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 2
+    },
+    {
+      "sampled": "InitPageHandler::readb_checked(unsigned int, unsigned char*)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 2
+    },
+    {
+      "sampled": "FPU_FLD_80(unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 2
+    },
+    {
+      "sampled": "InitPageHandler::readd_checked(unsigned int, unsigned int*)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 2
+    },
+    {
+      "sampled": "CPU_PopSeg(SegNames, bool)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "mem_writew(unsigned int, unsigned short)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "FPU_FST_64(unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "CPU_RET(bool, unsigned long, unsigned long)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "CPU_IO_Exception(unsigned long, unsigned long)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "cpu_switch_task(unsigned long, TSwitchType, unsigned long) [clone .isra.0]",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "FPU_FLD_32(unsigned int)",
+      "guest_eip": "0x112cc",
+      "return_offset": 158,
+      "samples": 1
+    },
+    {
+      "sampled": "InitPageHandler::writeb(unsigned int, unsigned char)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    },
+    {
+      "sampled": "InitPageHandler::readb(unsigned int)",
+      "guest_eip": "other JIT",
+      "return_offset": 0,
+      "samples": 1
+    }
+  ],
+  "caveat": "candidate frame-pointer return addresses only; asynchronous prologues, leafs, tail calls, missing frame pointers, and JIT transitions may break chain; validate machine-code call and control flow before claiming an edge"
+}

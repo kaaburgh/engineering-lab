@@ -1,0 +1,15 @@
+{
+  "benchmark_archive_sha256": "bd928b86e3bd1dc7ffeea88b11e757005be38bc8971aa228ee004d5d23a35a60",
+  "quake_exe_sha256": "7cdb244122cc607cc6f162524bfcac60f6d11d8ca2ff07473d6cd962311161fb",
+  "pak0_sha256": "35a9c55e5e5a284a159ad2a62e0e8def23d829561fe2f54eb402dbc0a9a946af",
+  "quake_exe_bytes": 404480,
+  "pak0_bytes": 18689235,
+  "package_root": "quake bench/drives/c/",
+  "optional_dos_extenders": [
+    {
+      "name": "CWSDPMI.EXE",
+      "sha256": "0a890815df6cbdc052915a856c16944cedec825267e7b6e453c351a0cdc695f2"
+    }
+  ],
+  "note": "Do not upload Quake executable or PAK, only hashes."
+}
