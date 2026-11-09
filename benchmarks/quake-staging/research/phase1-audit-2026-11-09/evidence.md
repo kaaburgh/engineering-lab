@@ -143,3 +143,14 @@
 загрузок на быстром пути); счётчики `PUSHFQ`/`POPFQ`, PUSH/POP, dispatcher —
 без изменений (±0.03%); guest-результаты идентичны. Механизм PR #10
 **CONFIRMED**; он не затрагивает самую большую статью (флаги).
+
+## 5. Открытые гипотезы (HYPOTHESIS)
+
+| # | Гипотеза | Почему не проверено здесь | Эксперимент |
+|---|---|---|---|
+| H-a | PR #10 экономит на JIT-стороне вызова (сброс/перезагрузка volatile-регистров) сверх helper-части | Нет PMU, шум времени ±6–10% | Инъекция K лишних пустых вызовов в место `FPU_FLD_32` (наклон = стоимость вызова in situ), experiment-plan M0.2 |
+| H-b | C1a (fast path + legacy промах) даёт ≥ половины helper-доли (≥3.5%) | Не реализовано (Phase 2) | experiment-plan E1 |
+| H-c | Стоимость `POPFQ` на AMD Zen сопоставима с Intel | Нет AMD-хоста | `microbench/flags_save.c` + `apply_flag_injection.py popf 4` на Zen 3/4 (E3) |
+| H-d | Рост JIT-кода PR #10 (+5.8%) не ухудшает I-cache на горячих путях | Нет PMU (`L1-icache-load-misses`) | `perf stat` на хосте с PMU, base vs pr10 |
+| H-e | Пропуск `MakeCodePage` для той же code page безопасен при SMC/CR3/CS-сменах | Не реализовано | experiment-plan E4 + тесты SMC/CR3 |
+| H-f | Heavy-debugger BPMR на x87 m32 перестаёт срабатывать в PR #10 | Требуется отдельная debugger-сборка и новый test hook | audit.md §3, риск 2 |
