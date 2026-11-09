@@ -41,11 +41,11 @@ Detailed, checksummed wraparound results:
 - `research/quake106-top30-coff-function-map.csv`: compact per-block reference
   (no game code, binaries or proprietary assets).
 
-The historical GitHub workflows preserved in [`workflows/archive/`](workflows/archive/) only **compile and
-export binaries** or package probe source. They do **not** execute benchmarks.
-All DOS runs for this investigation take place in the assistant's local
-Linux container; the runtime Debian 13 dependency versions and binary hashes
-are saved to build manifests.
+Historical build/export workflows and an early CI benchmarking workflow are
+preserved as **inactive references** in [`workflows/archive/`](workflows/archive/).
+The local correctness and JIT experiments summarized here used recorded Linux
+build environments; see the linked evidence and manifests for exact versions,
+binary hashes, and the distinction between local and CI measurements.
 
 ## Reproduce cache-wrap correctness locally
 

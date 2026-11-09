@@ -1,0 +1,62 @@
+name: Quake and DOSBox research sanity
+
+on:
+  push:
+    paths:
+      - 'benchmarks/quake-staging/harness/**'
+      - 'benchmarks/quake-staging/guest-block-mapping/tools/**'
+      - '.github/workflows/research-sanity.yml'
+  pull_request:
+    paths:
+      - 'benchmarks/quake-staging/harness/**'
+      - 'benchmarks/quake-staging/guest-block-mapping/tools/**'
+      - '.github/workflows/research-sanity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check portable Python harness syntax only (NO game execution)
+        run: |
+          python3 -m py_compile \
+            benchmarks/quake-staging/harness/local_ab.py \
+            benchmarks/quake-staging/harness/map_quake_coff.py \
+            benchmarks/quake-staging/harness/disassemble_selected_jit.py \
+            benchmarks/quake-staging/harness/run_selected_jit_local.py \
+            benchmarks/quake-staging/harness/run_wrap_local.py \
+            benchmarks/quake-staging/harness/semantic_modes_local.py
+      - name: Check guest block mapping parser and lifecycle tests (NO Quake)
+        run: |
+          python3 -m py_compile benchmarks/quake-staging/guest-block-mapping/tools/*.py
+          python3 -m unittest discover -s benchmarks/quake-staging/guest-block-mapping/tools -p 'test_*.py'
+      - name: Run selected JIT disassembly analyzer on synthetic code (NO Quake)
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/jit-synthetic
+          printf '\x90\xc3' > /tmp/jit-synthetic/sample.guest.bin
+          printf '\x90\xc3' > /tmp/jit-synthetic/sample.host.bin
+          cat > /tmp/jit-synthetic/sample.json <<'JSON'
+          {
+            "generation": 1, "guest_cs": "0x00a7", "guest_eip": "0x00010d3b",
+            "guest_linear_begin": "0x10010d3b", "guest_linear_end": "0x10010d3d",
+            "guest_expected_bytes": 2, "guest_captured_bytes": 2,
+            "guest_complete": true, "host_begin": "0x5000",
+            "host_end": "0x5002", "host_bytes": 2,
+            "guest_filename": "sample.guest.bin", "host_filename": "sample.host.bin"
+          }
+          JSON
+          python3 benchmarks/quake-staging/harness/disassemble_selected_jit.py \
+            --snapshots /tmp/jit-synthetic \
+            --report /tmp/jit-synthetic/report.md \
+            --summary /tmp/jit-synthetic/summary.json \
+            --include-disassembly
+          python3 - <<'PY'
+          import json
+          j=json.load(open('/tmp/jit-synthetic/summary.json'))
+          assert j['count']==1, j
+          assert j['snapshots'][0]['native_bytes']==2
+          PY

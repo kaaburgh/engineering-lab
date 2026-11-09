@@ -1,6 +1,6 @@
 # Historical GitHub Actions (inactive)
 
-These YAML files were copied unmodified from the private `kaaburgh/configs` research branches, with the source commits documented in [../../MIGRATION.md](../../MIGRATION.md).
+These YAML files were copied unmodified from the private `kaaburgh/configs` research branches, with the source commits documented in [../MIGRATION.md](../MIGRATION.md).
 
 They are **reference artifacts**, not runnable GitHub Actions in this repository: only YAML under the repository root's `.github/workflows/` directory is discovered as workflow definitions by GitHub Actions.
 
