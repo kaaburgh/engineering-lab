@@ -300,6 +300,95 @@ closing the gap are in
 confirmed at full size, and its dominant component is x87 (≈7% of the
 window), not the interpreter fallback (≈1.2–1.7%).
 
+## Step 2 of the register: inside the span cluster, and the x87 map
+
+The register's next step after the function-level verdict was to make H1
+actionable and to find out where the x87 path actually sits. Both are
+measured here on the same five-run pool.
+
+### The span cluster split into bodies
+
+The span rasteriser is a routine group with 24 entry points (the renderer's
+function-pointer dispatch stubs tail-jump into a shared body). Splitting the
+group at those entry points gives 25 bodies
+([quake106-span-bodies-2026-11-09.csv](quake106-span-bodies-2026-11-09.csv)):
+
+| Body | Range | JIT | Helpers | Total | Role |
+|---|---|---:|---:|---:|---|
+| `0x111A4` | `0x111A4`–`0x112EC` | 2.40% | 0.29% | **2.68%** | advancetable setup (`shl $12` of the fractional steps, stores `advancetable`/`advancetable+4`) |
+| `0x10E84` | `0x10E84`–`0x11088` | 0.94% | 1.10% | **2.04%** | dispatch stubs and dispatcher; the helper traffic here is the **x87 span setup** (`fild` of the span endpoints) |
+| `0x112EC` | `0x112EC`–`0x1141D` | 1.73% | 0.13% | **1.86%** | the unrolled textured-span inner loop (`mov al,[esi]` / `adc esi,[ecx*4+advancetable]` / `mov [edi+n],al`) |
+| `0x110C5` | `0x110C5`–`0x11158` | 0.93% | 0.16% | **1.09%** | s/t fraction setup (`shl $16` / `sar $16` of the span endpoints) |
+| `0x1116C` | `0x1116C`–`0x111A4` | 0.93% | 0% | **0.93%** | span count and reciprocal (`sstep = (snext - s) / (spancount - 1)`) |
+| `0x11436` | `0x11436`–`0x11461` | 0.75% | 0% | **0.75%** | iteration over `spans[]` (`imul [ecx*4+spans]`) |
+| `0x110A8` | `0x110A8`–`0x110C5` | 0.21% | 0% | 0.21% | span setup (vstart/vend) |
+| — | `0x11461`–`0x1179F` | 1.52% | 0.02% | 1.54% | tail and the entry-vector table (21 stubs, 22 bytes each) |
+
+The roles are confirmed against the id Software rasteriser source
+(`QW/client/d_draw.s`): the `entryvec_table` dispatch, the `advancetable`
+setup and the `adcl advancetable+4(,%ecx,4),%esi` inner loop all appear in
+the guest binary with the same shape.
+
+**H1 is now actionable**: the cost is not one thing but three — the
+advancetable setup (2.68%), the x87 span setup (2.04%) and the unrolled
+inner loop (1.86%). The first and the third are pure arithmetic on already
+translated code; the second is the x87 path, which is where H5's mechanism
+lives.
+
+### Where the x87 path sits
+
+Resolving the nested helper call *per guest block* (the analyzer now records
+it) and aggregating by function gives
+([quake106-x87-by-function-2026-11-09.csv](quake106-x87-by-function-2026-11-09.csv)):
+
+| Function | x87 samples | % of window | % of the function's own cost |
+|---|---:|---:|---:|
+| span cluster `0x10E84` | 311 | 0.75% | 6.8% |
+| `R_ClipEdge` `0x306A1` | 276 | 0.67% | **23.7%** |
+| `D_DrawZSpans` `0x10C57` | 130 | 0.31% | 9.9% |
+| `0x3096E` (unidentified) | 101 | 0.24% | 20.4% |
+| `R_RecursiveWorldNode` `0x2F574` | 77 | 0.19% | 6.7% |
+| `0x2D907` (unidentified) | 75 | 0.18% | 34.7% |
+| everything else | 571 | 1.38% | — |
+
+Two consequences:
+
+* The x87 traffic is **not concentrated**: the largest function holds 20% of
+  it and the top six hold 58%. A per-function fix would therefore not
+  capture the x87 cost; only a change to the shared helper path
+  (`FPU_FLD_32` → `mem_readd`) would.
+* The function most exposed to x87 is **`R_ClipEdge` — 23.7% of its own
+  cost is x87**, and its generated code has the highest x87 instruction
+  density of the selected blocks (9.5%, against 2.8% for
+  `R_RecursiveWorldNode` and 0% for the span and surf8 blocks).
+
+### The whole generated block, not only the sampled instructions
+
+The sampled instruction families describe where the profiler landed; the
+generated code itself is described in
+[quake106-native-block-profile-2026-11-09.csv](quake106-native-block-profile-2026-11-09.csv):
+
+| Guest block | native bytes | instructions | move | arith | branch | predicate | flags | x87 | call sites | `pushf` | patched disp. |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `0x10D3B` `D_DrawZSpans` | 516 | 192 | 38.5% | 45.8% | 7.8% | 3.6% | 1.6% | 0% | 4 | **3** | 0 |
+| `0x11216` span | 3 160 | 1 169 | 41.8% | 38.8% | 9.2% | 5.1% | 1.4% | 0% | 42 | 16 | 0 |
+| `0x112CC` span | 2 504 | 911 | 41.4% | 38.2% | 9.2% | 4.9% | 1.2% | 1.1% | 36 | 11 | 0 |
+| `0x11343` span | 3 123 | 1 152 | 41.4% | 38.4% | 10.0% | 5.4% | 1.1% | 0% | 42 | 12 | 0 |
+| `0x1143F` span | 2 219 | 822 | 38.7% | 40.5% | 10.6% | 5.4% | 1.5% | 0% | 28 | 10 | 0 |
+| `0x2F5CF` `R_RecursiveWorldNode` | 1 917 | 690 | 37.8% | 40.1% | 9.3% | 4.6% | 0.4% | 2.8% | 34 | 3 | 0 |
+| `0x306BD` `R_ClipEdge` | 832 | 284 | 35.9% | 37.3% | 6.3% | 3.2% | 0.4% | **9.5%** | 20 | 1 | 0 |
+| `0x3E233` surf8 mip0 | 2 059 | 762 | 45.4% | 35.8% | 9.2% | 4.6% | 0.7% | 0% | 32 | 5 | **6** |
+| `0x3E29A` surf8 mip0 | 2 080 | 762 | 46.9% | 34.3% | 9.2% | 4.6% | 0.7% | 0% | 32 | 4 | **7** |
+| `0x3E3EF` surf8 mip1 | 2 058 | 762 | 45.4% | 35.8% | 9.2% | 4.6% | 0.7% | 0% | 32 | 5 | **6** |
+| `0x3E455` surf8 mip1 | 1 581 | 589 | 40.4% | 39.2% | 10.0% | 4.9% | 1.4% | 0% | 20 | 6 | **2** |
+
+This closes H3 completely: the surf8 routines are **45% move-or-address and
+36% arithmetic with no x87 and no flags work**, and the runtime-patched
+displacement `0x0018007c` survives into the generated code (6–7 times per
+block) while the sentinel is gone. The per-frame cost of `surf8` is the
+texel address computation and the byte packing — the patching is a load-time
+event.
+
 ## Measurement floor, for whoever claims a speedup next
 
 On the same host: FPS coefficient of variation 2.17%, minimum detectable
@@ -330,13 +419,13 @@ the host that produced it.
 
 ## Next discriminating steps
 
-1. Split the **span cluster** (11.38%) into its entry-point bodies and
-   attribute the cost per body — this is where H1 becomes actionable.
-2. Measure the **x87 path** per function (7.09%), now that the unit is
-   functions, to see whether it is concentrated in `R_ClipEdge`,
-   `R_RecursiveWorldNode` or the span cluster.
-3. Keep H3 as "where does the surf8 texel packing spend its 4.3%", with the
-   patching ruled out as a per-frame cost.
+1. ~~Split the span cluster into its entry-point bodies.~~ **Done** above:
+   three cost centres inside the cluster (advancetable setup 2.68%, x87 span
+   setup 2.04%, unrolled inner loop 1.86%).
+2. ~~Measure the x87 path per function.~~ **Done** above: diffuse, with
+   `R_ClipEdge` the most exposed function (23.7% of its own cost).
+3. ~~Re-scope H3.~~ **Done** above: the patching is a load-time cost; the
+   per-frame cost is the inlined texel packing.
 4. Close the `BT`/`SETcc`/`SAHF` decoder gap and re-measure the fallback
    share with the regression test from PR #11 as the gate.
 5. Only then design changes, and measure them with an A/A control on a
