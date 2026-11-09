@@ -39,7 +39,7 @@ The DOS Quake 1.06 executable has an embedded DJGPP COFF `.text` section and con
 ## Artifacts and organization
 
 - **DOSBox fork:** minimal optional feature for selected compile-time guest/native code snapshots and focused correctness tests; new stacked PR **on top of Guest block mapping PR #1**, not mixed into #1.
-- **engineering-lab:** this hypothesis register, derived guest/host annotations, costs, experiment outcomes and benchmark harness. Earlier configs links describe historical provenance.
+- **configs/research:** this hypothesis register, guest/host disassembly, source annotations, costs and experiment outcomes, plus local-only benchmarking harness.
 - **Raw artifact:** filtered capture files and their hashes; do not commit proprietary Quake executable, `PAK0.PAK`, or unbounded logs.
 - Keep hypotheses `H1`–`H5` stable. Record rejected hypotheses and why; never silently redefine success after measurements.
 
@@ -223,13 +223,53 @@ Compared with the unpinned 48-run series:
 precision.** Keep this host for correctness and exploratory hot-path
 research, not small (<3%) JIT speedup claims.
 
+## Hypothesis verdicts — 2026-11-09: instrumented local run with helper-caller attribution
 
-## Current session — helper attribution and inline-read experiment (2026-11-09)
+The verdict report is
+[quake106-hypothesis-verdicts-2026-11-09.md](quake106-hypothesis-verdicts-2026-11-09.md);
+the per-block attribution data is
+[quake106-helper-attribution-2026-11-09.csv](quake106-helper-attribution-2026-11-09.csv);
+the analyzer is [../harness/attribute_helper_callers.py](../harness/attribute_helper_callers.py).
 
-The canonical public research home is this repository. Historical `configs` references describe prior provenance only. Detailed results: [local A/A stability](stability-aa48-report.md), [caller attribution](caller-attribution-2026-11-09.md), and [x87 prototype and correctness tests](fpu-read-study/README.md).
+The "blind spot" that separated H1 from H5 — a profiler sample inside an
+emulator helper with an unknown caller — was closed **without modifying the
+emulator**: an extended SIGPROF preload also records eight stack words, and
+the analyzer recovers the helper's return address from them. In a
+21-block run over the timedemo window, **1,045 of 1,243 helper samples
+(84.07%)** were attributed to a calling guest block.
 
-- The fresh trace-OFF fork build completed 4 warmups + 48 A/A measurements, all 969 frames; FPS CV 7.53%, p10–p90 spread 16.99%, same-binary placebo +1.66% (descriptive interval −0.41% to +3.90%). A later pinned A/A (4+24) had CV 11.02% and placebo interval −10.68% to +9.22%. Separate series do not establish a causal pinning effect; neither demonstrates adequate precision for a small optimization.
-- Two SIGPROF + live-snapshot experiments verified selected `0x10f4a`, `0x306bd`, and `0x112cc` generations and call sites for sampled candidate chains through `FPU_FLD_32` and `mem_readd`. The indirect call targets were not independently recovered from call-time registers; sample counts are not execution counts. H5 is a concrete candidate, not a proven inefficiency.
-- An experimental checked-inline x87 dword read changed generated code and passed nine DOS oracles across normal/dynamic cores and baseline/candidate binaries (36/36), including selected non-present and CPL3 protection faults. This is not full x87/MMIO/protection correctness. The 32-run randomized ABBA/BAAB A/B estimate was +9.59%, descriptive interval −3.27% to +26.26%; it is inconclusive. The prototype is an isolated research patch, not a product change.
+The hypotheses keep their original wording; what changed is the **verdict**
+against their own falsifiers:
 
-**Next boundary:** establish fresh A/A precision on a stable host, then independently test randomized paired A/B and other workloads; expand exception, interrupt and MMIO correctness before proposing a JIT patch. See the reports for provenance and limitations.
+- **H1 — not falsified, but the measurement unit was wrong.** The span
+  region carries **22.8% of all helper traffic** (284 samples, 3.78% of
+  the window), concentrated in **non-entry** blocks of the same functions
+  (`0x10F4A` 54, `0x10CA0` 28, `0x110FB` 22, `0x10572` 21). A "hot entry
+  block" systematically underestimates the cost, because the profiler lands
+  in entry blocks while the cost mechanism lives in the other blocks of the
+  same function. **Change the measurement unit to functions, not to
+  hypothesis text.**
+- **H2 — falsifier met.** The whole `0x10D00–0x10E00` region is 13
+  samples (1.05% of helper traffic); `0x10D3B` itself calls helpers twice.
+  Not worth pursuing for this guest.
+- **H3 — weak.** 5 samples in `0x3E000–0x3FFFF` (0.07% of the window) and
+  zero invalidations of `surf8` blocks.
+- **H4 — premise measured.** 7,735 creations and 185 invalidations per
+  run (2.39%), 7,669 distinct guest blocks, median 12 guest bytes against
+  368 native bytes (×27.2), dispatcher share 1.99%, 0 of 11 selected blocks
+  invalidated.
+- **H5 — the only live hypothesis, and its content changed.** The renderer
+  region carries 30.8% of helper traffic, but the largest single
+  identified cost is **not x87**: the dynamic core does not implement
+  `BT`/`BTS`/`BTR`/`BTC` at all (88 of 256 two-byte `0F` sub-opcodes are
+  implemented), so Quake's per-plane BSP frustum-culling loop is executed
+  by the **interpreter** through `gen_return(BR_Opcode)`. Measured share:
+  38 samples (0.51% of the window) inside `CPU_Core_Normal_Run`, 19 of them
+  at that block — a lower bound, because the round trip also breaks the
+  dynamic core's block chain. The H5 requirement to identify the functions
+  behind `0x306BD` and `0x2F5CF` is now closed: `R_ClipEdge` and
+  `R_RecursiveWorldNode`.
+
+The decoder gap, the guest regression test for that instruction family and
+the acceptance criteria for closing it are in
+[kaaburgh/dosbox-staging PR #11](https://github.com/kaaburgh/dosbox-staging/pull/11).
