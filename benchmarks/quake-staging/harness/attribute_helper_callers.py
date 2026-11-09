@@ -17,18 +17,6 @@ helper call, so the caller guest block follows from the lifecycle trace.
 
 The inference is heuristic and is reported as such: an unattributed share
 means the stack window did not contain a usable return address.
-
-The analyzer also resolves *nested* helper calls. When the interrupted
-helper was itself called from another helper (for example FPU_FLD_32 ->
-mem_readd), the first stack word that lies inside a known helper identifies
-that immediate caller, so the x87 share can be separated from plain guest
-memory traffic. The result is reported as
-'helper_samples_by_immediate_caller'.
-
-The analyzer additionally reports the samples that fall inside dynamic-core
-blocks per guest block ('jit_samples_by_guest_block'), which is what makes
-a region's own translated-code time measurable instead of only its helper
-traffic.
 """
 from __future__ import annotations
 
@@ -40,6 +28,11 @@ import struct
 import os
 import subprocess
 import sys
+
+FORK = Path('/workspace/dosbox-pr7')
+sys.path.insert(0, str(FORK / 'extras/guest-block-mapping'))
+
+from analyze_trace import events_from_csv, LiveMap  # noqa: E402
 
 REC = struct.Struct('<QQII8Q')
 STACK_WORDS = 8
@@ -86,26 +79,7 @@ def main() -> None:
     p.add_argument('--start-ns', type=int, required=True)
     p.add_argument('--end-ns', type=int, required=True)
     p.add_argument('--out', type=Path, required=True)
-    p.add_argument('--fork-root', type=Path, default=None,
-                   help='dosbox-staging checkout that provides '
-                        'extras/guest-block-mapping/analyze_trace.py; '
-                        'defaults to $DOSBOX_FORK_ROOT or an adjacent checkout')
     a = p.parse_args()
-
-    fork_root = a.fork_root
-    if fork_root is None:
-        env_root = os.environ.get('DOSBOX_FORK_ROOT')
-        if env_root:
-            fork_root = Path(env_root)
-        else:
-            fork_root = Path(__file__).resolve().parent.parent.parent
-    tool_dir = fork_root / 'extras/guest-block-mapping'
-    if not (tool_dir / 'analyze_trace.py').is_file():
-        raise SystemExit(
-            'analyze_trace.py not found under ' + str(tool_dir) +
-            '; pass --fork-root or set DOSBOX_FORK_ROOT')
-    sys.path.insert(0, str(tool_dir))
-    from analyze_trace import events_from_csv, LiveMap  # noqa: E402
 
     events = events_from_csv(a.trace)
     live = LiveMap()
@@ -151,6 +125,8 @@ def main() -> None:
     stack_words_seen: Counter = Counter()
     jit_per_guest: Counter = Counter()
     helper_by_immediate_caller: Counter = Counter()
+    # (guest_cs, guest_eip) -> Counter[(helper, immediate helper caller)]
+    per_guest_immediate: dict[tuple[int, int], Counter] = defaultdict(Counter)
 
     for ts, rip, tid, _pad, *stack in REC.iter_unpack(data):
         if tid != a.pid or not a.start_ns <= ts <= a.end_ns:
@@ -203,6 +179,9 @@ def main() -> None:
             continue
         helper_attributed += 1
         per_guest[(caller.guest_cs, caller.guest_eip)][helper] += 1
+        if immediate_caller is not None:
+            per_guest_immediate[(caller.guest_cs, caller.guest_eip)][
+                (helper, immediate_caller)] += 1
         # The stack word is the return address: it points just past the call
         # instruction, so it identifies the exact native call site.
         call_sites[(caller.guest_cs, caller.guest_eip)][
@@ -233,6 +212,13 @@ def main() -> None:
         'jit_samples_by_guest_block': {
             f'cs=0x{cs:04x} eip=0x{eip:05x}': n
             for (cs, eip), n in jit_per_guest.most_common()
+        },
+        'helper_samples_by_immediate_caller_per_guest_block': {
+            f'cs=0x{cs:04x} eip=0x{eip:05x}': {
+                f'{helper} <- {caller}': n
+                for (helper, caller), n in cnt.most_common()
+            }
+            for (cs, eip), cnt in sorted(per_guest_immediate.items())
         },
         'helper_samples_by_immediate_caller': {
             f'{helper} <- {caller}': n
