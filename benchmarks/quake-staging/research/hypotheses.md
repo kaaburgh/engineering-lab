@@ -284,3 +284,32 @@ exactly. Five instrumented runs give 41,502 samples in the demo window;
 
 The hypotheses keep their original wording. What changed are the verdicts,
 the **measurement unit** (blocks → functions) and the sampling depth.
+
+### Follow-up (same day): the span cluster split, and the x87 map
+
+The register's next step after the function-level verdict was to make H1
+actionable and to locate the x87 path. Both are done on the same pool.
+
+- **The span cluster** (11.38%) splits at its 24 entry points into 25
+  bodies with three cost centres: the **advancetable setup** (2.68%), the
+  **x87 span setup** (2.04%, the `fild` of the span endpoints) and the
+  **unrolled textured-span inner loop** (1.86%). Roles are confirmed against
+  the id Software rasteriser (`QW/client/d_draw.s`: `entryvec_table`,
+  `advancetable`, `adcl advancetable+4(,%ecx,4),%esi`).
+  Data: `research/quake106-span-bodies-2026-11-09.csv`.
+- **The x87 path is diffuse**: the largest function holds 20% of it, the top
+  six hold 58%. The most exposed function is **`R_ClipEdge` — 23.7% of its
+  own cost is x87** (its generated code has the highest x87 density of the
+  selected blocks, 9.5%). A per-function fix would not capture the x87
+  cost; the shared `FPU_FLD_32` → `mem_readd` path would.
+  Data: `research/quake106-x87-by-function-2026-11-09.csv`.
+- **H3 is closed as re-scoped**: the generated code of the surf8 blocks is
+  45% move-or-address and 36% arithmetic with no x87, and it carries the
+  **patched** displacement `0x0018007c` (6–7 times per block) instead of the
+  sentinel. The patching is a load-time event; the per-frame cost is the
+  texel packing.
+  Data: `research/quake106-native-block-profile-2026-11-09.csv`.
+
+New harness tools: `../harness/split_unit_bodies.py`,
+`../harness/profile_native_blocks.py`. The attribution analyzer now records
+the nested helper caller **per guest block**.
