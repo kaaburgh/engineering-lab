@@ -223,68 +223,64 @@ Compared with the unpinned 48-run series:
 precision.** Keep this host for correctness and exploratory hot-path
 research, not small (<3%) JIT speedup claims.
 
-## Hypothesis verdicts — 2026-11-09: instrumented local run with helper-caller attribution
+## Hypothesis verdicts — 2026-11-09: function-level re-measurement (5 runs, 41.5k samples)
 
 The verdict report is
-[quake106-hypothesis-verdicts-2026-11-09.md](quake106-hypothesis-verdicts-2026-11-09.md);
-the per-block attribution data is
-[quake106-helper-attribution-2026-11-09.csv](quake106-helper-attribution-2026-11-09.csv)
-and the per-region split of translated and helper time is
-[quake106-region-time-2026-11-09.csv](quake106-region-time-2026-11-09.csv);
-the analyzers are [../harness/attribute_helper_callers.py](../harness/attribute_helper_callers.py)
-and [../harness/map_fallback_opcodes.py](../harness/map_fallback_opcodes.py).
+[quake106-hypothesis-verdicts-2026-11-09.md](quake106-hypothesis-verdicts-2026-11-09.md).
+The data: per-function cost
+[quake106-function-cost-2026-11-09.csv](quake106-function-cost-2026-11-09.csv),
+per-block cost
+[quake106-block-cost-2026-11-09.csv](quake106-block-cost-2026-11-09.csv),
+the guest function map with x87 and patched-displacement counts
+[quake106-guest-function-map.csv](quake106-guest-function-map.csv).
+The analyzers: [../harness/attribute_helper_callers.py](../harness/attribute_helper_callers.py),
+[../harness/map_guest_functions.py](../harness/map_guest_functions.py),
+[../harness/pool_function_cost.py](../harness/pool_function_cost.py).
 
-The "blind spot" that separated H1 from H5 — a profiler sample inside an
-emulator helper with an unknown caller — was closed **without modifying the
-emulator**: an extended SIGPROF preload also records eight stack words, and
-the analyzer recovers the helper's return address from them. In a 21-block
-run over the timedemo window, **1,045 of 1,243 helper samples (84.07%)**
-were attributed to a calling guest block. The analyzer also resolves
-**nested** helper calls, which is what makes the x87 share measurable.
+**The unit changed from entry blocks to functions, and the change is
+material.** `QUAKE.EXE` has no symbol table, so the guest `.text` is
+segmented into code units delimited by `ret`
+(`harness/map_guest_functions.py`); for the hand-written assembly routines
+(`d_draw.s`, `surf8.s`) a unit is a routine group with several entry points.
+The segmentation reproduces the register's own identifications and the
+structurally identified `R_RecursiveWorldNode` / `R_ClipEdge` boundaries
+exactly. Five instrumented runs give 41,502 samples in the demo window;
+83.83% of helper samples are attributed to a calling guest block.
 
-The hypotheses keep their original wording; what changed are the **verdicts**
-against their own falsifiers, and the measurement unit for two of them:
+| Hypothesis | Entry-block view | **Function view** | Understatement |
+|---|---:|---:|---:|
+| H1 span family | 2.70% | **11.38%** | **×4.2** |
+| H2 Z-span | 1.10% | **3.27%** | ×3.0 |
+| H3 surf8 | 3.06% | **4.31%** | ×1.4 |
+| H5 ClipEdge + RecursiveWorldNode | 2.71% | **6.03%** | ×2.2 |
 
-- **H1 — not falsified, but the measurement unit was wrong.** The span
-  region carries **22.8% of all helper traffic** and **18.2% of the main
-  thread in translated code**, concentrated in **non-entry** blocks of the
-  same functions (`0x10F4A` 54, `0x10CA0` 28, `0x110FB` 22, `0x10572` 21).
-  A "hot entry block" systematically underestimates the cost, because the
-  profiler lands in entry blocks while the cost mechanism lives in the other
-  blocks of the same function. **Change the measurement unit to functions,
-  not to hypothesis text.**
-- **H2 — not falsified; the mechanism is visible.** The helper side looks
-  like the falsifier predicts (13 samples in the region, `0x10D3B` calls
-  helpers twice, straight-line instruction mix), but the region holds
-  **1.82% of the window in translated code**, and the generated native code
-  materialises the flags with a **`PUSHFQ` before each z-buffer store** —
-  exactly the flag materialisation H2 names.
-- **H3 — mis-targeted rather than weak.** Almost no helper traffic and
-  **zero** `surf8` invalidations, but the region holds **4.60% of the
-  window in translated code**, more than the Z-span region. The code is
-  hot; the hotness is not in helper calls or invalidations. **Re-scope H3
-  to ask where the `surf8` code spends its 4.6%.**
-- **H4 — premise measured.** 7,735 creations and 185 invalidations per
-  run (2.39%), 7,669 distinct guest blocks, median 12 guest bytes against
-  368 native bytes (×27.2), dispatcher share 1.99%, 0 of 11 selected blocks
+- **H1 — alive, and the largest unit in the guest.** The span drawing
+  cluster holds 11.38% of the main thread (9.67% translated + 1.70%
+  helpers); its hot RIPs land on **memory handling**, contradicting the
+  falsifier on both halves. The next question is where inside the cluster
+  the cost sits.
+- **H2 — not falsified.** `D_DrawZSpans` holds 3.27%; the native code of
+  block `0x10D3B` materialises the flags **three times** with `pushf`
+  (PUSHFQ), each right before the flag-dependent sequence and the z-buffer
+  store — the mechanism H2 names.
+- **H3 — re-scoped: the patching is a load-time cost.** The static `.text`
+  holds **61** sentinel displacements `0x12345678`, 48 of them in the surf8
+  routines; the **live guest memory** holds **no sentinel** and the patched
+  value `0x0018007c`, and so does the generated native code. The per-frame
+  cost of the surf8 routines (4.31%) is the inlined texel packing — 50% of
+  the sampled instructions there are move-or-address, with **no call-site
+  samples** — and **zero** surf8 blocks are invalidated.
+- **H4 — premise measured.** 7,735 creations and 185 invalidations per run
+  (2.39%), 7,669 distinct guest blocks, median 12 guest bytes vs 368
+  native bytes (×27.2), dispatcher 1.99%, 0 of 11 selected blocks
   invalidated.
-- **H5 — the only hypothesis whose proposed mechanism is confirmed at full
-  size, and x87 dominates it.** Resolving nested helper calls shows that
-  **74% of the `mem_readd` traffic is called by `FPU_FLD_32`**: the
-  x87-attributable share is **7.05% of the window** (5.17% `FPU_FLD_32` →
-  `mem_readd`, 1.62% `FPU_FLD_32`, 0.25% `FPU_FST_32`) against 1.81% for
-  direct guest reads. The plain helper table understates x87 by a factor of
-  four and must not be used for this comparison.
+- **H5 — live, and x87 dominates it.** With nested attribution the
+  x87-attributable share is **7.09%** of the window (4.65% of it is
+  `mem_readd` called *by* `FPU_FLD_32`), against 1.87% for direct guest
+  reads; the single-run estimate of 7.05% is reproduced within 0.04
+  percentage points. The decoder gap is the second effect: **1.19%** of the
+  window is directly attributable (1.3–1.7% credible once the dispatcher
+  and code-page re-resolution are included).
 
-The H5 requirement to identify the functions behind `0x306BD` and `0x2F5CF`
-is closed: `R_ClipEdge` and `R_RecursiveWorldNode`.
-
-A second effect of the same size was measured with exact counters: the
-dynamic core implements only 88 of the 256 two-byte `0F` sub-opcodes, so the
-`SETcc` family, the bit-test family and the one-byte `LAHF`/`SAHF` are
-executed by the interpreter — **1,963,529 fallbacks** in one timedemo
-window (`BT` 69.5%, `SETE` 15.1%, `SAHF` 9.5%), of which **1.20% of the
-window is directly attributable** and 1.3–1.7% is a credible total. The
-decoder gap, the guest regression test for those opcodes and the acceptance
-criteria for closing it are in
-[kaaburgh/dosbox-staging PR #11](https://github.com/kaaburgh/dosbox-staging/pull/11).
+The hypotheses keep their original wording. What changed are the verdicts,
+the **measurement unit** (blocks → functions) and the sampling depth.
