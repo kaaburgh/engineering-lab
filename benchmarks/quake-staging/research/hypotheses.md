@@ -228,48 +228,63 @@ research, not small (<3%) JIT speedup claims.
 The verdict report is
 [quake106-hypothesis-verdicts-2026-11-09.md](quake106-hypothesis-verdicts-2026-11-09.md);
 the per-block attribution data is
-[quake106-helper-attribution-2026-11-09.csv](quake106-helper-attribution-2026-11-09.csv);
-the analyzer is [../harness/attribute_helper_callers.py](../harness/attribute_helper_callers.py).
+[quake106-helper-attribution-2026-11-09.csv](quake106-helper-attribution-2026-11-09.csv)
+and the per-region split of translated and helper time is
+[quake106-region-time-2026-11-09.csv](quake106-region-time-2026-11-09.csv);
+the analyzers are [../harness/attribute_helper_callers.py](../harness/attribute_helper_callers.py)
+and [../harness/map_fallback_opcodes.py](../harness/map_fallback_opcodes.py).
 
 The "blind spot" that separated H1 from H5 — a profiler sample inside an
 emulator helper with an unknown caller — was closed **without modifying the
 emulator**: an extended SIGPROF preload also records eight stack words, and
-the analyzer recovers the helper's return address from them. In a
-21-block run over the timedemo window, **1,045 of 1,243 helper samples
-(84.07%)** were attributed to a calling guest block.
+the analyzer recovers the helper's return address from them. In a 21-block
+run over the timedemo window, **1,045 of 1,243 helper samples (84.07%)**
+were attributed to a calling guest block. The analyzer also resolves
+**nested** helper calls, which is what makes the x87 share measurable.
 
-The hypotheses keep their original wording; what changed is the **verdict**
-against their own falsifiers:
+The hypotheses keep their original wording; what changed are the **verdicts**
+against their own falsifiers, and the measurement unit for two of them:
 
 - **H1 — not falsified, but the measurement unit was wrong.** The span
-  region carries **22.8% of all helper traffic** (284 samples, 3.78% of
-  the window), concentrated in **non-entry** blocks of the same functions
-  (`0x10F4A` 54, `0x10CA0` 28, `0x110FB` 22, `0x10572` 21). A "hot entry
-  block" systematically underestimates the cost, because the profiler lands
-  in entry blocks while the cost mechanism lives in the other blocks of the
-  same function. **Change the measurement unit to functions, not to
-  hypothesis text.**
-- **H2 — falsifier met.** The whole `0x10D00–0x10E00` region is 13
-  samples (1.05% of helper traffic); `0x10D3B` itself calls helpers twice.
-  Not worth pursuing for this guest.
-- **H3 — weak.** 5 samples in `0x3E000–0x3FFFF` (0.07% of the window) and
-  zero invalidations of `surf8` blocks.
+  region carries **22.8% of all helper traffic** and **18.2% of the main
+  thread in translated code**, concentrated in **non-entry** blocks of the
+  same functions (`0x10F4A` 54, `0x10CA0` 28, `0x110FB` 22, `0x10572` 21).
+  A "hot entry block" systematically underestimates the cost, because the
+  profiler lands in entry blocks while the cost mechanism lives in the other
+  blocks of the same function. **Change the measurement unit to functions,
+  not to hypothesis text.**
+- **H2 — not falsified; the mechanism is visible.** The helper side looks
+  like the falsifier predicts (13 samples in the region, `0x10D3B` calls
+  helpers twice, straight-line instruction mix), but the region holds
+  **1.82% of the window in translated code**, and the generated native code
+  materialises the flags with a **`PUSHFQ` before each z-buffer store** —
+  exactly the flag materialisation H2 names.
+- **H3 — mis-targeted rather than weak.** Almost no helper traffic and
+  **zero** `surf8` invalidations, but the region holds **4.60% of the
+  window in translated code**, more than the Z-span region. The code is
+  hot; the hotness is not in helper calls or invalidations. **Re-scope H3
+  to ask where the `surf8` code spends its 4.6%.**
 - **H4 — premise measured.** 7,735 creations and 185 invalidations per
   run (2.39%), 7,669 distinct guest blocks, median 12 guest bytes against
   368 native bytes (×27.2), dispatcher share 1.99%, 0 of 11 selected blocks
   invalidated.
-- **H5 — the only live hypothesis, and its content changed.** The renderer
-  region carries 30.8% of helper traffic, but the largest single
-  identified cost is **not x87**: the dynamic core does not implement
-  `BT`/`BTS`/`BTR`/`BTC` at all (88 of 256 two-byte `0F` sub-opcodes are
-  implemented), so Quake's per-plane BSP frustum-culling loop is executed
-  by the **interpreter** through `gen_return(BR_Opcode)`. Measured share:
-  38 samples (0.51% of the window) inside `CPU_Core_Normal_Run`, 19 of them
-  at that block — a lower bound, because the round trip also breaks the
-  dynamic core's block chain. The H5 requirement to identify the functions
-  behind `0x306BD` and `0x2F5CF` is now closed: `R_ClipEdge` and
-  `R_RecursiveWorldNode`.
+- **H5 — the only hypothesis whose proposed mechanism is confirmed at full
+  size, and x87 dominates it.** Resolving nested helper calls shows that
+  **74% of the `mem_readd` traffic is called by `FPU_FLD_32`**: the
+  x87-attributable share is **7.05% of the window** (5.17% `FPU_FLD_32` →
+  `mem_readd`, 1.62% `FPU_FLD_32`, 0.25% `FPU_FST_32`) against 1.81% for
+  direct guest reads. The plain helper table understates x87 by a factor of
+  four and must not be used for this comparison.
 
-The decoder gap, the guest regression test for that instruction family and
-the acceptance criteria for closing it are in
+The H5 requirement to identify the functions behind `0x306BD` and `0x2F5CF`
+is closed: `R_ClipEdge` and `R_RecursiveWorldNode`.
+
+A second effect of the same size was measured with exact counters: the
+dynamic core implements only 88 of the 256 two-byte `0F` sub-opcodes, so the
+`SETcc` family, the bit-test family and the one-byte `LAHF`/`SAHF` are
+executed by the interpreter — **1,963,529 fallbacks** in one timedemo
+window (`BT` 69.5%, `SETE` 15.1%, `SAHF` 9.5%), of which **1.20% of the
+window is directly attributable** and 1.3–1.7% is a credible total. The
+decoder gap, the guest regression test for those opcodes and the acceptance
+criteria for closing it are in
 [kaaburgh/dosbox-staging PR #11](https://github.com/kaaburgh/dosbox-staging/pull/11).
