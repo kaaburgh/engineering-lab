@@ -17,6 +17,18 @@ helper call, so the caller guest block follows from the lifecycle trace.
 
 The inference is heuristic and is reported as such: an unattributed share
 means the stack window did not contain a usable return address.
+
+The analyzer also resolves *nested* helper calls. When the interrupted
+helper was itself called from another helper (for example FPU_FLD_32 ->
+mem_readd), the first stack word that lies inside a known helper identifies
+that immediate caller, so the x87 share can be separated from plain guest
+memory traffic. The result is reported as
+'helper_samples_by_immediate_caller'.
+
+The analyzer additionally reports the samples that fall inside dynamic-core
+blocks per guest block ('jit_samples_by_guest_block'), which is what makes
+a region's own translated-code time measurable instead of only its helper
+traffic.
 """
 from __future__ import annotations
 
@@ -137,6 +149,8 @@ def main() -> None:
     non_jit_symbols: Counter = Counter()
     unattributed_by_symbol: Counter = Counter()
     stack_words_seen: Counter = Counter()
+    jit_per_guest: Counter = Counter()
+    helper_by_immediate_caller: Counter = Counter()
 
     for ts, rip, tid, _pad, *stack in REC.iter_unpack(data):
         if tid != a.pid or not a.start_ns <= ts <= a.end_ns:
@@ -149,6 +163,7 @@ def main() -> None:
         block = live.locate(rip)
         if block is not None:
             in_jit += 1
+            jit_per_guest[(block.guest_cs, block.guest_eip)] += 1
             continue
 
         file_off = to_file_offset(rip)
@@ -162,6 +177,7 @@ def main() -> None:
 
         caller = None
         words = 0
+        immediate_caller = None
         for word in stack:
             if not word:
                 continue
@@ -170,7 +186,18 @@ def main() -> None:
                 caller = candidate
                 words += 1
                 break
+            # The interrupted helper may itself have been called from another
+            # helper (for example FPU_FLD_32 -> mem_readd). The first stack
+            # word inside a known helper identifies that immediate caller.
+            if immediate_caller is None:
+                off = to_file_offset(word)
+                if off is not None:
+                    sym = resolve(syms, off)
+                    if any(h in sym for h in HELPERS):
+                        immediate_caller = sym
         stack_words_seen[words] += 1
+        if immediate_caller is not None:
+            helper_by_immediate_caller[(helper, immediate_caller)] += 1
         if caller is None:
             unattributed_by_symbol[helper] += 1
             continue
@@ -202,6 +229,14 @@ def main() -> None:
             ]
             for (cs, eip), counts in sorted(
                 call_sites.items(), key=lambda kv: -sum(kv[1].values()))
+        },
+        'jit_samples_by_guest_block': {
+            f'cs=0x{cs:04x} eip=0x{eip:05x}': n
+            for (cs, eip), n in jit_per_guest.most_common()
+        },
+        'helper_samples_by_immediate_caller': {
+            f'{helper} <- {caller}': n
+            for (helper, caller), n in helper_by_immediate_caller.most_common()
         },
         'guest_blocks_by_helper_samples': {
             f'cs=0x{cs:04x} eip=0x{eip:05x}': dict(counts)
