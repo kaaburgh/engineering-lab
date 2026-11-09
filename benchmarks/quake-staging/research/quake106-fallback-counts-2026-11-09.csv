@@ -1,0 +1,15 @@
+guest_cs_eip,instruction,code_region,fallbacks_base_branch,fallbacks_decoder_gap_closed
+0x00a7:0x02f5c6,"bt edi,ebx",Quake,894278,0
+0x00a7:0x00491c,bt,Quake,368672,0
+0x00a7:0x031b6d,sete,Quake,289352,0
+0x00a7:0x032994,bt,Quake,102502,0
+0x00a7:0x04ed40,sahf,Quake,97835,0
+0x00a7:0x04ed5c,sahf,Quake,88485,0
+0x00a7:0x02f6a6,"btr edi,ebx",Quake,32666,0
+0x00a7:0x02ce25,sete,Quake,4469,0
+0x00a7:0x032f50,bts (memory bit base),Quake,3424,3420
+0x0d04d:0x02b01,unsupported opcode,DOS/BIOS,13221,13268
+0x0d04d:0x02afc,unsupported opcode,DOS/BIOS,13221,13268
+0x0018:0x02b70,unsupported opcode,DOS/BIOS,13221,13268
+TOTAL,all interpreter entries,whole run,2185284,301653
+QUAKE_CODE_TOTAL,interpreter entries caused by Quake's own code,Quake,1863789,0

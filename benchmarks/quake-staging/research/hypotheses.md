@@ -39,7 +39,7 @@ The DOS Quake 1.06 executable has an embedded DJGPP COFF `.text` section and con
 ## Artifacts and organization
 
 - **DOSBox fork:** minimal optional feature for selected compile-time guest/native code snapshots and focused correctness tests; new stacked PR **on top of Guest block mapping PR #1**, not mixed into #1.
-- **engineering-lab:** this hypothesis register, derived guest/host annotations, costs, experiment outcomes and benchmark harness. Earlier configs links describe historical provenance.
+- **configs/research:** this hypothesis register, guest/host disassembly, source annotations, costs and experiment outcomes, plus local-only benchmarking harness.
 - **Raw artifact:** filtered capture files and their hashes; do not commit proprietary Quake executable, `PAK0.PAK`, or unbounded logs.
 - Keep hypotheses `H1`–`H5` stable. Record rejected hypotheses and why; never silently redefine success after measurements.
 
@@ -223,13 +223,122 @@ Compared with the unpinned 48-run series:
 precision.** Keep this host for correctness and exploratory hot-path
 research, not small (<3%) JIT speedup claims.
 
+## Hypothesis verdicts — 2026-11-09: function-level re-measurement (5 runs, 41.5k samples)
 
-## Current session — helper attribution and inline-read experiment (2026-11-09)
+The verdict report is
+[quake106-hypothesis-verdicts-2026-11-09.md](quake106-hypothesis-verdicts-2026-11-09.md).
+The data: per-function cost
+[quake106-function-cost-2026-11-09.csv](quake106-function-cost-2026-11-09.csv),
+per-block cost
+[quake106-block-cost-2026-11-09.csv](quake106-block-cost-2026-11-09.csv),
+the guest function map with x87 and patched-displacement counts
+[quake106-guest-function-map.csv](quake106-guest-function-map.csv).
+The analyzers: [../harness/attribute_helper_callers.py](../harness/attribute_helper_callers.py),
+[../harness/map_guest_functions.py](../harness/map_guest_functions.py),
+[../harness/pool_function_cost.py](../harness/pool_function_cost.py).
 
-The canonical public research home is this repository. Historical `configs` references describe prior provenance only. Detailed results: [local A/A stability](stability-aa48-report.md), [caller attribution](caller-attribution-2026-11-09.md), and [x87 prototype and correctness tests](fpu-read-study/README.md).
+**The unit changed from entry blocks to functions, and the change is
+material.** `QUAKE.EXE` has no symbol table, so the guest `.text` is
+segmented into code units delimited by `ret`
+(`harness/map_guest_functions.py`); for the hand-written assembly routines
+(`d_draw.s`, `surf8.s`) a unit is a routine group with several entry points.
+The segmentation reproduces the register's own identifications and the
+structurally identified `R_RecursiveWorldNode` / `R_ClipEdge` boundaries
+exactly. Five instrumented runs give 41,502 samples in the demo window;
+83.83% of helper samples are attributed to a calling guest block.
 
-- The fresh trace-OFF fork build completed 4 warmups + 48 A/A measurements, all 969 frames; FPS CV 7.53%, p10–p90 spread 16.99%, same-binary placebo +1.66% (descriptive interval −0.41% to +3.90%). A later pinned A/A (4+24) had CV 11.02% and placebo interval −10.68% to +9.22%. Separate series do not establish a causal pinning effect; neither demonstrates adequate precision for a small optimization.
-- Two SIGPROF + live-snapshot experiments verified selected `0x10f4a`, `0x306bd`, and `0x112cc` generations and call sites for sampled candidate chains through `FPU_FLD_32` and `mem_readd`. The indirect call targets were not independently recovered from call-time registers; sample counts are not execution counts. H5 is a concrete candidate, not a proven inefficiency.
-- An experimental checked-inline x87 dword read changed generated code and passed nine DOS oracles across normal/dynamic cores and baseline/candidate binaries (36/36), including selected non-present and CPL3 protection faults. This is not full x87/MMIO/protection correctness. The 32-run randomized ABBA/BAAB A/B estimate was +9.59%, descriptive interval −3.27% to +26.26%; it is inconclusive. The prototype is an isolated research patch, not a product change.
+| Hypothesis | Entry-block view | **Function view** | Understatement |
+|---|---:|---:|---:|
+| H1 span family | 2.70% | **11.38%** | **×4.2** |
+| H2 Z-span | 1.10% | **3.27%** | ×3.0 |
+| H3 surf8 | 3.06% | **4.31%** | ×1.4 |
+| H5 ClipEdge + RecursiveWorldNode | 2.71% | **6.03%** | ×2.2 |
 
-**Next boundary:** establish fresh A/A precision on a stable host, then independently test randomized paired A/B and other workloads; expand exception, interrupt and MMIO correctness before proposing a JIT patch. See the reports for provenance and limitations.
+- **H1 — alive, and the largest unit in the guest.** The span drawing
+  cluster holds 11.38% of the main thread (9.67% translated + 1.70%
+  helpers); its hot RIPs land on **memory handling**, contradicting the
+  falsifier on both halves. The next question is where inside the cluster
+  the cost sits.
+- **H2 — not falsified.** `D_DrawZSpans` holds 3.27%; the native code of
+  block `0x10D3B` materialises the flags **three times** with `pushf`
+  (PUSHFQ), each right before the flag-dependent sequence and the z-buffer
+  store — the mechanism H2 names.
+- **H3 — re-scoped: the patching is a load-time cost.** The static `.text`
+  holds **61** sentinel displacements `0x12345678`, 48 of them in the surf8
+  routines; the **live guest memory** holds **no sentinel** and the patched
+  value `0x0018007c`, and so does the generated native code. The per-frame
+  cost of the surf8 routines (4.31%) is the inlined texel packing — 50% of
+  the sampled instructions there are move-or-address, with **no call-site
+  samples** — and **zero** surf8 blocks are invalidated.
+- **H4 — premise measured.** 7,735 creations and 185 invalidations per run
+  (2.39%), 7,669 distinct guest blocks, median 12 guest bytes vs 368
+  native bytes (×27.2), dispatcher 1.99%, 0 of 11 selected blocks
+  invalidated.
+- **H5 — live, and x87 dominates it.** With nested attribution the
+  x87-attributable share is **7.09%** of the window (4.65% of it is
+  `mem_readd` called *by* `FPU_FLD_32`), against 1.87% for direct guest
+  reads; the single-run estimate of 7.05% is reproduced within 0.04
+  percentage points. The decoder gap is the second effect: **1.19%** of the
+  window is directly attributable (1.3–1.7% credible once the dispatcher
+  and code-page re-resolution are included).
+
+The hypotheses keep their original wording. What changed are the verdicts,
+the **measurement unit** (blocks → functions) and the sampling depth.
+
+### Follow-up (same day): the span cluster split, and the x87 map
+
+The register's next step after the function-level verdict was to make H1
+actionable and to locate the x87 path. Both are done on the same pool.
+
+- **The span cluster** (11.38%) splits at its 24 entry points into 25
+  bodies with three cost centres: the **advancetable setup** (2.68%), the
+  **x87 span setup** (2.04%, the `fild` of the span endpoints) and the
+  **unrolled textured-span inner loop** (1.86%). Roles are confirmed against
+  the id Software rasteriser (`QW/client/d_draw.s`: `entryvec_table`,
+  `advancetable`, `adcl advancetable+4(,%ecx,4),%esi`).
+  Data: `research/quake106-span-bodies-2026-11-09.csv`.
+- **The x87 path is diffuse**: the largest function holds 20% of it, the top
+  six hold 58%. The most exposed function is **`R_ClipEdge` — 23.7% of its
+  own cost is x87** (its generated code has the highest x87 density of the
+  selected blocks, 9.5%). A per-function fix would not capture the x87
+  cost; the shared `FPU_FLD_32` → `mem_readd` path would.
+  Data: `research/quake106-x87-by-function-2026-11-09.csv`.
+- **H3 is closed as re-scoped**: the generated code of the surf8 blocks is
+  45% move-or-address and 36% arithmetic with no x87, and it carries the
+  **patched** displacement `0x0018007c` (6–7 times per block) instead of the
+  sentinel. The patching is a load-time event; the per-frame cost is the
+  texel packing.
+  Data: `research/quake106-native-block-profile-2026-11-09.csv`.
+
+New harness tools: `../harness/split_unit_bodies.py`,
+`../harness/profile_native_blocks.py`. The attribution analyzer now records
+the nested helper caller **per guest block**.
+
+### Follow-up (same day): the decoder gap is closed and measured
+
+The register's next step after that was to close the `BT`/`SETcc`/`SAHF`
+decoder gap with the regression test from
+[kaaburgh/dosbox-staging PR #11](https://github.com/kaaburgh/dosbox-staging/pull/11)
+as the gate, and then to measure the effect. Done in
+[kaaburgh/dosbox-staging PR #13](https://github.com/kaaburgh/dosbox-staging/pull/13).
+
+- **The gate passes**: the 19-case guest program produces byte-identical
+  output under the interpreter core and the dynamic core, with zero
+  self-check deviations; 710 of 1021 guest image bytes are translated in
+  19 blocks.
+- **The fallbacks in Quake's own code drop from 1 863 789 to zero**; the
+  interpreter entries of the whole run drop from 2 185 284 to 301 653, and
+  the remainder is DOS/BIOS code whose per-address counts are unchanged.
+- **The measured effect is 6.4 % guest FPS and 6.6 % host CPU time**
+  (A/B, 32 measured runs, ABBA quartets, 95 % bootstrap intervals
+  [−7.356, −5.390] and [5.768, 7.564]).
+- **The effect is larger than the 1.19 % fallback window** that the
+  profiling attributed to the interpreter and the x87 transfer, because a
+  fallback also ends the cached block and forces a re-translation. The
+  register's cost model must count that invalidation cost, not only the
+  interpreter's samples.
+- **No hypothesis changes.** The fallback was a small component of H5's
+  window; H5's dominant component remains x87 (≈7 % of the window).
+
+Data: `research/quake106-fallback-counts-2026-11-09.csv`,
+`research/quake106-decoder-gap-closure-2026-11-09.json`.
