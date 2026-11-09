@@ -139,6 +139,8 @@ python3 extras/jit-audit/tools/count_quake.py --dosbox <counters-build> --game g
 4. E3 (C4 — флаги): стоимость `POPFQ` на AMD (микробенчмарк + инъекция),
    распределение по блокам, дифференциальный тест флагов — до реализации.
 5. E4 (C3 — dispatcher): прототип «skip MakeCodePage» (67.5% входов — та же
-   code page) с тестами SMC/CR3/CS. E5 (C6): `BT`/`SETcc`/`SAHF` в dynamic core.
+   code page) с тестами SMC/CR3/CS. E5 (C6): `BT`/`SETcc`/`SAHF`/`LAHF` в
+   dynamic core — самый дешёвый PR, гейт `tests/bitops.asm`; учесть
+   [проверку dosbox-staging#11 и engineering-lab#2](peer-review-dosbox11-lab2.md).
 6. Отдельное correctness-изменение: точные #PF для всех x87 memory-форм
    (тест `pfprec` → везде `E=I R=ok`), независимо от производительности.

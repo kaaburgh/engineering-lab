@@ -29,7 +29,9 @@
    A/A-плацебо.
 3. **Время.** Только на выделенном хосте (bare metal или VM без
    overcommit, фиксированная частота, turbo off, `isolcpus`/`taskset` для
-   main thread). Протокол — `tools/bench_quake.py` с fixed cycles (метрика
+   main thread). Кандидат — окружение engineering-lab#2 (заявлен CV 2.17%,
+   MDE ≈1% CPU-времени): сначала опубликовать его A/A-данные и повторить
+   PR #10 против base с двумя плацебо-метками (ожидание ≈+9%). Протокол — `tools/bench_quake.py` с fixed cycles (метрика
    `demo_cpu_s`) и, для сравнения с прошлым, `--cycles max` (FPS).
    - Сначала A/A: ≥16 блоков; принять хост, если |плацебо| < 1% и ширина
      bootstrap-интервала < 2%. Иначе — не делать выводов о малых эффектах.
@@ -123,13 +125,20 @@ Intel — ≈10–12 нс / ≈0.3 нс. Дальше:
 смены CR3/INVLPG и CS/режима между RET; опровержение — счётчик `MakeCodePage`
 не падает примерно на 2/3 или любой тест расходится с normal core.
 
-## E5 (дешёвый, низкий риск). C6 — `BT`/`SETcc`/`SAHF` в dynamic core
+## E5 (дешёвый, низкий риск). C6 — `BT`/`SETcc`/`SAHF`/`LAHF` в dynamic core
 
-1.95 M fallback в normal core за окно, все `BR_Opcode`; 70% — `BT r/m,r`,
-далее `SETE`, `SAHF`, `BTR`. Реализовать по образцу dynrec/normal core;
-опровержение — `fallback_opcode` не падает на ≈1.8 M; корректность —
-дифференциальный тест результатов и определённых флагов против normal
-core (undefined флаги `BT` — как в normal core).
+1.95 M fallback в normal core за окно, все `BR_Opcode` (см. candidates C6).
+- **Изменение:** регистровые формы `BT/BTS/BTR/BTC`, `SETcc r/m8`,
+  `SAHF`/`LAHF`; memory-формы `BTx` оставить на fallback.
+- **Корректность:** `tests/bitops.asm` (34 случая, CF через `SBB`, memory
+  bit string, 16-бит, x87-идиомы сравнения) — 0 отклонений на normal и
+  dynamic; тест kaaburgh/dosbox-staging#11 как дополнительный; Quake demo1 —
+  идентичные guest-результаты в lag mode.
+- **Опровержение:** `fallback_opcode` не падает до ≈60 k (системные
+  инструкции CWSDPMI) → реализация не покрывает горячие формы; блоки в дампе
+  всё ещё заканчиваются на `0F A3`/`9E`/`0F 94` → то же.
+- **Время:** ожидаемый эффект мал (≈1–2%) — только на тихом хосте
+  (см. M0.3 и пол измерений из engineering-lab#2, если он подтвердится).
 
 ## Общие правила
 
