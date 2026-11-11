@@ -1,0 +1,16 @@
+{
+  "expected_sha256": {
+    "QUAKE.EXE": "7cdb244122cc607cc6f162524bfcac60f6d11d8ca2ff07473d6cd962311161fb",
+    "CWSDPMI.EXE": "0a890815df6cbdc052915a856c16944cedec825267e7b6e453c351a0cdc695f2",
+    "ID1/PAK0.PAK": "35a9c55e5e5a284a159ad2a62e0e8def23d829561fe2f54eb402dbc0a9a946af"
+  },
+  "download_url": "https://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/quake/quake106.zip",
+  "zip_sha256": "ec6c9d34b1ae0252ac0066045b6611a7919c2a0d78a3a66d9387a8f597553239",
+  "zip_sha256_matches_reference": true,
+  "source": "zip",
+  "files_sha256": {
+    "QUAKE.EXE": "7cdb244122cc607cc6f162524bfcac60f6d11d8ca2ff07473d6cd962311161fb",
+    "CWSDPMI.EXE": "0a890815df6cbdc052915a856c16944cedec825267e7b6e453c351a0cdc695f2",
+    "ID1/PAK0.PAK": "35a9c55e5e5a284a159ad2a62e0e8def23d829561fe2f54eb402dbc0a9a946af"
+  }
+}

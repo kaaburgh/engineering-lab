@@ -1,0 +1,153 @@
+{
+  "labels": {
+    "base": {
+      "runs": 21,
+      "ok": 21,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "matches_phase2_reference": true
+    },
+    "base2": {
+      "runs": 21,
+      "ok": 21,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "matches_phase2_reference": true
+    },
+    "c4": {
+      "runs": 20,
+      "ok": 20,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "matches_phase2_reference": true
+    },
+    "c1a": {
+      "runs": 20,
+      "ok": 20,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "matches_phase2_reference": true
+    },
+    "c2": {
+      "runs": 20,
+      "ok": 20,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "matches_phase2_reference": true
+    },
+    "c6": {
+      "runs": 20,
+      "ok": 20,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.8"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.8"
+      ],
+      "matches_phase2_reference": true
+    },
+    "all4": {
+      "runs": 20,
+      "ok": 20,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.8"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.8"
+      ],
+      "matches_phase2_reference": true
+    },
+    "c3": {
+      "runs": 20,
+      "ok": 20,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "matches_phase2_reference": true
+    },
+    "c1b": {
+      "runs": 20,
+      "ok": 20,
+      "modal_result": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "deviating": 0,
+      "phase2_reference": [
+        "969",
+        "3.0",
+        "326.7"
+      ],
+      "matches_phase2_reference": true
+    }
+  },
+  "deviating_runs": [],
+  "failed_runs": [],
+  "reference_set": "MSVC ABI (clang-cl/MSVC): c6/all4 326.8",
+  "deterministic": true,
+  "all_match_phase2_reference": true
+}

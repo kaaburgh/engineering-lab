@@ -1,0 +1,82 @@
+{
+  "FLAGRST": {
+    "source": "extras/jit-audit/tests/flagrst.asm",
+    "defines": [],
+    "sha256": "9fbc8c8a735b74dd2035b8e879e1a4590f13a5175efb6749190bb615457a5aab"
+  },
+  "FLAGOPS": {
+    "source": "extras/jit-audit/tests/flagops.asm",
+    "defines": [],
+    "sha256": "f36e8c34fb62555510a45779011aea29b60eb9b727be4cfbbd56e07565159855"
+  },
+  "BITOPS": {
+    "source": "extras/jit-audit/tests/bitops.asm",
+    "defines": [],
+    "sha256": "f28ab101f7367e80346b0b6633f813f2540aa11bbee0ee89a6a5faac4183ee9e"
+  },
+  "X87LOAD": {
+    "source": "extras/jit-audit/tests/x87load.asm",
+    "defines": [],
+    "sha256": "b745d7771fd397c86932f0c1ad056da23e493f463957abfbbe5d09f2751e2005"
+  },
+  "X87STORE": {
+    "source": "extras/jit-audit/tests/x87store.asm",
+    "defines": [],
+    "sha256": "1006f30e4ee26416b685b8c49db73096644338a4e4bbd5cda9018199381ee38b"
+  },
+  "STACKOPS": {
+    "source": "extras/jit-audit/tests/stackops.asm",
+    "defines": [],
+    "sha256": "119e6b5ca3645dfda8c69310913152e77dab46df0e7ee01b2c58f437ca1b74f9"
+  },
+  "JITSIZE": {
+    "source": "extras/jit-audit/tests/jitsize.asm",
+    "defines": [],
+    "sha256": "8b9130979ef08922398250d54b8127e4b5717b29d791feeb53b3eed832e79486"
+  },
+  "JITSIZED": {
+    "source": "extras/jit-audit/tests/jitsize.asm",
+    "defines": [
+      "-DDIRTY"
+    ],
+    "sha256": "306b84792951602adf8bb7d165758484e350e8d222c057c2c7cfe530ee21b2e5"
+  },
+  "PFPREC": {
+    "source": "extras/jit-audit/tests/pfprec.asm",
+    "defines": [],
+    "sha256": "2bfc5b8586eed475e516e1710f630cbe8fd42f335f75fb03c691536f5478def3"
+  },
+  "PFREGS": {
+    "source": "extras/jit-audit/tests/pfregs.asm",
+    "defines": [],
+    "sha256": "945339e102335f3d68eea6bdd2ac952ee3ea4584a2aa6dc92741a89ffeb6706e"
+  },
+  "FLAGOPSN": {
+    "source": "extras/jit-audit/tests/flagops.asm",
+    "defines": [
+      "-DNEG"
+    ],
+    "sha256": "dc88071b7b3ad19bae975beb4e21b8b9cea59801bfff670fa93fcdf1257a27bc"
+  },
+  "X87LNEG": {
+    "source": "extras/jit-audit/tests/x87load.asm",
+    "defines": [
+      "-DNEG"
+    ],
+    "sha256": "c32dc674ec16487d72799ae8d15f56d69d1684211ad249c61763503887b24c94"
+  },
+  "X87SNEG": {
+    "source": "extras/jit-audit/tests/x87store.asm",
+    "defines": [
+      "-DNEG"
+    ],
+    "sha256": "37f587546e9b2ebb440c41069337441a62fb43ae76875cd3a2b8e318237fb97d"
+  },
+  "STACKNEG": {
+    "source": "extras/jit-audit/tests/stackops.asm",
+    "defines": [
+      "-DNEG"
+    ],
+    "sha256": "8c5aa8345adea2bbc9f19c030165c6c0311d3ef597eb8107b34b68181663fe70"
+  }
+}
