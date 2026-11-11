@@ -1,0 +1,883 @@
+{
+ "main_thread_samples": 2807,
+ "regions_pct": {
+  "jit": 74.74,
+  "dosbox-all4-map": 15.85,
+  "libSDL3.so.0.2.10": 7.02,
+  "jit-unattributed": 1.18,
+  "inlined": 0.89,
+  "[kernel.kallsyms]": 0.18,
+  "libc.so.6": 0.11,
+  "[vdso]": 0.04
+ },
+ "top_symbols": [
+  {
+   "dso": "libSDL3.so.0.2.10",
+   "symbol": "[unknown]",
+   "samples": 196,
+   "pct": 6.98
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "MakeCodePage(unsigned long, CodePageHandler*&)",
+   "samples": 74,
+   "pct": 2.64
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "CPU_Core_Dyn_X86_Run()",
+   "samples": 66,
+   "pct": 2.35
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "mem_writed(unsigned int, unsigned int)",
+   "samples": 56,
+   "pct": 2.0
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "mem_writed_checked_dcx64(unsigned int, unsigned long)",
+   "samples": 43,
+   "pct": 1.53
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "VGA_ChainedVGA_Handler::writed(unsigned int, unsigned int)",
+   "samples": 24,
+   "pct": 0.86
+  },
+  {
+   "dso": "inlined",
+   "symbol": "__memcpy_avx512_unaligned_erms",
+   "samples": 23,
+   "pct": 0.82
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "FPU_FST_32(unsigned int)",
+   "samples": 18,
+   "pct": 0.64
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+   "samples": 17,
+   "pct": 0.61
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+   "samples": 15,
+   "pct": 0.53
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "mem_writed_checked(unsigned int, unsigned int)",
+   "samples": 13,
+   "pct": 0.46
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "ScaleHoriz2x_32(void const*)",
+   "samples": 13,
+   "pct": 0.46
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "draw_linear_line_from_dac_palette(unsigned long, unsigned long)",
+   "samples": 10,
+   "pct": 0.36
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "mem_writew(unsigned int, unsigned short)",
+   "samples": 10,
+   "pct": 0.36
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+   "samples": 9,
+   "pct": 0.32
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "FPU_FLDCW_DH(unsigned int)",
+   "samples": 7,
+   "pct": 0.25
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "unsigned char mem_readb<(MemOpMode)0>(unsigned int)",
+   "samples": 6,
+   "pct": 0.21
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "PAGING_LinkPage(unsigned int, unsigned int)",
+   "samples": 6,
+   "pct": 0.21
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "PAGING_SetDirBase(unsigned long)",
+   "samples": 4,
+   "pct": 0.14
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "PageHandler::writed_checked(unsigned int, unsigned int)",
+   "samples": 4,
+   "pct": 0.14
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "MEM_GetPageHandler(unsigned long)",
+   "samples": 4,
+   "pct": 0.14
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "FPU_FLD_64(unsigned int)",
+   "samples": 4,
+   "pct": 0.14
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "write_byte_to_port(unsigned short, unsigned char)",
+   "samples": 3,
+   "pct": 0.11
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "InitPageHandler::readd_checked(unsigned int, unsigned int*)",
+   "samples": 3,
+   "pct": 0.11
+  },
+  {
+   "dso": "[kernel.kallsyms]",
+   "symbol": "do_syscall_64",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "mem_readd_checked_dcx64(unsigned int, unsigned int*)",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "PIC_RunQueue()",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "libc.so.6",
+   "symbol": "__syscall_cancel_arch",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "inlined",
+   "symbol": "___pthread_mutex_lock",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "InitPageHandler::readb_checked(unsigned int, unsigned char*)",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "CPU_Core_Normal_Run()",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "FPU_FLD_80(unsigned int)",
+   "samples": 2,
+   "pct": 0.07
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "normal_loop()",
+   "samples": 1,
+   "pct": 0.04
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "mem_writew_checked_dcx64(unsigned int, unsigned long)",
+   "samples": 1,
+   "pct": 0.04
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "dyn_helper_idivd(int)",
+   "samples": 1,
+   "pct": 0.04
+  },
+  {
+   "dso": "[kernel.kallsyms]",
+   "symbol": "smp_call_function_many_cond",
+   "samples": 1,
+   "pct": 0.04
+  },
+  {
+   "dso": "[kernel.kallsyms]",
+   "symbol": "inode_permission",
+   "samples": 1,
+   "pct": 0.04
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "PIC_AddEvent(void (*)(unsigned int), double, unsigned int)",
+   "samples": 1,
+   "pct": 0.04
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "vga_dac_send_color(unsigned char, unsigned char)",
+   "samples": 1,
+   "pct": 0.04
+  },
+  {
+   "dso": "dosbox-all4-map",
+   "symbol": "InitPageHandler::writed_checked(unsigned int, unsigned int)",
+   "samples": 1,
+   "pct": 0.04
+  }
+ ],
+ "jit_self_instruction_class_at_ip": {
+  "mem-move": 1076,
+  "alu/other": 619,
+  "branch": 223,
+  "x87": 85,
+  "reg-move": 59,
+  "pushfq": 34,
+  "call": 2
+ },
+ "jit_self_instruction_class_before_ip": {
+  "mem-move": 928,
+  "alu/other": 410,
+  "branch": 263,
+  "pushfq": 213,
+  "x87": 95,
+  "call": 42,
+  "reg-move": 22
+ },
+ "helper_samples_attributed_to_caller_block": 261,
+ "helper_to_caller_block": [
+  {
+   "helper": "mem_writed_checked_dcx64(unsigned int, unsigned long)",
+   "caller_eip": "00010572",
+   "samples": 41
+  },
+  {
+   "helper": "VGA_ChainedVGA_Handler::writed(unsigned int, unsigned int)",
+   "caller_eip": "00010572",
+   "samples": 24
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "00011050",
+   "samples": 6
+  },
+  {
+   "helper": "mem_writed_checked(unsigned int, unsigned int)",
+   "caller_eip": "0002fa6a",
+   "samples": 5
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "000306bd",
+   "samples": 5
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "000110fb",
+   "samples": 5
+  },
+  {
+   "helper": "PAGING_SetDirBase(unsigned long)",
+   "caller_eip": "00003e80",
+   "samples": 4
+  },
+  {
+   "helper": "PageHandler::writed_checked(unsigned int, unsigned int)",
+   "caller_eip": "00010572",
+   "samples": 4
+  },
+  {
+   "helper": "FPU_FLDCW_DH(unsigned int)",
+   "caller_eip": "0003071f",
+   "samples": 3
+  },
+  {
+   "helper": "write_byte_to_port(unsigned short, unsigned char)",
+   "caller_eip": "00047e98",
+   "samples": 2
+  },
+  {
+   "helper": "FPU_FST_32(unsigned int)",
+   "caller_eip": "000110fb",
+   "samples": 2
+  },
+  {
+   "helper": "FPU_FST_32(unsigned int)",
+   "caller_eip": "0002f646",
+   "samples": 2
+  },
+  {
+   "helper": "mem_writew(unsigned int, unsigned short)",
+   "caller_eip": "0002d3a0",
+   "samples": 2
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "000307b7",
+   "samples": 2
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "0002f5cf",
+   "samples": 2
+  },
+  {
+   "helper": "InitPageHandler::InitPage(unsigned int, bool) [clone .isra.0]",
+   "caller_eip": "00055ef6",
+   "samples": 2
+  },
+  {
+   "helper": "FPU_FST_32(unsigned int)",
+   "caller_eip": "0002f5cf",
+   "samples": 2
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "00010cec",
+   "samples": 2
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "00003e80",
+   "samples": 2
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "00010fe2",
+   "samples": 2
+  },
+  {
+   "helper": "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+   "caller_eip": "000119fb",
+   "samples": 2
+  },
+  {
+   "helper": "FPU_FST_32(unsigned int)",
+   "caller_eip": "000306bd",
+   "samples": 2
+  },
+  {
+   "helper": "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+   "caller_eip": "0003071f",
+   "samples": 2
+  },
+  {
+   "helper": "FPU_FLD_80(unsigned int)",
+   "caller_eip": "00012d79",
+   "samples": 2
+  },
+  {
+   "helper": "FPU_FST_32(unsigned int)",
+   "caller_eip": "0002cb1a",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writed_checked(unsigned int, unsigned int)",
+   "caller_eip": "0002fc50",
+   "samples": 1
+  },
+  {
+   "helper": "unsigned short mem_readw<(MemOpMode)0>(unsigned int)",
+   "caller_eip": "00012d79",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writew_checked_dcx64(unsigned int, unsigned long)",
+   "caller_eip": "00010d06",
+   "samples": 1
+  },
+  {
+   "helper": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+   "caller_eip": "00014319",
+   "samples": 1
+  },
+  {
+   "helper": "unsigned int mem_readd<(MemOpMode)0>(unsigned int)",
+   "caller_eip": "0004d972",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writew(unsigned int, unsigned short)",
+   "caller_eip": "000346eb",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "00019638",
+   "samples": 1
+  },
+  {
+   "helper": "InitPageHandler::readd_checked(unsigned int, unsigned int*)",
+   "caller_eip": "00035565",
+   "samples": 1
+  },
+  {
+   "helper": "mem_readd_checked_dcx64(unsigned int, unsigned int*)",
+   "caller_eip": "000340aa",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writed_checked(unsigned int, unsigned int)",
+   "caller_eip": "0002fb37",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "00055ef6",
+   "samples": 1
+  },
+  {
+   "helper": "FPU_FLDCW_DH(unsigned int)",
+   "caller_eip": "00011993",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "0002d2a1",
+   "samples": 1
+  },
+  {
+   "helper": "mem_writed(unsigned int, unsigned int)",
+   "caller_eip": "0002c96c",
+   "samples": 1
+  },
+  {
+   "helper": "FPU_FST_32(unsigned int)",
+   "caller_eip": "00030782",
+   "samples": 1
+  }
+ ],
+ "top_blocks": [
+  {
+   "cs": "00a7",
+   "eip": "00010572",
+   "samples_total": 91,
+   "samples_self": 22,
+   "samples_in_helpers": 69,
+   "native_bytes": 624,
+   "guest_bytes": 11,
+   "native_calls": 4,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 3.24
+  },
+  {
+   "cs": "00a7",
+   "eip": "000306bd",
+   "samples_total": 47,
+   "samples_self": 39,
+   "samples_in_helpers": 8,
+   "native_bytes": 1520,
+   "guest_bytes": 91,
+   "native_calls": 20,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 1.67
+  },
+  {
+   "cs": "00a7",
+   "eip": "00010d3b",
+   "samples_total": 40,
+   "samples_self": 39,
+   "samples_in_helpers": 1,
+   "native_bytes": 528,
+   "guest_bytes": 49,
+   "native_calls": 4,
+   "pushfq": 3,
+   "popfq": 0,
+   "pct_total": 1.43
+  },
+  {
+   "cs": "00a7",
+   "eip": "00012dd0",
+   "samples_total": 40,
+   "samples_self": 40,
+   "samples_in_helpers": 0,
+   "native_bytes": 1424,
+   "guest_bytes": 80,
+   "native_calls": 16,
+   "pushfq": 7,
+   "popfq": 0,
+   "pct_total": 1.43
+  },
+  {
+   "cs": "00a7",
+   "eip": "00010ca0",
+   "samples_total": 39,
+   "samples_self": 39,
+   "samples_in_helpers": 0,
+   "native_bytes": 1520,
+   "guest_bytes": 76,
+   "native_calls": 18,
+   "pushfq": 5,
+   "popfq": 0,
+   "pct_total": 1.39
+  },
+  {
+   "cs": "00a7",
+   "eip": "00055ef6",
+   "samples_total": 37,
+   "samples_self": 33,
+   "samples_in_helpers": 4,
+   "native_bytes": 1152,
+   "guest_bytes": 14,
+   "native_calls": 10,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 1.32
+  },
+  {
+   "cs": "00a7",
+   "eip": "0001119b",
+   "samples_total": 29,
+   "samples_self": 29,
+   "samples_in_helpers": 0,
+   "native_bytes": 2816,
+   "guest_bytes": 123,
+   "native_calls": 36,
+   "pushfq": 14,
+   "popfq": 0,
+   "pct_total": 1.03
+  },
+  {
+   "cs": "00a7",
+   "eip": "000112ec",
+   "samples_total": 25,
+   "samples_self": 25,
+   "samples_in_helpers": 0,
+   "native_bytes": 3280,
+   "guest_bytes": 122,
+   "native_calls": 44,
+   "pushfq": 16,
+   "popfq": 0,
+   "pct_total": 0.89
+  },
+  {
+   "cs": "00a7",
+   "eip": "00011343",
+   "samples_total": 24,
+   "samples_self": 24,
+   "samples_in_helpers": 0,
+   "native_bytes": 3136,
+   "guest_bytes": 130,
+   "native_calls": 42,
+   "pushfq": 11,
+   "popfq": 0,
+   "pct_total": 0.86
+  },
+  {
+   "cs": "00a7",
+   "eip": "000110fb",
+   "samples_total": 23,
+   "samples_self": 14,
+   "samples_in_helpers": 9,
+   "native_bytes": 1472,
+   "guest_bytes": 85,
+   "native_calls": 20,
+   "pushfq": 3,
+   "popfq": 0,
+   "pct_total": 0.82
+  },
+  {
+   "cs": "00a7",
+   "eip": "0002fabe",
+   "samples_total": 21,
+   "samples_self": 18,
+   "samples_in_helpers": 3,
+   "native_bytes": 928,
+   "guest_bytes": 37,
+   "native_calls": 12,
+   "pushfq": 2,
+   "popfq": 0,
+   "pct_total": 0.75
+  },
+  {
+   "cs": "00a7",
+   "eip": "0001121e",
+   "samples_total": 20,
+   "samples_self": 20,
+   "samples_in_helpers": 0,
+   "native_bytes": 3040,
+   "guest_bytes": 113,
+   "native_calls": 40,
+   "pushfq": 15,
+   "popfq": 0,
+   "pct_total": 0.71
+  },
+  {
+   "cs": "00a7",
+   "eip": "00011216",
+   "samples_total": 20,
+   "samples_self": 20,
+   "samples_in_helpers": 0,
+   "native_bytes": 3168,
+   "guest_bytes": 119,
+   "native_calls": 42,
+   "pushfq": 16,
+   "popfq": 0,
+   "pct_total": 0.71
+  },
+  {
+   "cs": "00a7",
+   "eip": "00010f4a",
+   "samples_total": 20,
+   "samples_self": 20,
+   "samples_in_helpers": 0,
+   "native_bytes": 1408,
+   "guest_bytes": 115,
+   "native_calls": 18,
+   "pushfq": 0,
+   "popfq": 0,
+   "pct_total": 0.71
+  },
+  {
+   "cs": "00a7",
+   "eip": "0002e211",
+   "samples_total": 20,
+   "samples_self": 20,
+   "samples_in_helpers": 0,
+   "native_bytes": 2128,
+   "guest_bytes": 71,
+   "native_calls": 32,
+   "pushfq": 2,
+   "popfq": 0,
+   "pct_total": 0.71
+  },
+  {
+   "cs": "00a7",
+   "eip": "0001143f",
+   "samples_total": 19,
+   "samples_self": 19,
+   "samples_in_helpers": 0,
+   "native_bytes": 2256,
+   "guest_bytes": 126,
+   "native_calls": 28,
+   "pushfq": 10,
+   "popfq": 0,
+   "pct_total": 0.68
+  },
+  {
+   "cs": "00a7",
+   "eip": "000313ae",
+   "samples_total": 19,
+   "samples_self": 19,
+   "samples_in_helpers": 0,
+   "native_bytes": 416,
+   "guest_bytes": 24,
+   "native_calls": 4,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 0.68
+  },
+  {
+   "cs": "00a7",
+   "eip": "000112cc",
+   "samples_total": 19,
+   "samples_self": 19,
+   "samples_in_helpers": 0,
+   "native_bytes": 2704,
+   "guest_bytes": 119,
+   "native_calls": 36,
+   "pushfq": 11,
+   "popfq": 0,
+   "pct_total": 0.68
+  },
+  {
+   "cs": "00a7",
+   "eip": "0003e233",
+   "samples_total": 19,
+   "samples_self": 19,
+   "samples_in_helpers": 0,
+   "native_bytes": 2064,
+   "guest_bytes": 103,
+   "native_calls": 32,
+   "pushfq": 5,
+   "popfq": 0,
+   "pct_total": 0.68
+  },
+  {
+   "cs": "00a7",
+   "eip": "000111a4",
+   "samples_total": 19,
+   "samples_self": 19,
+   "samples_in_helpers": 0,
+   "native_bytes": 2848,
+   "guest_bytes": 122,
+   "native_calls": 36,
+   "pushfq": 14,
+   "popfq": 0,
+   "pct_total": 0.68
+  },
+  {
+   "cs": "00a7",
+   "eip": "00011050",
+   "samples_total": 18,
+   "samples_self": 12,
+   "samples_in_helpers": 6,
+   "native_bytes": 1104,
+   "guest_bytes": 88,
+   "native_calls": 14,
+   "pushfq": 3,
+   "popfq": 0,
+   "pct_total": 0.64
+  },
+  {
+   "cs": "00a7",
+   "eip": "0003e455",
+   "samples_total": 17,
+   "samples_self": 17,
+   "samples_in_helpers": 0,
+   "native_bytes": 1616,
+   "guest_bytes": 71,
+   "native_calls": 20,
+   "pushfq": 5,
+   "popfq": 0,
+   "pct_total": 0.61
+  },
+  {
+   "cs": "00a7",
+   "eip": "00011366",
+   "samples_total": 16,
+   "samples_self": 16,
+   "samples_in_helpers": 0,
+   "native_bytes": 2336,
+   "guest_bytes": 95,
+   "native_calls": 30,
+   "pushfq": 7,
+   "popfq": 0,
+   "pct_total": 0.57
+  },
+  {
+   "cs": "00a7",
+   "eip": "0002f5cf",
+   "samples_total": 16,
+   "samples_self": 12,
+   "samples_in_helpers": 4,
+   "native_bytes": 2464,
+   "guest_bytes": 103,
+   "native_calls": 34,
+   "pushfq": 3,
+   "popfq": 0,
+   "pct_total": 0.57
+  },
+  {
+   "cs": "00a7",
+   "eip": "000312ee",
+   "samples_total": 14,
+   "samples_self": 14,
+   "samples_in_helpers": 0,
+   "native_bytes": 768,
+   "guest_bytes": 28,
+   "native_calls": 10,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 0.5
+  },
+  {
+   "cs": "00a7",
+   "eip": "0002f646",
+   "samples_total": 14,
+   "samples_self": 11,
+   "samples_in_helpers": 3,
+   "native_bytes": 2144,
+   "guest_bytes": 96,
+   "native_calls": 28,
+   "pushfq": 4,
+   "popfq": 0,
+   "pct_total": 0.5
+  },
+  {
+   "cs": "00a7",
+   "eip": "00030782",
+   "samples_total": 13,
+   "samples_self": 11,
+   "samples_in_helpers": 2,
+   "native_bytes": 512,
+   "guest_bytes": 53,
+   "native_calls": 6,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 0.46
+  },
+  {
+   "cs": "00a7",
+   "eip": "0003e3ef",
+   "samples_total": 13,
+   "samples_self": 13,
+   "samples_in_helpers": 0,
+   "native_bytes": 2064,
+   "guest_bytes": 102,
+   "native_calls": 32,
+   "pushfq": 5,
+   "popfq": 0,
+   "pct_total": 0.46
+  },
+  {
+   "cs": "00a7",
+   "eip": "00010d6c",
+   "samples_total": 12,
+   "samples_self": 12,
+   "samples_in_helpers": 0,
+   "native_bytes": 464,
+   "guest_bytes": 7,
+   "native_calls": 4,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 0.43
+  },
+  {
+   "cs": "00a7",
+   "eip": "0000e5d8",
+   "samples_total": 12,
+   "samples_self": 12,
+   "samples_in_helpers": 0,
+   "native_bytes": 416,
+   "guest_bytes": 11,
+   "native_calls": 4,
+   "pushfq": 1,
+   "popfq": 0,
+   "pct_total": 0.43
+  }
+ ],
+ "static_code": {
+  "generations": 7705,
+  "clears": 183,
+  "total_native_bytes": 4554736,
+  "max_block_bytes": 4928,
+  "instruction_classes": {
+   "mem-move": 441571,
+   "alu/other": 281299,
+   "branch": 168979,
+   "reg-move": 115997,
+   "call": 50089,
+   "pushfq": 8122,
+   "x87": 7749
+  }
+ }
+}

@@ -1,0 +1,1886 @@
+{
+  "run_id": "phase2-validation-full-20261111T184805Z",
+  "runner_version": 1,
+  "mode": "full",
+  "errors": [],
+  "host": {
+    "os": "Windows",
+    "machine": "AMD64",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor"
+  },
+  "sources": {
+    "remote": "https://github.com/kaaburgh/dosbox-staging.git",
+    "offline": false,
+    "fetch": {
+      "+refs/heads/main:refs/up/heads/main": "ok",
+      "+refs/pull/14/head:refs/up/pull/14": "ok",
+      "+refs/heads/phase2/c4-popfq-free-flag-restore:refs/up/heads/phase2/c4-popfq-free-flag-restore": "ok",
+      "+refs/pull/15/head:refs/up/pull/15": "ok",
+      "+refs/heads/phase2/c1a-x87-inline-load-v2:refs/up/heads/phase2/c1a-x87-inline-load-v2": "ok",
+      "+refs/pull/16/head:refs/up/pull/16": "ok",
+      "+refs/heads/phase2/c2-stack-inline:refs/up/heads/phase2/c2-stack-inline": "ok",
+      "+refs/pull/17/head:refs/up/pull/17": "ok",
+      "+refs/heads/phase2/c6-decode-bt-setcc-sahf:refs/up/heads/phase2/c6-decode-bt-setcc-sahf": "ok",
+      "+refs/heads/phase2/integration-local:refs/up/heads/phase2/integration-local": "ok",
+      "+refs/pull/18/head:refs/up/pull/18": "ok",
+      "+refs/heads/phase2/c3-return-target-cache:refs/up/heads/phase2/c3-return-target-cache": "ok",
+      "+refs/pull/19/head:refs/up/pull/19": "ok",
+      "+refs/heads/phase2/c1b-x87-inline-store:refs/up/heads/phase2/c1b-x87-inline-store": "ok"
+    },
+    "main_now": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+    "baseline": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+    "variants": {
+      "base": {
+        "title": "main at the Phase 2 baseline (A/A placebo: base and base2)",
+        "pr": null,
+        "branch": null,
+        "resolved_from": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+        "sha": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+        "phase2_sha": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [],
+        "commits_since_base": []
+      },
+      "c4": {
+        "title": "PR #14 C4: guest flags restored without POPFQ",
+        "pr": 14,
+        "branch": "phase2/c4-popfq-free-flag-restore",
+        "resolved_from": "refs/up/pull/14",
+        "sha": "5bacbd99f1358f4096069313e16586f48cf6917f",
+        "phase2_sha": "5bacbd99f1358f4096069313e16586f48cf6917f",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [
+          "src/cpu/core_dyn_x86.cpp",
+          "src/cpu/core_dyn_x86/decoder.h",
+          "src/cpu/core_dyn_x86/risc_x64.h"
+        ],
+        "commits_since_base": [
+          "5bacbd99f style: Format the POPFQ-free flag restore with clang-format",
+          "b5a78e311 Restore guest flags without POPFQ in the x86-64 dynamic core"
+        ]
+      },
+      "c1a": {
+        "title": "PR #15 C1a: inline x87 m32 load",
+        "pr": 15,
+        "branch": "phase2/c1a-x87-inline-load-v2",
+        "resolved_from": "refs/up/pull/15",
+        "sha": "22ad052dfe80a33778ebccf04f19ca8baf447792",
+        "phase2_sha": "22ad052dfe80a33778ebccf04f19ca8baf447792",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [
+          "src/cpu/core_dyn_x86/dyn_fpu_dh.h"
+        ],
+        "commits_since_base": [
+          "22ad052df style: Put the x87 m32 load comments on their own lines",
+          "caacd6822 style: Format the x87 m32 inline load with clang-format",
+          "c45a4620b Inline the in-page TLB hit path of dynamic core x87 m32 loads"
+        ]
+      },
+      "c2": {
+        "title": "PR #16 C2: inline PUSH/POP",
+        "pr": 16,
+        "branch": "phase2/c2-stack-inline",
+        "resolved_from": "refs/up/pull/16",
+        "sha": "4619d41d6b8f58180b4faf37c358c616a71c8c0f",
+        "phase2_sha": "4619d41d6b8f58180b4faf37c358c616a71c8c0f",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [
+          "src/cpu/core_dyn_x86/decoder.h"
+        ],
+        "commits_since_base": [
+          "4619d41d6 style: Format the inline PUSH/POP change with clang-format",
+          "f0343030f Inline the TLB fast path for dynamic core PUSH and POP"
+        ]
+      },
+      "c6": {
+        "title": "PR #17 C6: BT/SETcc/SAHF/LAHF translated",
+        "pr": 17,
+        "branch": "phase2/c6-decode-bt-setcc-sahf",
+        "resolved_from": "refs/up/pull/17",
+        "sha": "f8e39504ca4e394ee7742b7cc370a8744336b281",
+        "phase2_sha": "f8e39504ca4e394ee7742b7cc370a8744336b281",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [
+          "src/cpu/core_dyn_x86/decoder.h",
+          "src/cpu/core_dyn_x86/risc_x64.h"
+        ],
+        "commits_since_base": [
+          "f8e39504c style: Format the BT/SETcc/SAHF/LAHF translation with clang-format",
+          "0b9b58da3 Translate BT/BTS/BTR/BTC, SETcc, SAHF and LAHF in the x86-64 dynamic core"
+        ]
+      },
+      "all4": {
+        "title": "C4+C1a+C2+C6 integration (measurement only)",
+        "pr": null,
+        "branch": "phase2/integration-local",
+        "resolved_from": "refs/up/heads/phase2/integration-local",
+        "sha": "911ccc0526281235169ad147cb64c7f2fa831dd3",
+        "phase2_sha": "911ccc0526281235169ad147cb64c7f2fa831dd3",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [
+          "src/cpu/core_dyn_x86.cpp",
+          "src/cpu/core_dyn_x86/decoder.h",
+          "src/cpu/core_dyn_x86/dyn_fpu_dh.h",
+          "src/cpu/core_dyn_x86/risc_x64.h"
+        ],
+        "commits_since_base": [
+          "911ccc052 Local integration of C1a, C2, C4 and C6 for measurement only",
+          "bc63cb815 Merge branch 'phase2/c2-stack-inline' into phase2/integration-local",
+          "de793a2cc Merge branch 'phase2/c1a-x87-inline-load' into phase2/integration-local",
+          "284b7a181 Use a near jump over the x87 m32 load helper call",
+          "0b9b58da3 Translate BT/BTS/BTR/BTC, SETcc, SAHF and LAHF in the x86-64 dynamic core",
+          "f0343030f Inline the TLB fast path for dynamic core PUSH and POP",
+          "b5a78e311 Restore guest flags without POPFQ in the x86-64 dynamic core",
+          "8233fe323 Inline the in-page TLB hit path of dynamic core x87 m32 loads"
+        ]
+      },
+      "c3": {
+        "title": "PR #18 C3: near-return linking (neutral in Phase 2)",
+        "pr": 18,
+        "branch": "phase2/c3-return-target-cache",
+        "resolved_from": "refs/up/pull/18",
+        "sha": "c861a8b02e4685d3c3bd4f245e0417d502a5a149",
+        "phase2_sha": "c861a8b02e4685d3c3bd4f245e0417d502a5a149",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [
+          "src/cpu/core_dyn_x86.cpp",
+          "src/cpu/core_dyn_x86/decoder.h",
+          "src/cpu/core_dyn_x86/risc_x64.h",
+          "src/cpu/dyn_cache.h"
+        ],
+        "commits_since_base": [
+          "c861a8b02 style: Put the return-target address comment on its own line",
+          "b2322705c style: Format the near-return linking with clang-format",
+          "333984500 Link near returns to their last target in the x86-64 dynamic core"
+        ]
+      },
+      "c1b": {
+        "title": "PR #19 C1b: inline x87 m32 store (neutral in Phase 2)",
+        "pr": 19,
+        "branch": "phase2/c1b-x87-inline-store",
+        "resolved_from": "refs/up/pull/19",
+        "sha": "dfed705a3607271a710e298087c13d9e19769d7f",
+        "phase2_sha": "dfed705a3607271a710e298087c13d9e19769d7f",
+        "matches_phase2": true,
+        "based_on_phase2_baseline": true,
+        "files_changed_vs_base": [
+          "src/cpu/core_dyn_x86/dyn_fpu_dh.h"
+        ],
+        "commits_since_base": [
+          "dfed705a3 Inline the in-page TLB hit path of dynamic core x87 m32 stores"
+        ]
+      }
+    }
+  },
+  "builds": {
+    "preset": "release-windows",
+    "cmake_args": [],
+    "compat_shims": false,
+    "mode": "incremental",
+    "variants": {
+      "base": {
+        "label": "base",
+        "sha": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "af93e7ca0cf9a9fb669550d8d10ad13cd01a766f2b4d85f35b707f428448a1b6",
+        "binary_sha256_normalized": "402fd65c537d479ca9290baa78997c6156458aa924dedf7ba29b6030eff1cab8",
+        "binary_size": 12412416,
+        "build_seconds": 514.2,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      },
+      "c4": {
+        "label": "c4",
+        "sha": "5bacbd99f1358f4096069313e16586f48cf6917f",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "ba68554a53e14dd9ce6c9dd083e897c1033db1c7e75b72a54735b687091758de",
+        "binary_sha256_normalized": "de7e30cc2431ab54830b8ac355e548c954eaba7996dfb5766dc39edb602a7181",
+        "binary_size": 12410368,
+        "build_seconds": 8.8,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      },
+      "c1a": {
+        "label": "c1a",
+        "sha": "22ad052dfe80a33778ebccf04f19ca8baf447792",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "15be7c4e74f68b76dbf9693e5de17b8a7b3581141f01c4883da7a425950db840",
+        "binary_sha256_normalized": "0175b6814ca13ae3b63c35480a89484f0a4769be97e82caa09e3b1fd724b843a",
+        "binary_size": 12414976,
+        "build_seconds": 8.8,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      },
+      "c2": {
+        "label": "c2",
+        "sha": "4619d41d6b8f58180b4faf37c358c616a71c8c0f",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "0257b71337088c13cf62c52f645c2e51e8df960efd15c34850c1d309e7c942d2",
+        "binary_sha256_normalized": "62fce80d121791b501506a769412550c7626e9b86de4bf8ac146ca5b0df4e19d",
+        "binary_size": 12411904,
+        "build_seconds": 8.5,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      },
+      "c6": {
+        "label": "c6",
+        "sha": "f8e39504ca4e394ee7742b7cc370a8744336b281",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "9f3768d6848f856fe3c1b90938183b0429d30c312afce8505365f07d358dd38d",
+        "binary_sha256_normalized": "f24809d72b5c96878be2360f95dcc81931172f53afe45b30fc8a7b3c4789c575",
+        "binary_size": 12413952,
+        "build_seconds": 8.5,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      },
+      "all4": {
+        "label": "all4",
+        "sha": "911ccc0526281235169ad147cb64c7f2fa831dd3",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "8cc089baed619121085cbb4c1485e4b3ceae8f15b738f0be3b52439c857927bc",
+        "binary_sha256_normalized": "e91a2e8c9c2836bbf34f3823008af340e0f740ff34d2bdeb5b27fe596096633d",
+        "binary_size": 12413952,
+        "build_seconds": 8.6,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      },
+      "c3": {
+        "label": "c3",
+        "sha": "c861a8b02e4685d3c3bd4f245e0417d502a5a149",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "db15b61150c91d191bf9b5740f21d8a364ed010d51cba3758705e174f3c57e37",
+        "binary_sha256_normalized": "9bbd6f333082ae17483d645358d0b58884dec689fc52a986022a280172e74307",
+        "binary_size": 12413440,
+        "build_seconds": 8.6,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      },
+      "c1b": {
+        "label": "c1b",
+        "sha": "dfed705a3607271a710e298087c13d9e19769d7f",
+        "preset": "release-windows",
+        "build_mode": "incremental",
+        "binary_sha256": "e787c1c683b15c1008e1cb413d4f0599f09295b5b78b2c1770ba50ed8fcfa969",
+        "binary_sha256_normalized": "23973127ee98b53d17d27944c5de01a31d515b1c9d16485535a024b7c312a70e",
+        "binary_size": 12414976,
+        "build_seconds": 8.6,
+        "cmake_cache": {
+          "CCACHE_PROGRAM": "C:/Strawberry/c/bin/ccache.exe",
+          "CMAKE_BUILD_TYPE": "Release",
+          "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+          "CMAKE_CXX_FLAGS_DEBUG": "/Ob0 /Od /RTC1",
+          "CMAKE_CXX_FLAGS_MINSIZEREL": "/O1 /Ob1 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELEASE": "/O2 /Ob2 /DNDEBUG",
+          "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/O2 /Ob1 /DNDEBUG",
+          "CMAKE_GENERATOR_TOOLSET": "ClangCL",
+          "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "OPT_DEBUGGER": "OFF",
+          "OPT_DOCUMENTATION": "OFF",
+          "OPT_FORCE_DYNREC": "OFF",
+          "OPT_HEAVY_DEBUGGER": "OFF",
+          "OPT_MANYMOUSE": "ON",
+          "OPT_OPENGL": "ON",
+          "OPT_SANITIZER": "OFF",
+          "OPT_TESTS": "ON",
+          "OPT_THREAD_SANITIZER": "OFF",
+          "OPT_XINPUT": "OFF",
+          "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+          "CMAKE_GENERATOR": "Visual Studio 18 2026",
+          "CMAKE_GENERATOR_PLATFORM": "",
+          "CMAKE_CXX_COMPILER_ID": "Clang",
+          "CMAKE_CXX_COMPILER_VERSION": "22.1.3",
+          "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC",
+          "CMAKE_CXX_SIMULATE_ID": "MSVC"
+        },
+        "core_dyn_x86_compile_command": null,
+        "core_dyn_x86_compiled": true,
+        "compiler_launcher": null,
+        "compat_shims_applied": []
+      }
+    },
+    "rebuild_check": {
+      "first": "af93e7ca0cf9a9fb669550d8d10ad13cd01a766f2b4d85f35b707f428448a1b6",
+      "again": "3758cdfdf5a518a72685bee56448544afdecb1cd5c43e9251382ce946e350c91",
+      "raw_identical": false,
+      "identical": true,
+      "note": "compared with link timestamp, checksum and debug-directory data zeroed (PE); ELF binaries are compared byte for byte"
+    }
+  },
+  "test_binaries": {
+    "FLAGRST": {
+      "source": "extras/jit-audit/tests/flagrst.asm",
+      "defines": [],
+      "sha256": "9fbc8c8a735b74dd2035b8e879e1a4590f13a5175efb6749190bb615457a5aab"
+    },
+    "FLAGOPS": {
+      "source": "extras/jit-audit/tests/flagops.asm",
+      "defines": [],
+      "sha256": "f36e8c34fb62555510a45779011aea29b60eb9b727be4cfbbd56e07565159855"
+    },
+    "BITOPS": {
+      "source": "extras/jit-audit/tests/bitops.asm",
+      "defines": [],
+      "sha256": "f28ab101f7367e80346b0b6633f813f2540aa11bbee0ee89a6a5faac4183ee9e"
+    },
+    "X87LOAD": {
+      "source": "extras/jit-audit/tests/x87load.asm",
+      "defines": [],
+      "sha256": "b745d7771fd397c86932f0c1ad056da23e493f463957abfbbe5d09f2751e2005"
+    },
+    "X87STORE": {
+      "source": "extras/jit-audit/tests/x87store.asm",
+      "defines": [],
+      "sha256": "1006f30e4ee26416b685b8c49db73096644338a4e4bbd5cda9018199381ee38b"
+    },
+    "STACKOPS": {
+      "source": "extras/jit-audit/tests/stackops.asm",
+      "defines": [],
+      "sha256": "119e6b5ca3645dfda8c69310913152e77dab46df0e7ee01b2c58f437ca1b74f9"
+    },
+    "JITSIZE": {
+      "source": "extras/jit-audit/tests/jitsize.asm",
+      "defines": [],
+      "sha256": "8b9130979ef08922398250d54b8127e4b5717b29d791feeb53b3eed832e79486"
+    },
+    "JITSIZED": {
+      "source": "extras/jit-audit/tests/jitsize.asm",
+      "defines": [
+        "-DDIRTY"
+      ],
+      "sha256": "306b84792951602adf8bb7d165758484e350e8d222c057c2c7cfe530ee21b2e5"
+    },
+    "PFPREC": {
+      "source": "extras/jit-audit/tests/pfprec.asm",
+      "defines": [],
+      "sha256": "2bfc5b8586eed475e516e1710f630cbe8fd42f335f75fb03c691536f5478def3"
+    },
+    "PFREGS": {
+      "source": "extras/jit-audit/tests/pfregs.asm",
+      "defines": [],
+      "sha256": "945339e102335f3d68eea6bdd2ac952ee3ea4584a2aa6dc92741a89ffeb6706e"
+    },
+    "FLAGOPSN": {
+      "source": "extras/jit-audit/tests/flagops.asm",
+      "defines": [
+        "-DNEG"
+      ],
+      "sha256": "dc88071b7b3ad19bae975beb4e21b8b9cea59801bfff670fa93fcdf1257a27bc"
+    },
+    "X87LNEG": {
+      "source": "extras/jit-audit/tests/x87load.asm",
+      "defines": [
+        "-DNEG"
+      ],
+      "sha256": "c32dc674ec16487d72799ae8d15f56d69d1684211ad249c61763503887b24c94"
+    },
+    "X87SNEG": {
+      "source": "extras/jit-audit/tests/x87store.asm",
+      "defines": [
+        "-DNEG"
+      ],
+      "sha256": "37f587546e9b2ebb440c41069337441a62fb43ae76875cd3a2b8e318237fb97d"
+    },
+    "STACKNEG": {
+      "source": "extras/jit-audit/tests/stackops.asm",
+      "defines": [
+        "-DNEG"
+      ],
+      "sha256": "8c5aa8345adea2bbc9f19c030165c6c0311d3ef597eb8107b34b68181663fe70"
+    }
+  },
+  "tests": {
+    "cycles": "max",
+    "variants": {
+      "all4": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        }
+      },
+      "base": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": null
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": null
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": null
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": null
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": null
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": null
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": null
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": null
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": null
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": null
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": null
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": null
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": null
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": null
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": null
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": null
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": null
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": null
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": null
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": null
+          }
+        }
+      },
+      "c1a": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        }
+      },
+      "c1b": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        }
+      },
+      "c2": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        }
+      },
+      "c3": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        }
+      },
+      "c4": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        }
+      },
+      "c6": {
+        "dynamic": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "KNOWN",
+            "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "PASS",
+            "detail": "STACKOPS fails=00000000 checks=00000131",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        },
+        "normal": {
+          "BITOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "FLAGOPS": {
+            "verdict": "PASS",
+            "detail": "deviations=0000",
+            "same_as_base": true
+          },
+          "FLAGRST": {
+            "verdict": "PASS",
+            "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+            "same_as_base": true
+          },
+          "JITSIZE": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "JITSIZED": {
+            "verdict": "PASS",
+            "detail": "JITSIZE_PASS",
+            "same_as_base": true
+          },
+          "PFPREC": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "PFREGS": {
+            "verdict": "PASS",
+            "detail": "8 cases",
+            "same_as_base": true
+          },
+          "STACKOPS": {
+            "verdict": "KNOWN",
+            "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+            "same_as_base": true
+          },
+          "X87LOAD": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          },
+          "X87STORE": {
+            "verdict": "PASS",
+            "detail": "deviations=00",
+            "same_as_base": true
+          }
+        }
+      }
+    },
+    "negative_controls": {
+      "dynamic": {
+        "FLAGOPSN": {
+          "detected": true,
+          "detail": "deviations=4A00"
+        },
+        "STACKNEG": {
+          "detected": true,
+          "detail": "STACKOPS fails=00000001 checks=00000132; negative control (FAIL)          [0] got=00000001 exp=000000"
+        },
+        "X87LNEG": {
+          "detected": true,
+          "detail": "deviations=06"
+        },
+        "X87SNEG": {
+          "detected": true,
+          "detail": "deviations=06"
+        }
+      },
+      "normal": {
+        "FLAGOPSN": {
+          "detected": true,
+          "detail": "deviations=4A00"
+        },
+        "STACKNEG": {
+          "detected": true,
+          "detail": "STACKOPS fails=00000002 checks=00000132; pf call eip                      [0] got=00000EA1 exp=00000E"
+        },
+        "X87LNEG": {
+          "detected": true,
+          "detail": "deviations=06"
+        },
+        "X87SNEG": {
+          "detected": true,
+          "detail": "deviations=06"
+        }
+      }
+    }
+  },
+  "bench": {
+    "determinism": {
+      "labels": {
+        "base": {
+          "runs": 21,
+          "ok": 21,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "matches_phase2_reference": true
+        },
+        "base2": {
+          "runs": 21,
+          "ok": 21,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "matches_phase2_reference": true
+        },
+        "c4": {
+          "runs": 20,
+          "ok": 20,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "matches_phase2_reference": true
+        },
+        "c1a": {
+          "runs": 20,
+          "ok": 20,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "matches_phase2_reference": true
+        },
+        "c2": {
+          "runs": 20,
+          "ok": 20,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "matches_phase2_reference": true
+        },
+        "c6": {
+          "runs": 20,
+          "ok": 20,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.8"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.8"
+          ],
+          "matches_phase2_reference": true
+        },
+        "all4": {
+          "runs": 20,
+          "ok": 20,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.8"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.8"
+          ],
+          "matches_phase2_reference": true
+        },
+        "c3": {
+          "runs": 20,
+          "ok": 20,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "matches_phase2_reference": true
+        },
+        "c1b": {
+          "runs": 20,
+          "ok": 20,
+          "modal_result": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "deviating": 0,
+          "phase2_reference": [
+            "969",
+            "3.0",
+            "326.7"
+          ],
+          "matches_phase2_reference": true
+        }
+      },
+      "deviating_runs": [],
+      "failed_runs": [],
+      "reference_set": "MSVC ABI (clang-cl/MSVC): c6/all4 326.8",
+      "deterministic": true,
+      "all_match_phase2_reference": true
+    },
+    "stats": {
+      "metric": "demo_cpu_s",
+      "reference": [
+        "base",
+        "base2"
+      ],
+      "blocks_used": 20,
+      "blocks_dropped": [],
+      "speedup_vs_base": {
+        "all4": {
+          "speedup_pct": 19.88,
+          "boot95_pct": [
+            19.25,
+            20.55
+          ],
+          "blocks": 20
+        },
+        "base": {
+          "speedup_pct": -0.03,
+          "boot95_pct": [
+            -0.21,
+            0.17
+          ],
+          "blocks": 20
+        },
+        "base2": {
+          "speedup_pct": 0.03,
+          "boot95_pct": [
+            -0.17,
+            0.21
+          ],
+          "blocks": 20
+        },
+        "c1a": {
+          "speedup_pct": 6.96,
+          "boot95_pct": [
+            5.87,
+            7.82
+          ],
+          "blocks": 20
+        },
+        "c1b": {
+          "speedup_pct": 1.4,
+          "boot95_pct": [
+            0.98,
+            1.83
+          ],
+          "blocks": 20
+        },
+        "c2": {
+          "speedup_pct": 2.86,
+          "boot95_pct": [
+            2.31,
+            3.37
+          ],
+          "blocks": 20
+        },
+        "c3": {
+          "speedup_pct": 2.14,
+          "boot95_pct": [
+            1.36,
+            2.79
+          ],
+          "blocks": 20
+        },
+        "c4": {
+          "speedup_pct": 3.05,
+          "boot95_pct": [
+            2.62,
+            3.51
+          ],
+          "blocks": 20
+        },
+        "c6": {
+          "speedup_pct": 5.76,
+          "boot95_pct": [
+            5.13,
+            6.45
+          ],
+          "blocks": 20
+        }
+      },
+      "aa_base_vs_base2": {
+        "speedup_pct": -0.05,
+        "boot95_pct": [
+          -0.42,
+          0.35
+        ],
+        "blocks": 20
+      },
+      "aa_ok": true,
+      "aa_resolution_pct": 0.39,
+      "timing_conclusive": true,
+      "speedup_vs_base_thread_cycles": {
+        "all4": {
+          "speedup_pct": 19.81,
+          "boot95_pct": [
+            19.35,
+            20.27
+          ],
+          "blocks": 20
+        },
+        "base": {
+          "speedup_pct": -0.04,
+          "boot95_pct": [
+            -0.2,
+            0.11
+          ],
+          "blocks": 20
+        },
+        "base2": {
+          "speedup_pct": 0.04,
+          "boot95_pct": [
+            -0.11,
+            0.2
+          ],
+          "blocks": 20
+        },
+        "c1a": {
+          "speedup_pct": 6.89,
+          "boot95_pct": [
+            5.92,
+            7.65
+          ],
+          "blocks": 20
+        },
+        "c1b": {
+          "speedup_pct": 1.61,
+          "boot95_pct": [
+            1.3,
+            1.94
+          ],
+          "blocks": 20
+        },
+        "c2": {
+          "speedup_pct": 2.84,
+          "boot95_pct": [
+            2.27,
+            3.29
+          ],
+          "blocks": 20
+        },
+        "c3": {
+          "speedup_pct": 2.0,
+          "boot95_pct": [
+            1.17,
+            2.57
+          ],
+          "blocks": 20
+        },
+        "c4": {
+          "speedup_pct": 2.79,
+          "boot95_pct": [
+            2.44,
+            3.16
+          ],
+          "blocks": 20
+        },
+        "c6": {
+          "speedup_pct": 5.62,
+          "boot95_pct": [
+            5.13,
+            6.11
+          ],
+          "blocks": 20
+        }
+      },
+      "per_label": {
+        "base": {
+          "n": 20,
+          "median_s": 4.6562,
+          "cv_pct": 0.6
+        },
+        "base2": {
+          "n": 20,
+          "median_s": 4.6562,
+          "cv_pct": 0.96
+        },
+        "c4": {
+          "n": 20,
+          "median_s": 4.5156,
+          "cv_pct": 0.78
+        },
+        "c1a": {
+          "n": 20,
+          "median_s": 4.3359,
+          "cv_pct": 2.22
+        },
+        "c2": {
+          "n": 20,
+          "median_s": 4.5156,
+          "cv_pct": 1.1
+        },
+        "c6": {
+          "n": 20,
+          "median_s": 4.4141,
+          "cv_pct": 1.06
+        },
+        "all4": {
+          "n": 20,
+          "median_s": 3.8906,
+          "cv_pct": 1.09
+        },
+        "c3": {
+          "n": 20,
+          "median_s": 4.5469,
+          "cv_pct": 1.58
+        },
+        "c1b": {
+          "n": 20,
+          "median_s": 4.5938,
+          "cv_pct": 0.87
+        }
+      }
+    },
+    "params": {
+      "blocks": 20,
+      "warmups": 2,
+      "seed": 820240247,
+      "returncode": 0
+    }
+  },
+  "overall": {
+    "verdict": "OK",
+    "reasons": []
+  }
+}

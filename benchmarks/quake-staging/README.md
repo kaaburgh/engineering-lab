@@ -7,6 +7,16 @@ programs are maintained in
 
 ## Latest research (2026-11-09)
 
+**Independent Phase 1 audit:** [research/phase1-audit-2026-11-09/](research/phase1-audit-2026-11-09/audit.md)
+re-checks PR #1–#10 on a different host with Linux `perf` (DWARF unwind),
+exact in-emulator event counters and cost injection. Key results: the dynamic
+core's x87 memory faults give the guest #PF handler the JIT-block start EIP
+and stale registers (PR #10 fixes this for m32 loads only — a behaviour
+change); timing noise remains 6–10% even with deterministic guest work, but
+28 interleaved blocks put PR #10 at +8.7% [+5.0, +12.6] (PR #9: +1.9%,
+indistinguishable from noise); guest-flag save/restore (`PUSHFQ`/`POPFQ`)
+costs ≈9% of the demo window, more than the x87 helper path (≈7.3%).
+
 Current session results are indexed in [research/hypotheses.md](research/hypotheses.md), including [A/A stability](research/stability-aa48-report.md), [helper caller attribution](research/caller-attribution-2026-11-09.md), and the [x87 inline-read research experiment](research/fpu-read-study/). No performance improvement has been established.
 
 ## What is verified (2026-11-07)

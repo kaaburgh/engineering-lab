@@ -1,0 +1,62 @@
+{
+ "seed": 77003,
+ "cycles": "1000000",
+ "blocks": 20,
+ "warmups": 0,
+ "variants": {
+  "base": {
+   "path": "dosbox-fastbase",
+   "sha256": "a9d084df446195754dcbdb871e716e33c5b6b3010ebcde6b5b8092e1a4c02df8"
+  },
+  "all4": {
+   "path": "dosbox-all4",
+   "sha256": "590496d0eef4c6871c4c4b11490630c0a4cfa340c1d1beb0c03346f3dc5fe80c"
+  }
+ },
+ "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+ "nproc": 4,
+ "poll_ms": 5,
+ "schedule": [
+  "base",
+  "all4",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "base",
+  "all4",
+  "all4",
+  "base",
+  "base",
+  "all4",
+  "all4",
+  "base"
+ ],
+ "note": "determinism stress: three instances of this series ran concurrently on 4 vCPUs"
+}

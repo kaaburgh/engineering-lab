@@ -1,0 +1,9 @@
+int_mov   F=01 E=I R=ok V=ok
+fld32     F=01 E=I R=ok V=ok
+fadd32    F=01 E=I R=ok V=ok
+fild32    F=01 E=I R=ok V=ok
+fiadd32   F=01 E=I R=ok V=ok
+fld32x    F=01 E=I R=ok V=ok
+fld64     F=01 E=I R=ok V=ok
+fstp32    F=01 E=I R=ok V=ok
+PFPREC_DONE

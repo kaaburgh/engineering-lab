@@ -1,0 +1,73 @@
+{
+  "os": "Windows",
+  "os_release": "2025Server",
+  "os_version": "10.0.26100",
+  "machine": "AMD64",
+  "python": "3.12.10",
+  "cpu_model": "AMD EPYC 7763 64-Core Processor",
+  "logical_cpus": 4,
+  "allowed_cpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "topology": {
+    "cores": [
+      {
+        "smt": true,
+        "efficiency_class": 0,
+        "group": 0,
+        "mask": "0x3"
+      },
+      {
+        "smt": true,
+        "efficiency_class": 0,
+        "group": 0,
+        "mask": "0xc"
+      }
+    ],
+    "caches": [
+      {
+        "level": 3,
+        "size_kib": 32768,
+        "type": 0,
+        "group": 0,
+        "mask": "0xf"
+      }
+    ]
+  },
+  "power_scheme": "Power Scheme GUID: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c  (High performance)",
+  "sensors_start": {
+    "ac_power": "ac"
+  },
+  "cpu_clock_mhz": "2445 / 2445",
+  "thermal_zones_c": null,
+  "tools": {
+    "git": "git version 2.56.0.windows.4",
+    "cmake": "cmake version 4.4.5",
+    "nasm": "NASM version 2.16.01 compiled on May  3 2024",
+    "ninja": null,
+    "python": "3.12.10"
+  },
+  "runner": {
+    "version": 1,
+    "commit": "0536289898eae39a727059874b22fafdc5efb472",
+    "dirty": false,
+    "argv": [
+      "--mode",
+      "full",
+      "--with-optional",
+      "--work",
+      "<WORK>"
+    ]
+  },
+  "bench_cpus": [
+    2,
+    3
+  ],
+  "preset": "release-windows",
+  "sensors_end": {
+    "ac_power": "ac"
+  }
+}

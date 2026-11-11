@@ -1,0 +1,512 @@
+rm push16 sp2 esp                [0] got=00000000 OBS
+rm push16 sp2 ecx                [0] got=AABBCCDD OBS
+rm push16 sp2 m[FFFC]            [0] got=88776655 OBS
+rm push16 sp2 m[10000]           [0] got=BBAA99FF OBS
+rm push16 sp2 m[0]               [0] got=DDCCC3D4 OBS
+rm push16 sp1 esp                [0] got=0000FFFF OBS
+rm push16 sp1 ecx                [0] got=AABBCCDD OBS
+rm push16 sp1 m[FFFC]            [0] got=D4776655 OBS
+rm push16 sp1 m[10000]           [0] got=BBAA99C3 OBS
+rm push16 sp1 m[0]               [0] got=DDCCBBA9 OBS
+rm push16 sp0 esp                [0] got=0000FFFE OBS
+rm push16 sp0 ecx                [0] got=AABBCCDD OBS
+rm push16 sp0 m[FFFC]            [0] got=C3D46655 OBS
+rm push16 sp0 m[10000]           [0] got=BBAA99FF OBS
+rm push16 sp0 m[0]               [0] got=DDCCBBA9 OBS
+rm push32 sp4 esp                [0] got=00000000 OBS
+rm push32 sp4 ecx                [0] got=AABBCCDD OBS
+rm push32 sp4 m[FFFC]            [0] got=88776655 OBS
+rm push32 sp4 m[10000]           [0] got=BBAA99FF OBS
+rm push32 sp4 m[0]               [0] got=A1B2C3D4 OBS
+rm push32 sp2 esp                [0] got=0000FFFE OBS
+rm push32 sp2 ecx                [0] got=AABBCCDD OBS
+rm push32 sp2 m[FFFC]            [0] got=C3D46655 OBS
+rm push32 sp2 m[10000]           [0] got=BBAAA1B2 OBS
+rm push32 sp2 m[0]               [0] got=DDCCBBA9 OBS
+rm push32 sp1 esp                [0] got=0000FFFD OBS
+rm push32 sp1 ecx                [0] got=AABBCCDD OBS
+rm push32 sp1 m[FFFC]            [0] got=B2C3D455 OBS
+rm push32 sp1 m[10000]           [0] got=BBAA99A1 OBS
+rm push32 sp1 m[0]               [0] got=DDCCBBA9 OBS
+rm push32 sp0 esp                [0] got=0000FFFC OBS
+rm push32 sp0 ecx                [0] got=AABBCCDD OBS
+rm push32 sp0 m[FFFC]            [0] got=A1B2C3D4 OBS
+rm push32 sp0 m[10000]           [0] got=BBAA99FF OBS
+rm push32 sp0 m[0]               [0] got=DDCCBBA9 OBS
+rm pop16 spFFFE esp              [0] got=00000000 OBS
+rm pop16 spFFFE ecx              [0] got=AABB8877 OBS
+rm pop16 spFFFE m[FFFC]          [0] got=88776655 OBS
+rm pop16 spFFFE m[10000]         [0] got=BBAA99FF OBS
+rm pop16 spFFFE m[0]             [0] got=DDCCBBA9 OBS
+rm pop16 spFFFF esp              [0] got=00000001 OBS
+rm pop16 spFFFF ecx              [0] got=AABBFF88 OBS
+rm pop16 spFFFF m[FFFC]          [0] got=88776655 OBS
+rm pop16 spFFFF m[10000]         [0] got=BBAA99FF OBS
+rm pop16 spFFFF m[0]             [0] got=DDCCBBA9 OBS
+rm pop32 spFFFE esp              [0] got=00000002 OBS
+rm pop32 spFFFE ecx              [0] got=99FF8877 OBS
+rm pop32 spFFFE m[FFFC]          [0] got=88776655 OBS
+rm pop32 spFFFE m[10000]         [0] got=BBAA99FF OBS
+rm pop32 spFFFE m[0]             [0] got=DDCCBBA9 OBS
+rm pop32 spFFFC esp              [0] got=00000000 OBS
+rm pop32 spFFFC ecx              [0] got=88776655 OBS
+rm pop32 spFFFC m[FFFC]          [0] got=88776655 OBS
+rm pop32 spFFFC m[10000]         [0] got=BBAA99FF OBS
+rm pop32 spFFFC m[0]             [0] got=DDCCBBA9 OBS
+rm pop32 spFFFD esp              [0] got=00000001 OBS
+rm pop32 spFFFD ecx              [0] got=FF887766 OBS
+rm pop32 spFFFD m[FFFC]          [0] got=88776655 OBS
+rm pop32 spFFFD m[10000]         [0] got=BBAA99FF OBS
+rm pop32 spFFFD m[0]             [0] got=DDCCBBA9 OBS
+rm push sp esp                   [0] got=00000000 OBS
+rm push sp ecx                   [0] got=AABBCCDD OBS
+rm push sp m[FFFC]               [0] got=88776655 OBS
+rm push sp m[10000]              [0] got=BBAA99FF OBS
+rm push sp m[0]                  [0] got=DDCC0002 OBS
+rm call esp                      [0] got=00000000 OBS
+rm ret esp                       [0] got=00000002 OBS
+p32 esp after push               [0] got=00011FFC exp=00011FFC OK
+p32 esp after pop                [0] got=00012000 exp=00012000 OK
+p32 popped value                 [0] got=11223344 exp=11223344 OK
+p32 memory                       [0] got=11223344 exp=11223344 OK
+p32 guards                       [0] got=0000A5A5 exp=0000A5A5 OK
+p32 esp after push               [1] got=00011FFD exp=00011FFD OK
+p32 esp after pop                [1] got=00012001 exp=00012001 OK
+p32 popped value                 [1] got=11223344 exp=11223344 OK
+p32 memory                       [1] got=11223344 exp=11223344 OK
+p32 guards                       [1] got=0000A5A5 exp=0000A5A5 OK
+p32 esp after push               [2] got=00011FFE exp=00011FFE OK
+p32 esp after pop                [2] got=00012002 exp=00012002 OK
+p32 popped value                 [2] got=11223344 exp=11223344 OK
+p32 memory                       [2] got=11223344 exp=11223344 OK
+p32 guards                       [2] got=0000A5A5 exp=0000A5A5 OK
+p32 esp after push               [3] got=00011FFF exp=00011FFF OK
+p32 esp after pop                [3] got=00012003 exp=00012003 OK
+p32 popped value                 [3] got=11223344 exp=11223344 OK
+p32 memory                       [3] got=11223344 exp=11223344 OK
+p32 guards                       [3] got=0000A5A5 exp=0000A5A5 OK
+imm8 esp                         [0] got=00011FFC exp=00011FFC OK
+imm8 mem                         [0] got=FFFFFF80 exp=FFFFFF80 OK
+imm32 esp                        [0] got=00011FF8 exp=00011FF8 OK
+imm32 value                      [0] got=89ABCDEF exp=89ABCDEF OK
+imm8 value                       [0] got=FFFFFF80 exp=FFFFFF80 OK
+imm pair esp                     [0] got=00012000 exp=00012000 OK
+push [m] esp                     [0] got=00011FFC exp=00011FFC OK
+push [m] mem                     [0] got=CAFEBABE exp=CAFEBABE OK
+pop [m] value                    [0] got=CAFEBABE exp=CAFEBABE OK
+pop [m] esp                      [0] got=00012000 exp=00012000 OK
+pop [esp] esp                    [0] got=00012000 exp=00012000 OK
+pop [esp] mem                    [0] got=12345678 exp=12345678 OK
+push esp esp                     [0] got=00011FFC exp=00011FFC OK
+push esp value                   [0] got=00012000 exp=00012000 OK
+pop esp                          [0] got=00011400 exp=00011400 OK
+push [esp] esp                   [0] got=00011FF8 exp=00011FF8 OK
+push [esp] v1                    [0] got=5AA5F00F exp=5AA5F00F OK
+push [esp] v2                    [0] got=5AA5F00F exp=5AA5F00F OK
+call rel32 esp                   [0] got=00011FFC exp=00011FFC OK
+call rel32 retaddr               [0] got=0000080B exp=0000080B OK
+ret esp                          [0] got=00012000 exp=00012000 OK
+call reg esp                     [0] got=00011FFC exp=00011FFC OK
+call reg retaddr                 [0] got=00000867 exp=00000867 OK
+call reg ret esp                 [0] got=00012000 exp=00012000 OK
+call [m] esp                     [0] got=00011FFC exp=00011FFC OK
+call [m] retaddr                 [0] got=000008CC exp=000008CC OK
+call [m] ret esp                 [0] got=00012000 exp=00012000 OK
+ret 8 esp                        [0] got=00012000 exp=00012000 OK
+push es esp                      [0] got=00011FFC exp=00011FFC OK
+push es sel                      [0] got=00000010 exp=00000010 OK
+push cs sel                      [0] got=00000008 exp=00000008 OK
+push cs dword (obs)              [0] got=00000008 OBS
+pushfd flags                     [0] got=00000044 exp=00000044 OK
+popfd flags                      [0] got=000000D5 exp=000000D5 OK
+imm8 esp                         [1] got=00011FFD exp=00011FFD OK
+imm8 mem                         [1] got=FFFFFF80 exp=FFFFFF80 OK
+imm32 esp                        [1] got=00011FF9 exp=00011FF9 OK
+imm32 value                      [1] got=89ABCDEF exp=89ABCDEF OK
+imm8 value                       [1] got=FFFFFF80 exp=FFFFFF80 OK
+imm pair esp                     [1] got=00012001 exp=00012001 OK
+push [m] esp                     [1] got=00011FFD exp=00011FFD OK
+push [m] mem                     [1] got=CAFEBABE exp=CAFEBABE OK
+pop [m] value                    [1] got=CAFEBABE exp=CAFEBABE OK
+pop [m] esp                      [1] got=00012001 exp=00012001 OK
+pop [esp] esp                    [1] got=00012001 exp=00012001 OK
+pop [esp] mem                    [1] got=12345678 exp=12345678 OK
+push esp esp                     [1] got=00011FFD exp=00011FFD OK
+push esp value                   [1] got=00012001 exp=00012001 OK
+pop esp                          [1] got=00011400 exp=00011400 OK
+push [esp] esp                   [1] got=00011FF9 exp=00011FF9 OK
+push [esp] v1                    [1] got=5AA5F00F exp=5AA5F00F OK
+push [esp] v2                    [1] got=5AA5F00F exp=5AA5F00F OK
+call rel32 esp                   [1] got=00011FFD exp=00011FFD OK
+call rel32 retaddr               [1] got=0000080B exp=0000080B OK
+ret esp                          [1] got=00012001 exp=00012001 OK
+call reg esp                     [1] got=00011FFD exp=00011FFD OK
+call reg retaddr                 [1] got=00000867 exp=00000867 OK
+call reg ret esp                 [1] got=00012001 exp=00012001 OK
+call [m] esp                     [1] got=00011FFD exp=00011FFD OK
+call [m] retaddr                 [1] got=000008CC exp=000008CC OK
+call [m] ret esp                 [1] got=00012001 exp=00012001 OK
+ret 8 esp                        [1] got=00012001 exp=00012001 OK
+push es esp                      [1] got=00011FFD exp=00011FFD OK
+push es sel                      [1] got=00000010 exp=00000010 OK
+push cs sel                      [1] got=00000008 exp=00000008 OK
+push cs dword (obs)              [1] got=00000008 OBS
+pushfd flags                     [1] got=00000044 exp=00000044 OK
+popfd flags                      [1] got=000000D5 exp=000000D5 OK
+imm8 esp                         [2] got=00011FFE exp=00011FFE OK
+imm8 mem                         [2] got=FFFFFF80 exp=FFFFFF80 OK
+imm32 esp                        [2] got=00011FFA exp=00011FFA OK
+imm32 value                      [2] got=89ABCDEF exp=89ABCDEF OK
+imm8 value                       [2] got=FFFFFF80 exp=FFFFFF80 OK
+imm pair esp                     [2] got=00012002 exp=00012002 OK
+push [m] esp                     [2] got=00011FFE exp=00011FFE OK
+push [m] mem                     [2] got=CAFEBABE exp=CAFEBABE OK
+pop [m] value                    [2] got=CAFEBABE exp=CAFEBABE OK
+pop [m] esp                      [2] got=00012002 exp=00012002 OK
+pop [esp] esp                    [2] got=00012002 exp=00012002 OK
+pop [esp] mem                    [2] got=12345678 exp=12345678 OK
+push esp esp                     [2] got=00011FFE exp=00011FFE OK
+push esp value                   [2] got=00012002 exp=00012002 OK
+pop esp                          [2] got=00011400 exp=00011400 OK
+push [esp] esp                   [2] got=00011FFA exp=00011FFA OK
+push [esp] v1                    [2] got=5AA5F00F exp=5AA5F00F OK
+push [esp] v2                    [2] got=5AA5F00F exp=5AA5F00F OK
+call rel32 esp                   [2] got=00011FFE exp=00011FFE OK
+call rel32 retaddr               [2] got=0000080B exp=0000080B OK
+ret esp                          [2] got=00012002 exp=00012002 OK
+call reg esp                     [2] got=00011FFE exp=00011FFE OK
+call reg retaddr                 [2] got=00000867 exp=00000867 OK
+call reg ret esp                 [2] got=00012002 exp=00012002 OK
+call [m] esp                     [2] got=00011FFE exp=00011FFE OK
+call [m] retaddr                 [2] got=000008CC exp=000008CC OK
+call [m] ret esp                 [2] got=00012002 exp=00012002 OK
+ret 8 esp                        [2] got=00012002 exp=00012002 OK
+push es esp                      [2] got=00011FFE exp=00011FFE OK
+push es sel                      [2] got=00000010 exp=00000010 OK
+push cs sel                      [2] got=00000008 exp=00000008 OK
+push cs dword (obs)              [2] got=00000008 OBS
+pushfd flags                     [2] got=00000044 exp=00000044 OK
+popfd flags                      [2] got=000000D5 exp=000000D5 OK
+imm8 esp                         [3] got=00011FFF exp=00011FFF OK
+imm8 mem                         [3] got=FFFFFF80 exp=FFFFFF80 OK
+imm32 esp                        [3] got=00011FFB exp=00011FFB OK
+imm32 value                      [3] got=89ABCDEF exp=89ABCDEF OK
+imm8 value                       [3] got=FFFFFF80 exp=FFFFFF80 OK
+imm pair esp                     [3] got=00012003 exp=00012003 OK
+push [m] esp                     [3] got=00011FFF exp=00011FFF OK
+push [m] mem                     [3] got=CAFEBABE exp=CAFEBABE OK
+pop [m] value                    [3] got=CAFEBABE exp=CAFEBABE OK
+pop [m] esp                      [3] got=00012003 exp=00012003 OK
+pop [esp] esp                    [3] got=00012003 exp=00012003 OK
+pop [esp] mem                    [3] got=12345678 exp=12345678 OK
+push esp esp                     [3] got=00011FFF exp=00011FFF OK
+push esp value                   [3] got=00012003 exp=00012003 OK
+pop esp                          [3] got=00011400 exp=00011400 OK
+push [esp] esp                   [3] got=00011FFB exp=00011FFB OK
+push [esp] v1                    [3] got=5AA5F00F exp=5AA5F00F OK
+push [esp] v2                    [3] got=5AA5F00F exp=5AA5F00F OK
+call rel32 esp                   [3] got=00011FFF exp=00011FFF OK
+call rel32 retaddr               [3] got=0000080B exp=0000080B OK
+ret esp                          [3] got=00012003 exp=00012003 OK
+call reg esp                     [3] got=00011FFF exp=00011FFF OK
+call reg retaddr                 [3] got=00000867 exp=00000867 OK
+call reg ret esp                 [3] got=00012003 exp=00012003 OK
+call [m] esp                     [3] got=00011FFF exp=00011FFF OK
+call [m] retaddr                 [3] got=000008CC exp=000008CC OK
+call [m] ret esp                 [3] got=00012003 exp=00012003 OK
+ret 8 esp                        [3] got=00012003 exp=00012003 OK
+push es esp                      [3] got=00011FFF exp=00011FFF OK
+push es sel                      [3] got=00000010 exp=00000010 OK
+push cs sel                      [3] got=00000008 exp=00000008 OK
+push cs dword (obs)              [3] got=00000008 OBS
+pushfd flags                     [3] got=00000044 exp=00000044 OK
+popfd flags                      [3] got=000000D5 exp=000000D5 OK
+o16 esp after push               [0] got=00011FFE exp=00011FFE OK
+o16 esp after pop                [0] got=00012000 exp=00012000 OK
+o16 pop keeps upper              [0] got=AABBC3D4 exp=AABBC3D4 OK
+o16 mem                          [0] got=0000C3D4 exp=0000C3D4 OK
+o16 guards                       [0] got=0000A5A5 exp=0000A5A5 OK
+o16 imm16 esp                    [0] got=00011FFE exp=00011FFE OK
+o16 imm8 esp                     [0] got=00011FFC exp=00011FFC OK
+o16 pop [m] x2                   [0] got=1234FFFF exp=1234FFFF OK
+o16 push sp                      [0] got=00002000 exp=00002000 OK
+o16 pop sp                       [0] got=00010900 exp=00010900 OK
+o16 call esp                     [0] got=00011FFE exp=00011FFE OK
+o16 call retaddr                 [0] got=00000BBE exp=00000BBE OK
+o16 ret esp                      [0] got=00012000 exp=00012000 OK
+o16 esp after push               [1] got=00011FFF exp=00011FFF OK
+o16 esp after pop                [1] got=00012001 exp=00012001 OK
+o16 pop keeps upper              [1] got=AABBC3D4 exp=AABBC3D4 OK
+o16 mem                          [1] got=0000C3D4 exp=0000C3D4 OK
+o16 guards                       [1] got=0000A5A5 exp=0000A5A5 OK
+o16 imm16 esp                    [1] got=00011FFF exp=00011FFF OK
+o16 imm8 esp                     [1] got=00011FFD exp=00011FFD OK
+o16 pop [m] x2                   [1] got=1234FFFF exp=1234FFFF OK
+o16 push sp                      [1] got=00002001 exp=00002001 OK
+o16 pop sp                       [1] got=00010900 exp=00010900 OK
+o16 call esp                     [1] got=00011FFF exp=00011FFF OK
+o16 call retaddr                 [1] got=00000BBE exp=00000BBE OK
+o16 ret esp                      [1] got=00012001 exp=00012001 OK
+o16 esp after push               [2] got=00012000 exp=00012000 OK
+o16 esp after pop                [2] got=00012002 exp=00012002 OK
+o16 pop keeps upper              [2] got=AABBC3D4 exp=AABBC3D4 OK
+o16 mem                          [2] got=0000C3D4 exp=0000C3D4 OK
+o16 guards                       [2] got=0000A5A5 exp=0000A5A5 OK
+o16 imm16 esp                    [2] got=00012000 exp=00012000 OK
+o16 imm8 esp                     [2] got=00011FFE exp=00011FFE OK
+o16 pop [m] x2                   [2] got=1234FFFF exp=1234FFFF OK
+o16 push sp                      [2] got=00002002 exp=00002002 OK
+o16 pop sp                       [2] got=00010900 exp=00010900 OK
+o16 call esp                     [2] got=00012000 exp=00012000 OK
+o16 call retaddr                 [2] got=00000BBE exp=00000BBE OK
+o16 ret esp                      [2] got=00012002 exp=00012002 OK
+o16 esp after push               [3] got=00012001 exp=00012001 OK
+o16 esp after pop                [3] got=00012003 exp=00012003 OK
+o16 pop keeps upper              [3] got=AABBC3D4 exp=AABBC3D4 OK
+o16 mem                          [3] got=0000C3D4 exp=0000C3D4 OK
+o16 guards                       [3] got=0000A5A5 exp=0000A5A5 OK
+o16 imm16 esp                    [3] got=00012001 exp=00012001 OK
+o16 imm8 esp                     [3] got=00011FFF exp=00011FFF OK
+o16 pop [m] x2                   [3] got=1234FFFF exp=1234FFFF OK
+o16 push sp                      [3] got=00002003 exp=00002003 OK
+o16 pop sp                       [3] got=00010900 exp=00010900 OK
+o16 call esp                     [3] got=00012001 exp=00012001 OK
+o16 call retaddr                 [3] got=00000BBE exp=00000BBE OK
+o16 ret esp                      [3] got=00012003 exp=00012003 OK
+pf push nfault                   [0] got=00000001 exp=00000001 OK
+pf push cr2                      [0] got=000127FC exp=000127FC OK
+pf push err                      [0] got=00000002 exp=00000002 OK
+pf push eip                      [0] got=00000C7B exp=00000C7B OK
+pf push esp@fault                [0] got=00012800 exp=00012800 OK
+pf push esp after                [0] got=000127FC exp=000127FC OK
+pf push mem                      [0] got=DEADBEEF exp=DEADBEEF OK
+pf pop nfault                    [0] got=00000001 exp=00000001 OK
+pf pop cr2                       [0] got=00012800 exp=00012800 OK
+pf pop err                       [0] got=00000000 exp=00000000 OK
+pf pop eip                       [0] got=00000D7D exp=00000D7D OK
+pf pop esp@fault                 [0] got=00012800 exp=00012800 OK
+pf pop ecx@fault                 [0] got=DEADBEEF exp=DEADBEEF OK
+pf pop ecx                       [0] got=CAFEF00D exp=CAFEF00D OK
+pf pop esp after                 [0] got=00012804 exp=00012804 OK
+pf call nfault                   [0] got=00000001 exp=00000001 OK
+pf call cr2                      [0] got=000127FC exp=000127FC OK
+pf call err                      [0] got=00000002 exp=00000002 OK
+pf call eip                      [0] got=00000E87 exp=00000E87 OK
+pf call esp@fault                [0] got=00012800 exp=00012800 OK
+pf call esp in callee            [0] got=000127FC exp=000127FC OK
+pf call retaddr                  [0] got=00000E8C exp=00000E8C OK
+pf call esp after ret            [0] got=00012800 exp=00012800 OK
+pf ret nfault                    [0] got=00000001 exp=00000001 OK
+pf ret cr2                       [0] got=00012800 exp=00012800 OK
+pf ret err                       [0] got=00000000 exp=00000000 OK
+pf ret eip                       [0] got=00000FA0 exp=00000FA0 OK
+pf ret esp@fault                 [0] got=00012800 exp=00012800 OK
+pf ret esp after                 [0] got=00012804 exp=00012804 OK
+pf pop esp nfault                [0] got=00000001 exp=00000001 OK
+pf pop esp cr2                   [0] got=00012800 exp=00012800 OK
+pf pop esp err                   [0] got=00000000 exp=00000000 OK
+pf pop esp eip                   [0] got=000010B6 exp=000010B6 OK
+pf pop esp esp@fault             [0] got=00012800 exp=00012800 OK
+pf pop esp after                 [0] got=00011400 exp=00011400 OK
+pf o16 push nfault               [0] got=00000001 exp=00000001 OK
+pf o16 push cr2                  [0] got=000127FE exp=000127FE OK
+pf o16 push err                  [0] got=00000002 exp=00000002 OK
+pf o16 push eip                  [0] got=00001199 exp=00001199 OK
+pf o16 push esp@fault            [0] got=00012800 exp=00012800 OK
+pf o16 push esp after            [0] got=000127FE exp=000127FE OK
+pf o16 push mem                  [0] got=0000C3D4 exp=0000C3D4 OK
+pf o16 pop nfault                [0] got=00000001 exp=00000001 OK
+pf o16 pop cr2                   [0] got=00012800 exp=00012800 OK
+pf o16 pop err                   [0] got=00000000 exp=00000000 OK
+pf o16 pop eip                   [0] got=0000128F exp=0000128F OK
+pf o16 pop esp@fault             [0] got=00012800 exp=00012800 OK
+pf o16 pop ecx@fault             [0] got=AABBCCDD exp=AABBCCDD OK
+pf o16 pop ecx                   [0] got=AABB5678 exp=AABB5678 OK
+pf o16 pop esp                   [0] got=00012802 exp=00012802 OK
+x push hi-miss nfault            [0] got=00000001 exp=00000001 OK
+x push hi-miss cr2               [0] got=00012000 exp=00012000 OK
+x push hi-miss err               [0] got=00000002 exp=00000002 OK
+x push hi-miss eip               [0] got=000013B3 exp=000013B3 OK
+x push hi-miss esp@fault         [0] got=00012002 exp=00012002 OK
+x push hi-miss snap(obs)         [0] got=3344A5A5 OBS
+x push hi-miss esp               [0] got=00011FFE exp=00011FFE OK
+x push hi-miss mem               [0] got=11223344 exp=11223344 OK
+x push lo-miss nfault            [1] got=00000001 exp=00000001 OK
+x push lo-miss cr2               [1] got=00011FFE exp=00011FFE OK
+x push lo-miss err               [1] got=00000002 exp=00000002 OK
+x push lo-miss eip               [1] got=000014E3 exp=000014E3 OK
+x push lo-miss esp@fault         [1] got=00012002 exp=00012002 OK
+x push lo-miss snap(obs)         [1] got=A5A5A5A5 OBS
+x push lo-miss esp               [1] got=00011FFE exp=00011FFE OK
+x push lo-miss mem               [1] got=11223344 exp=11223344 OK
+x pop hi-miss nfault             [2] got=00000001 exp=00000001 OK
+x pop hi-miss cr2                [2] got=00012000 exp=00012000 OK
+x pop hi-miss err                [2] got=00000000 exp=00000000 OK
+x pop hi-miss eip                [2] got=0000161B exp=0000161B OK
+x pop hi-miss esp@fault          [2] got=00011FFE exp=00011FFE OK
+x pop hi-miss ecx@fault          [2] got=DEADBEEF exp=DEADBEEF OK
+x pop hi-miss esp                [2] got=00012002 exp=00012002 OK
+x pop hi-miss ecx(obs)           [2] got=0000BBAA OBS
+x push16 hi-miss nfault          [3] got=00000001 exp=00000001 OK
+x push16 hi-miss cr2             [3] got=00012000 exp=00012000 OK
+x push16 hi-miss err             [3] got=00000002 exp=00000002 OK
+x push16 hi-miss eip             [3] got=0000173C exp=0000173C OK
+x push16 hi-miss esp@fault       [3] got=00012001 exp=00012001 OK
+x push16 snap(obs)               [3] got=D4A5A5A5 OBS
+x push16 mem                     [3] got=0000C3D4 exp=0000C3D4 OK
+live eax                         [0] got=07070707 exp=07070707 OK
+live ecx                         [0] got=06060606 exp=06060606 OK
+live edx                         [0] got=05050505 exp=05050505 OK
+live ebx                         [0] got=04040404 exp=04040404 OK
+live ebp                         [0] got=03030303 exp=03030303 OK
+live esi                         [0] got=02020202 exp=02020202 OK
+live edi                         [0] got=01010101 exp=01010101 OK
+live esp                         [0] got=00012008 exp=00012008 OK
+live flags ah                    [0] got=00000006 exp=00000006 OK
+live of                          [0] got=00000000 exp=00000000 OK
+live mem[0] edi                  [0] got=07070707 exp=07070707 OK
+live mem[3] ebx                  [0] got=04040404 exp=04040404 OK
+live mem[6] eax                  [0] got=01010101 exp=01010101 OK
+live eax                         [1] got=07070707 exp=07070707 OK
+live ecx                         [1] got=06060606 exp=06060606 OK
+live edx                         [1] got=05050505 exp=05050505 OK
+live ebx                         [1] got=04040404 exp=04040404 OK
+live ebp                         [1] got=03030303 exp=03030303 OK
+live esi                         [1] got=02020202 exp=02020202 OK
+live edi                         [1] got=01010101 exp=01010101 OK
+live esp                         [1] got=00012009 exp=00012009 OK
+live flags ah                    [1] got=00000006 exp=00000006 OK
+live of                          [1] got=00000000 exp=00000000 OK
+live mem[0] edi                  [1] got=07070707 exp=07070707 OK
+live mem[3] ebx                  [1] got=04040404 exp=04040404 OK
+live mem[6] eax                  [1] got=01010101 exp=01010101 OK
+live eax                         [2] got=07070707 exp=07070707 OK
+live ecx                         [2] got=06060606 exp=06060606 OK
+live edx                         [2] got=05050505 exp=05050505 OK
+live ebx                         [2] got=04040404 exp=04040404 OK
+live ebp                         [2] got=03030303 exp=03030303 OK
+live esi                         [2] got=02020202 exp=02020202 OK
+live edi                         [2] got=01010101 exp=01010101 OK
+live esp                         [2] got=0001200A exp=0001200A OK
+live flags ah                    [2] got=00000006 exp=00000006 OK
+live of                          [2] got=00000000 exp=00000000 OK
+live mem[0] edi                  [2] got=07070707 exp=07070707 OK
+live mem[3] ebx                  [2] got=04040404 exp=04040404 OK
+live mem[6] eax                  [2] got=01010101 exp=01010101 OK
+live eax                         [3] got=07070707 exp=07070707 OK
+live ecx                         [3] got=06060606 exp=06060606 OK
+live edx                         [3] got=05050505 exp=05050505 OK
+live ebx                         [3] got=04040404 exp=04040404 OK
+live ebp                         [3] got=03030303 exp=03030303 OK
+live esi                         [3] got=02020202 exp=02020202 OK
+live edi                         [3] got=01010101 exp=01010101 OK
+live esp                         [3] got=0001200B exp=0001200B OK
+live flags ah                    [3] got=00000006 exp=00000006 OK
+live of                          [3] got=00000000 exp=00000000 OK
+live mem[0] edi                  [3] got=07070707 exp=07070707 OK
+live mem[3] ebx                  [3] got=04040404 exp=04040404 OK
+live mem[6] eax                  [3] got=01010101 exp=01010101 OK
+live eax                         [4] got=07070707 exp=07070707 OK
+live ecx                         [4] got=06060606 exp=06060606 OK
+live edx                         [4] got=05050505 exp=05050505 OK
+live ebx                         [4] got=04040404 exp=04040404 OK
+live ebp                         [4] got=03030303 exp=03030303 OK
+live esi                         [4] got=02020202 exp=02020202 OK
+live edi                         [4] got=01010101 exp=01010101 OK
+live esp                         [4] got=00012800 exp=00012800 OK
+live flags ah                    [4] got=00000006 exp=00000006 OK
+live of                          [4] got=00000000 exp=00000000 OK
+live mem[0] edi                  [4] got=07070707 exp=07070707 OK
+live mem[3] ebx                  [4] got=04040404 exp=04040404 OK
+live mem[6] eax                  [4] got=01010101 exp=01010101 OK
+s16 push16 sp2 esp               [0] got=77770000 OBS
+s16 push16 sp2 ecx               [0] got=AABBCCDD OBS
+s16 push16 sp2 m[FFFC]           [0] got=88776655 OBS
+s16 push16 sp2 m[10000]          [0] got=BBAA99FF OBS
+s16 push16 sp2 m[0]              [0] got=DDCCC3D4 OBS
+s16 push16 sp1 esp               [0] got=7777FFFF OBS
+s16 push16 sp1 ecx               [0] got=AABBCCDD OBS
+s16 push16 sp1 m[FFFC]           [0] got=D4776655 OBS
+s16 push16 sp1 m[10000]          [0] got=BBAA99C3 OBS
+s16 push16 sp1 m[0]              [0] got=DDCCBBA9 OBS
+s16 push16 sp0 esp               [0] got=7777FFFE OBS
+s16 push16 sp0 ecx               [0] got=AABBCCDD OBS
+s16 push16 sp0 m[FFFC]           [0] got=C3D46655 OBS
+s16 push16 sp0 m[10000]          [0] got=BBAA99FF OBS
+s16 push16 sp0 m[0]              [0] got=DDCCBBA9 OBS
+s16 push32 sp4 esp               [0] got=77770000 OBS
+s16 push32 sp4 ecx               [0] got=AABBCCDD OBS
+s16 push32 sp4 m[FFFC]           [0] got=88776655 OBS
+s16 push32 sp4 m[10000]          [0] got=BBAA99FF OBS
+s16 push32 sp4 m[0]              [0] got=A1B2C3D4 OBS
+s16 push32 sp2 esp               [0] got=7777FFFE OBS
+s16 push32 sp2 ecx               [0] got=AABBCCDD OBS
+s16 push32 sp2 m[FFFC]           [0] got=C3D46655 OBS
+s16 push32 sp2 m[10000]          [0] got=BBAAA1B2 OBS
+s16 push32 sp2 m[0]              [0] got=DDCCBBA9 OBS
+s16 push32 sp0 esp               [0] got=7777FFFC OBS
+s16 push32 sp0 ecx               [0] got=AABBCCDD OBS
+s16 push32 sp0 m[FFFC]           [0] got=A1B2C3D4 OBS
+s16 push32 sp0 m[10000]          [0] got=BBAA99FF OBS
+s16 push32 sp0 m[0]              [0] got=DDCCBBA9 OBS
+s16 pop16 spFFFE esp             [0] got=77770000 OBS
+s16 pop16 spFFFE ecx             [0] got=AABB8877 OBS
+s16 pop16 spFFFE m[FFFC]         [0] got=88776655 OBS
+s16 pop16 spFFFE m[10000]        [0] got=BBAA99FF OBS
+s16 pop16 spFFFE m[0]            [0] got=DDCCBBA9 OBS
+s16 pop16 spFFFF esp             [0] got=77770001 OBS
+s16 pop16 spFFFF ecx             [0] got=AABBFF88 OBS
+s16 pop16 spFFFF m[FFFC]         [0] got=88776655 OBS
+s16 pop16 spFFFF m[10000]        [0] got=BBAA99FF OBS
+s16 pop16 spFFFF m[0]            [0] got=DDCCBBA9 OBS
+s16 pop32 spFFFE esp             [0] got=77770002 OBS
+s16 pop32 spFFFE ecx             [0] got=99FF8877 OBS
+s16 pop32 spFFFE m[FFFC]         [0] got=88776655 OBS
+s16 pop32 spFFFE m[10000]        [0] got=BBAA99FF OBS
+s16 pop32 spFFFE m[0]            [0] got=DDCCBBA9 OBS
+s16 pop32 spFFFC esp             [0] got=77770000 OBS
+s16 pop32 spFFFC ecx             [0] got=88776655 OBS
+s16 pop32 spFFFC m[FFFC]         [0] got=88776655 OBS
+s16 pop32 spFFFC m[10000]        [0] got=BBAA99FF OBS
+s16 pop32 spFFFC m[0]            [0] got=DDCCBBA9 OBS
+s16 pop32 spFFFD esp             [0] got=77770001 OBS
+s16 pop32 spFFFD ecx             [0] got=FF887766 OBS
+s16 pop32 spFFFD m[FFFC]         [0] got=88776655 OBS
+s16 pop32 spFFFD m[10000]        [0] got=BBAA99FF OBS
+s16 pop32 spFFFD m[0]            [0] got=DDCCBBA9 OBS
+s16 push sp(66) esp              [0] got=77770000 OBS
+s16 push sp(66) ecx              [0] got=AABBCCDD OBS
+s16 push sp(66) m[FFFC]          [0] got=88776655 OBS
+s16 push sp(66) m[10000]         [0] got=BBAA99FF OBS
+s16 push sp(66) m[0]             [0] got=DDCC0002 OBS
+s16 push esp esp                 [0] got=77770000 OBS
+s16 push esp ecx                 [0] got=AABBCCDD OBS
+s16 push esp m[FFFC]             [0] got=88776655 OBS
+s16 push esp m[10000]            [0] got=BBAA99FF OBS
+s16 push esp m[0]                [0] got=77770004 OBS
+s16 call esp                     [0] got=7777FFFE OBS
+s16 ret esp                      [0] got=77770002 OBS
+s16 call m[FFFC]                 [0] got=230C6655 OBS
+r3 push nfault                   [0] got=00000001 exp=00000001 OK
+r3 push cr2                      [0] got=000137FC exp=000137FC OK
+r3 push err                      [0] got=00000007 exp=00000007 OK
+r3 push eip                      [0] got=00002717 exp=00002717 OK
+r3 push esp@fault                [0] got=00013800 exp=00013800 OK
+r3 push esp after                [0] got=000137FC exp=000137FC OK
+r3 push mem                      [0] got=13572468 exp=13572468 OK
+r3 pop nfault                    [0] got=00000001 exp=00000001 OK
+r3 pop cr2                       [0] got=00013800 exp=00013800 OK
+r3 pop err                       [0] got=00000005 exp=00000005 OK
+r3 pop eip                       [0] got=00002721 exp=00002721 OK
+r3 pop esp@fault                 [0] got=00013800 exp=00013800 OK
+r3 pop eax@fault                 [0] got=DEADBEEF exp=DEADBEEF OK
+r3 pop eax                       [0] got=C0FFEE11 exp=C0FFEE11 OK
+r3 pop esp after                 [0] got=00013804 exp=00013804 OK
+r3 np push nfault                [0] got=00000001 exp=00000001 OK
+r3 np push cr2                   [0] got=000137FC exp=000137FC OK
+r3 np push err                   [0] got=00000006 exp=00000006 OK
+r3 np push eip                   [0] got=00002717 exp=00002717 OK
+r3 np push esp@fault             [0] got=00013800 exp=00013800 OK
+r3 np esp after                  [0] got=000137FC exp=000137FC OK
+r3 np mem                        [0] got=13572468 exp=13572468 OK
+STACKOPS fails=00000000 checks=00000131

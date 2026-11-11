@@ -1,0 +1,171 @@
+{
+  "remote": "https://github.com/kaaburgh/dosbox-staging.git",
+  "offline": false,
+  "fetch": {
+    "+refs/heads/main:refs/up/heads/main": "ok",
+    "+refs/pull/14/head:refs/up/pull/14": "ok",
+    "+refs/heads/phase2/c4-popfq-free-flag-restore:refs/up/heads/phase2/c4-popfq-free-flag-restore": "ok",
+    "+refs/pull/15/head:refs/up/pull/15": "ok",
+    "+refs/heads/phase2/c1a-x87-inline-load-v2:refs/up/heads/phase2/c1a-x87-inline-load-v2": "ok",
+    "+refs/pull/16/head:refs/up/pull/16": "ok",
+    "+refs/heads/phase2/c2-stack-inline:refs/up/heads/phase2/c2-stack-inline": "ok",
+    "+refs/pull/17/head:refs/up/pull/17": "ok",
+    "+refs/heads/phase2/c6-decode-bt-setcc-sahf:refs/up/heads/phase2/c6-decode-bt-setcc-sahf": "ok",
+    "+refs/heads/phase2/integration-local:refs/up/heads/phase2/integration-local": "ok",
+    "+refs/pull/18/head:refs/up/pull/18": "ok",
+    "+refs/heads/phase2/c3-return-target-cache:refs/up/heads/phase2/c3-return-target-cache": "ok",
+    "+refs/pull/19/head:refs/up/pull/19": "ok",
+    "+refs/heads/phase2/c1b-x87-inline-store:refs/up/heads/phase2/c1b-x87-inline-store": "ok"
+  },
+  "main_now": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+  "baseline": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+  "variants": {
+    "base": {
+      "title": "main at the Phase 2 baseline (A/A placebo: base and base2)",
+      "pr": null,
+      "branch": null,
+      "resolved_from": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+      "sha": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+      "phase2_sha": "27b1b7ca719c21ef3444f7ad1cf2d9cd439527cc",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [],
+      "commits_since_base": []
+    },
+    "c4": {
+      "title": "PR #14 C4: guest flags restored without POPFQ",
+      "pr": 14,
+      "branch": "phase2/c4-popfq-free-flag-restore",
+      "resolved_from": "refs/up/pull/14",
+      "sha": "5bacbd99f1358f4096069313e16586f48cf6917f",
+      "phase2_sha": "5bacbd99f1358f4096069313e16586f48cf6917f",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [
+        "src/cpu/core_dyn_x86.cpp",
+        "src/cpu/core_dyn_x86/decoder.h",
+        "src/cpu/core_dyn_x86/risc_x64.h"
+      ],
+      "commits_since_base": [
+        "5bacbd99f style: Format the POPFQ-free flag restore with clang-format",
+        "b5a78e311 Restore guest flags without POPFQ in the x86-64 dynamic core"
+      ]
+    },
+    "c1a": {
+      "title": "PR #15 C1a: inline x87 m32 load",
+      "pr": 15,
+      "branch": "phase2/c1a-x87-inline-load-v2",
+      "resolved_from": "refs/up/pull/15",
+      "sha": "22ad052dfe80a33778ebccf04f19ca8baf447792",
+      "phase2_sha": "22ad052dfe80a33778ebccf04f19ca8baf447792",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [
+        "src/cpu/core_dyn_x86/dyn_fpu_dh.h"
+      ],
+      "commits_since_base": [
+        "22ad052df style: Put the x87 m32 load comments on their own lines",
+        "caacd6822 style: Format the x87 m32 inline load with clang-format",
+        "c45a4620b Inline the in-page TLB hit path of dynamic core x87 m32 loads"
+      ]
+    },
+    "c2": {
+      "title": "PR #16 C2: inline PUSH/POP",
+      "pr": 16,
+      "branch": "phase2/c2-stack-inline",
+      "resolved_from": "refs/up/pull/16",
+      "sha": "4619d41d6b8f58180b4faf37c358c616a71c8c0f",
+      "phase2_sha": "4619d41d6b8f58180b4faf37c358c616a71c8c0f",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [
+        "src/cpu/core_dyn_x86/decoder.h"
+      ],
+      "commits_since_base": [
+        "4619d41d6 style: Format the inline PUSH/POP change with clang-format",
+        "f0343030f Inline the TLB fast path for dynamic core PUSH and POP"
+      ]
+    },
+    "c6": {
+      "title": "PR #17 C6: BT/SETcc/SAHF/LAHF translated",
+      "pr": 17,
+      "branch": "phase2/c6-decode-bt-setcc-sahf",
+      "resolved_from": "refs/up/pull/17",
+      "sha": "f8e39504ca4e394ee7742b7cc370a8744336b281",
+      "phase2_sha": "f8e39504ca4e394ee7742b7cc370a8744336b281",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [
+        "src/cpu/core_dyn_x86/decoder.h",
+        "src/cpu/core_dyn_x86/risc_x64.h"
+      ],
+      "commits_since_base": [
+        "f8e39504c style: Format the BT/SETcc/SAHF/LAHF translation with clang-format",
+        "0b9b58da3 Translate BT/BTS/BTR/BTC, SETcc, SAHF and LAHF in the x86-64 dynamic core"
+      ]
+    },
+    "all4": {
+      "title": "C4+C1a+C2+C6 integration (measurement only)",
+      "pr": null,
+      "branch": "phase2/integration-local",
+      "resolved_from": "refs/up/heads/phase2/integration-local",
+      "sha": "911ccc0526281235169ad147cb64c7f2fa831dd3",
+      "phase2_sha": "911ccc0526281235169ad147cb64c7f2fa831dd3",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [
+        "src/cpu/core_dyn_x86.cpp",
+        "src/cpu/core_dyn_x86/decoder.h",
+        "src/cpu/core_dyn_x86/dyn_fpu_dh.h",
+        "src/cpu/core_dyn_x86/risc_x64.h"
+      ],
+      "commits_since_base": [
+        "911ccc052 Local integration of C1a, C2, C4 and C6 for measurement only",
+        "bc63cb815 Merge branch 'phase2/c2-stack-inline' into phase2/integration-local",
+        "de793a2cc Merge branch 'phase2/c1a-x87-inline-load' into phase2/integration-local",
+        "284b7a181 Use a near jump over the x87 m32 load helper call",
+        "0b9b58da3 Translate BT/BTS/BTR/BTC, SETcc, SAHF and LAHF in the x86-64 dynamic core",
+        "f0343030f Inline the TLB fast path for dynamic core PUSH and POP",
+        "b5a78e311 Restore guest flags without POPFQ in the x86-64 dynamic core",
+        "8233fe323 Inline the in-page TLB hit path of dynamic core x87 m32 loads"
+      ]
+    },
+    "c3": {
+      "title": "PR #18 C3: near-return linking (neutral in Phase 2)",
+      "pr": 18,
+      "branch": "phase2/c3-return-target-cache",
+      "resolved_from": "refs/up/pull/18",
+      "sha": "c861a8b02e4685d3c3bd4f245e0417d502a5a149",
+      "phase2_sha": "c861a8b02e4685d3c3bd4f245e0417d502a5a149",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [
+        "src/cpu/core_dyn_x86.cpp",
+        "src/cpu/core_dyn_x86/decoder.h",
+        "src/cpu/core_dyn_x86/risc_x64.h",
+        "src/cpu/dyn_cache.h"
+      ],
+      "commits_since_base": [
+        "c861a8b02 style: Put the return-target address comment on its own line",
+        "b2322705c style: Format the near-return linking with clang-format",
+        "333984500 Link near returns to their last target in the x86-64 dynamic core"
+      ]
+    },
+    "c1b": {
+      "title": "PR #19 C1b: inline x87 m32 store (neutral in Phase 2)",
+      "pr": 19,
+      "branch": "phase2/c1b-x87-inline-store",
+      "resolved_from": "refs/up/pull/19",
+      "sha": "dfed705a3607271a710e298087c13d9e19769d7f",
+      "phase2_sha": "dfed705a3607271a710e298087c13d9e19769d7f",
+      "matches_phase2": true,
+      "based_on_phase2_baseline": true,
+      "files_changed_vs_base": [
+        "src/cpu/core_dyn_x86/dyn_fpu_dh.h"
+      ],
+      "commits_since_base": [
+        "dfed705a3 Inline the in-page TLB hit path of dynamic core x87 m32 stores"
+      ]
+    }
+  }
+}

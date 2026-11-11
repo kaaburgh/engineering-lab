@@ -233,3 +233,26 @@ The canonical public research home is this repository. Historical `configs` refe
 - An experimental checked-inline x87 dword read changed generated code and passed nine DOS oracles across normal/dynamic cores and baseline/candidate binaries (36/36), including selected non-present and CPL3 protection faults. This is not full x87/MMIO/protection correctness. The 32-run randomized ABBA/BAAB A/B estimate was +9.59%, descriptive interval −3.27% to +26.26%; it is inconclusive. The prototype is an isolated research patch, not a product change.
 
 **Next boundary:** establish fresh A/A precision on a stable host, then independently test randomized paired A/B and other workloads; expand exception, interrupt and MMIO correctness before proposing a JIT patch. See the reports for provenance and limitations.
+
+
+## Independent Phase 1 audit (2026-11-09)
+
+Full report: [phase1-audit-2026-11-09/audit.md](phase1-audit-2026-11-09/audit.md),
+evidence table [evidence.md](phase1-audit-2026-11-09/evidence.md), ranked
+candidates [candidates.md](phase1-audit-2026-11-09/candidates.md), plan
+[experiment-plan.md](phase1-audit-2026-11-09/experiment-plan.md), handoff
+[HANDOFF.md](phase1-audit-2026-11-09/HANDOFF.md).
+
+- **H1–H3 block data confirmed** independently (same hot blocks, sizes, live
+  `surf8` patch); **H5 confirmed** as 152 M `FPU_FLD_32` calls ≈7.3% of the
+  demo window; **H4 refined** to 18.0 M dispatcher entries ≈3.6%.
+- **New:** guest-flag save/restore around inline memory accesses (604 M
+  `PUSHFQ`, 37.3 M `POPFQ`) ≈9% of the window on Intel (in-situ injection);
+  stack PUSH/POP always call out-of-line helpers (105 M calls ≈4.6%).
+- **Semantics:** dynamic-core x87 memory faults use the legacy nested #PF path
+  (guest sees block-start EIP and stale registers); PR #10 changes this for m32
+  loads; PR #9 is semantically neutral. Earlier fault oracles cannot detect it.
+- **Measurement:** host CPU time varies 6–10% even with deterministic guest
+  work. Pooled over 28 interleaved blocks (two identical-binary placebo
+  labels), PR #10 is +8.7% [+5.0, +12.6] — consistent with its +9.59% claim —
+  while PR #9 (+1.9% [−1.9, +5.7]) is indistinguishable from noise.

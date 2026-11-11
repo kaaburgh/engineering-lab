@@ -1,0 +1,891 @@
+{
+  "cycles": "max",
+  "variants": {
+    "all4": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      }
+    },
+    "base": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": null
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": null
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": null
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": null
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": null
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": null
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": null
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": null
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": null
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": null
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": null
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": null
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": null
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": null
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": null
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": null
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": null
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": null
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": null
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": null
+        }
+      }
+    },
+    "c1a": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      }
+    },
+    "c1b": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      }
+    },
+    "c2": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      }
+    },
+    "c3": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      }
+    },
+    "c4": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      }
+    },
+    "c6": {
+      "dynamic": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=ee7b17c3acdc67ff",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "KNOWN",
+          "detail": "legacy x87 #PF imprecision: fld32,fadd32,fild32,fiadd32,fld32x,fld64,fstp32",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "PASS",
+          "detail": "STACKOPS fails=00000000 checks=00000131",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      },
+      "normal": {
+        "BITOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "FLAGOPS": {
+          "verdict": "PASS",
+          "detail": "deviations=0000",
+          "same_as_base": true
+        },
+        "FLAGRST": {
+          "verdict": "PASS",
+          "detail": "FLAGRST combos=64 deviations=0 sha=39252bafb8f556af",
+          "same_as_base": true
+        },
+        "JITSIZE": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "JITSIZED": {
+          "verdict": "PASS",
+          "detail": "JITSIZE_PASS",
+          "same_as_base": true
+        },
+        "PFPREC": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "PFREGS": {
+          "verdict": "PASS",
+          "detail": "8 cases",
+          "same_as_base": true
+        },
+        "STACKOPS": {
+          "verdict": "KNOWN",
+          "detail": "STACKOPS fails=00000001 checks=00000131; pf call eip                      [0] got=00000E8C exp=00000E",
+          "same_as_base": true
+        },
+        "X87LOAD": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        },
+        "X87STORE": {
+          "verdict": "PASS",
+          "detail": "deviations=00",
+          "same_as_base": true
+        }
+      }
+    }
+  },
+  "negative_controls": {
+    "dynamic": {
+      "FLAGOPSN": {
+        "detected": true,
+        "detail": "deviations=4A00"
+      },
+      "STACKNEG": {
+        "detected": true,
+        "detail": "STACKOPS fails=00000001 checks=00000132; negative control (FAIL)          [0] got=00000001 exp=000000"
+      },
+      "X87LNEG": {
+        "detected": true,
+        "detail": "deviations=06"
+      },
+      "X87SNEG": {
+        "detected": true,
+        "detail": "deviations=06"
+      }
+    },
+    "normal": {
+      "FLAGOPSN": {
+        "detected": true,
+        "detail": "deviations=4A00"
+      },
+      "STACKNEG": {
+        "detected": true,
+        "detail": "STACKOPS fails=00000002 checks=00000132; pf call eip                      [0] got=00000EA1 exp=00000E"
+      },
+      "X87LNEG": {
+        "detected": true,
+        "detail": "deviations=06"
+      },
+      "X87SNEG": {
+        "detected": true,
+        "detail": "deviations=06"
+      }
+    }
+  }
+}

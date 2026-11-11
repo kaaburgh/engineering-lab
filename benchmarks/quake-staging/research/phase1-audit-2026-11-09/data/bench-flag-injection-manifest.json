@@ -1,0 +1,44 @@
+{
+ "seed": 1109,
+ "cycles": "1000000",
+ "blocks": 6,
+ "warmups": 1,
+ "variants": {
+  "base": {
+   "path": "dosbox-base",
+   "sha256": "704f46286e0f87a1cdb2b226c72b680d7cc49a64ba687db9da3f2b73bb1b029e"
+  },
+  "popf4": {
+   "path": "dosbox-inj-popf4",
+   "sha256": "8467ba99775ec1d44875395198720d58b70999abf35e5fa889685de30a1cadc0"
+  },
+  "pushf4": {
+   "path": "dosbox-inj-pushf4",
+   "sha256": "82618cf5020f33b8ce8c33ae32c45b081d9b0953fb09c34309bb8f4ff8b694fa"
+  }
+ },
+ "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+ "nproc": 4,
+ "poll_ms": 5,
+ "schedule": [
+  "base",
+  "pushf4",
+  "base",
+  "popf4",
+  "pushf4",
+  "base",
+  "popf4",
+  "popf4",
+  "base",
+  "pushf4",
+  "popf4",
+  "base",
+  "pushf4",
+  "pushf4",
+  "popf4",
+  "base",
+  "popf4",
+  "pushf4",
+  "base"
+ ]
+}

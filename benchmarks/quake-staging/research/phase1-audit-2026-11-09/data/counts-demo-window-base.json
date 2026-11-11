@@ -1,0 +1,77 @@
+{
+ "description": "Exact event counts in the Quake 1.06 demo1 timedemo window, fixed cpu_cycles_protected=1000000 (lag mode), JitCounters build of main 27b1b7c; two independent runs",
+ "run1": {
+  "frames": 969,
+  "guest_seconds": 3.0,
+  "fps": 326.7,
+  "window_counts": {
+   "pushfq_exec": 604307687,
+   "popfq_exec": 37289061,
+   "push_helper_calls": 65390464,
+   "pop_helper_calls": 39474680,
+   "fpu_fld32_calls": 152409081,
+   "fpu_fst32_calls": 36117047,
+   "fpu_fld64_calls": 2457812,
+   "dispatch_loop": 18008653,
+   "makecodepage_calls": 18008653,
+   "run_block_from_dispatcher": 18012774,
+   "normal_core_runs": 1945752,
+   "blocks_created": 3730,
+   "read_word_slow_path": 157704,
+   "write_word_slow_path": 15750265
+  },
+  "per_frame": {
+   "pushfq_exec": 623640.5,
+   "popfq_exec": 38482.0,
+   "push_helper_calls": 67482.4,
+   "pop_helper_calls": 40737.5,
+   "fpu_fld32_calls": 157284.9,
+   "fpu_fst32_calls": 37272.5,
+   "fpu_fld64_calls": 2536.4,
+   "dispatch_loop": 18584.8,
+   "makecodepage_calls": 18584.8,
+   "run_block_from_dispatcher": 18589.0,
+   "normal_core_runs": 2008.0,
+   "blocks_created": 3.8,
+   "read_word_slow_path": 162.7,
+   "write_word_slow_path": 16254.1
+  }
+ },
+ "run2": {
+  "frames": 969,
+  "guest_seconds": 3.0,
+  "fps": 326.7,
+  "window_counts": {
+   "pushfq_exec": 604249050,
+   "popfq_exec": 37285328,
+   "push_helper_calls": 65355025,
+   "pop_helper_calls": 39449556,
+   "fpu_fld32_calls": 152406525,
+   "fpu_fst32_calls": 36115343,
+   "fpu_fld64_calls": 2450147,
+   "dispatch_loop": 17995476,
+   "makecodepage_calls": 17995476,
+   "run_block_from_dispatcher": 17999598,
+   "normal_core_runs": 1945752,
+   "blocks_created": 3730,
+   "read_word_slow_path": 157704,
+   "write_word_slow_path": 15750265
+  },
+  "per_frame": {
+   "pushfq_exec": 623580.0,
+   "popfq_exec": 38478.2,
+   "push_helper_calls": 67445.8,
+   "pop_helper_calls": 40711.6,
+   "fpu_fld32_calls": 157282.3,
+   "fpu_fst32_calls": 37270.7,
+   "fpu_fld64_calls": 2528.5,
+   "dispatch_loop": 18571.2,
+   "makecodepage_calls": 18571.2,
+   "run_block_from_dispatcher": 18575.4,
+   "normal_core_runs": 2008.0,
+   "blocks_created": 3.8,
+   "read_word_slow_path": 162.7,
+   "write_word_slow_path": 16254.1
+  }
+ }
+}
