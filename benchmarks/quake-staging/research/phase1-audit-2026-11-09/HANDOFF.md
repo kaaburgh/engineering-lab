@@ -1,5 +1,7 @@
 # HANDOFF — как продолжить (Phase 2)
 
+Результаты Phase 2 (2026-11-11): [../phase2-2026-11-11/report.md](../phase2-2026-11-11/report.md).
+
 Состояние на 2026-11-09. Документы этой фазы: [audit.md](audit.md),
 [evidence.md](evidence.md), [candidates.md](candidates.md),
 [experiment-plan.md](experiment-plan.md). Производные данные — `data/`.

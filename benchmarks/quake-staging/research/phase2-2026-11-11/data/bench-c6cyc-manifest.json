@@ -1,0 +1,25 @@
+{
+ "seed": 5,
+ "cycles": "1000000",
+ "blocks": 2,
+ "warmups": 0,
+ "variants": {
+  "c6cyc": {
+   "path": "dosbox-c6cyc",
+   "sha256": "ec6965c2f5b2dcfdd3194c41a269e4d75a55da594d3a963d1a93b1df66b569ac"
+  },
+  "c6": {
+   "path": "dosbox-c6",
+   "sha256": "9dc24c510a6bc56640c3b5b4af10c8446d39bbc54a743617cd12b123f7b360b6"
+  }
+ },
+ "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+ "nproc": 4,
+ "poll_ms": 5,
+ "schedule": [
+  "c6cyc",
+  "c6",
+  "c6cyc",
+  "c6"
+ ]
+}
