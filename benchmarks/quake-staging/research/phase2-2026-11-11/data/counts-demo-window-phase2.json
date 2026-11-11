@@ -285,5 +285,50 @@
    "0F 21": 2548,
    "AE": 479
   }
+ },
+ "c1b": {
+  "frames": 969,
+  "guest_seconds": 3.0,
+  "fps": 326.7,
+  "window_counts": {
+   "pushfq_exec": 604269371,
+   "popfq_exec": 37291424,
+   "push_helper_calls": 65412563,
+   "pop_helper_calls": 39492029,
+   "fpu_fld32_calls": 152411325,
+   "fpu_fst32_calls": 3607,
+   "fpu_fld64_calls": 2464567,
+   "dispatch_loop": 18018285,
+   "makecodepage_calls": 18018285,
+   "run_block_from_dispatcher": 18022376,
+   "normal_core_runs": 1945584,
+   "blocks_created": 3579,
+   "read_word_slow_path": 157615,
+   "write_word_slow_path": 15734178,
+   "push_fast_path_eligible": 65394680,
+   "pop_fast_path_eligible": 39489301,
+   "dispatch_same_code_page": 12167909,
+   "fallback_no_code_page": 0,
+   "fallback_invalidation_map": 0,
+   "fallback_smc": 0,
+   "fallback_opcode": 1945584,
+   "fallback_trap": 0
+  },
+  "br_opcode_fallback_opcodes": {
+   "0F A3": 1367631,
+   "0F 94": 295801,
+   "9E": 183754,
+   "0F B3": 32725,
+   "0F 22": 15244,
+   "0F 23": 12705,
+   "0F B2": 10000,
+   "0F 01": 7622,
+   "0F 20": 7622,
+   "0F AB": 3977,
+   "0F 9E": 2910,
+   "0F 00": 2541,
+   "0F 21": 2540,
+   "AE": 474
+  }
  }
 }
